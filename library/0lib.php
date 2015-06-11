@@ -9,6 +9,7 @@
 function renderListTop($table) {
 	$newLink = 'index.php?navigation=' . $_GET['navigation'] . '&sub=' . $_GET['sub'] . '&action=new';
 	$allLink = 'index.php?navigation=' . $_GET['navigation'] . '&sub=' . $_GET['sub'] . '&action=all';
+	$treeLink = 'index.php?navigation=' . $_GET['navigation'] . '&sub=tree';
 	echo '<ul class="listTopLinks">';
 	
 	if ($table['topActions'] != str_replace(',','',$table['topActions'])) {
@@ -29,6 +30,12 @@ function renderListTop($table) {
 				case 'new':
 					echo '<li class="actionNew">';
 					echo '<a href="' . $allLink . '" class="btn btn-default">Alle ' . $table['plural'] . '</a>';
+					echo '</li>';
+					break;
+					
+				case 'tree':
+					echo '<li class="actionTree">';
+					echo '<a href="' . $treeLink . '" class="btn btn-default">Baumansicht</a>';
 					echo '</li>';
 					break;
 			}
@@ -486,13 +493,111 @@ function resizePic($img, $width, $height, $src = 'images/uploaded', $dest = 'ima
 	}
 }
 
-/* Diverses */
 
-// function issetNotEmpty($var, $if, $else) {
-// 	if (isset($var) && !empty($var)) {
-// 		echo $if;
-// 	} else {
-// 		echo $else;
-// 	}
-// }
+/**
+ * make_comparer
+ * Sortiert mehrdimensionale Arrays durch tieferliegende Ebenen. Wird in prepareNodes verwendet.
+ * @author http://stackoverflow.com/questions/96759/how-do-i-sort-a-multidimensional-array-in-php#answer-16788610
+ * @return number
+ */
+
+function make_comparer() {
+	// Normalize criteria up front so that the comparer finds everything tidy
+	$criteria = func_get_args();
+	foreach ($criteria as $index => $criterion) {
+		$criteria[$index] = is_array($criterion)
+		? array_pad($criterion, 3, null)
+		: array($criterion, SORT_ASC, null);
+	}
+
+	return function($first, $second) use (&$criteria) {
+		foreach ($criteria as $criterion) {
+			// How will we compare this round?
+			list($column, $sortOrder, $projection) = $criterion;
+			$sortOrder = $sortOrder === SORT_DESC ? -1 : 1;
+
+			// If a projection was defined project the values now
+			if ($projection) {
+				$lhs = call_user_func($projection, $first[$column]);
+				$rhs = call_user_func($projection, $second[$column]);
+			}
+			else {
+				$lhs = $first[$column];
+				$rhs = $second[$column];
+			}
+
+			// Do the actual comparison; do not return if equal
+			if ($lhs < $rhs) {
+				return -1 * $sortOrder;
+			}
+			else if ($lhs > $rhs) {
+				return 1 * $sortOrder;
+			}
+		}
+
+		return 0; // tiebreakers exhausted, so $first == $second
+	};
+}
+
+/**
+ * preparenodes
+ * Sortiert alle Nodes nach Navigation (hauptnavigation,servicenavigation,etc) und diese nach Position. Es werden auch die ganzen Ebenen mittels ParentId erstellt (TODO!)
+ * @param array $nodes
+ */
+
+function prepareNodes($nodes) {
+	if (count($nodes) > 0) {
+		foreach ($nodes as $node) {
+			$navigations[$node['navigation']][] = $node;
+		}
+
+		// 		shuffle($navigations['hauptnavigation']);
+		// 		shuffle($navigations['servicenavigation']);
+
+		$result['unsorted'] = $navigations;
+
+		foreach ($navigations as $navigationTitel => $navigation) {
+			usort($navigation, make_comparer(
+					['position', SORT_ASC],
+					['id', SORT_ASC]
+			));
+
+			$navigations[$navigationTitel] = $navigation;
+			$result['sorted'][$navigationTitel] = $navigation;
+		}
+
+
+	}
+
+	return $result['sorted'];
+}
+
+/**
+ * renderTreeView
+ * Gibt die Nodes im CMS in der Baumansicht aus
+ * @param array $preparedNodes (mittels prepareNodes() vorbereitete Nodes
+ */
+function renderTreeView($preparedNodes) {
+	if (count($preparedNodes) > 0) {
+		echo '<ul class="treeview treeviewRoot level0 levelNavigations">';
+		foreach ($preparedNodes as $navigationTitel => $navigation) {
+			echo '<li class="navigation">';
+			echo '<span class="navigationsTitel"><i class="fa fa-caret-square-o-down"></i>' . $navigationTitel . '</span>';
+			if (count($navigation) > 0) {
+				echo '<ul class="treeview level0 levelNavigationItems">';
+				echo '<i class="fa fa-long-arrow-down down1"></i>';
+					foreach ($navigation as $navigationItem) {
+						echo '<li>';
+						echo '<i class="fa fa-long-arrow-right right1"></i><a href="" class="navigationsItemTitel">' . $navigationItem['titel'] . '</a>';
+						echo '</li>';
+					}
+					
+				echo '</ul>';
+			}
+			echo '</li>';
+		}
+		echo '</ul>';
+	}
+}
+
 ?>

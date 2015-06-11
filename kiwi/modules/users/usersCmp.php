@@ -1,8 +1,9 @@
-<div class="modul users usersAll">
+<div class="modul users usersMain">
 	<div class="listTop">
 		<?php
-			renderListTop($data['table']);
+			//renderListTop($data['table']);
 		?>
+		<h1><?php echo $data['table']['label']; ?></h1>
 	</div>
 	<?php
 		if ((isset($_GET['action']) && $_GET['action'] == 'edit' && isset($_GET['usersId'])) || (isset($_GET['sub']) && $_GET['sub'] == 'own') ) {

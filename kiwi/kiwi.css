@@ -35,8 +35,25 @@ body {
 	height: 100%;
 	margin: 0;
 	padding: 0;
+	color: #4d4d4d;
 	font-family: 'Open Sans';
 	font-weight: 400;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+h7,
+h8 {
+	color: #4d4d4d;
+}
+
+h1 {
+	margin: 0;
+	font-weight: 300;
 }
 
 a,
@@ -304,6 +321,37 @@ table.kiwiTable th.idLabel {
 
 .ansichtDetail form.kiwiForm {
 	margin-bottom: 15px;
+}
+
+ul.treeviewRoot {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+
+ul.treeviewRoot .navigationsTitel i {
+	padding-right: 5px;
+}
+
+ul.treeviewRoot ul.level0 {
+	list-style: none;
+	padding: 0 0 0 25px;
+	position: relative;
+}
+
+ul.treeviewRoot ul.level0 .down1 {
+	position: absolute;
+	left: 10px;
+	top: 0;
+	display: none;
+}
+
+ul.treeviewRoot ul.level0 > li {
+	position: relative;
+}
+
+ul.treeviewRoot ul.level0 .right1 {
+	padding-right: 5px;
 }
 
 .listTop {
