@@ -1,0 +1,412 @@
+@CHARSET "UTF-8";
+
+/* Allgemein */
+
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700);
+
+@keyframes rotating {
+  from {
+    -ms-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  to {
+    -ms-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+/* Admin Template */
+
+html {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	font-family: 'Open Sans';
+	font-weight: 400;
+}
+
+a,
+button {
+	transition: all ease .3s;
+}
+
+#template {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+#header {
+	width: 100%;
+	height: 80px;
+	overflow: hidden;
+	background-color: #4d4d4d;
+	border-bottom: 8px solid #91ff55;
+	z-index: 100;
+}
+
+#header #logo {
+	width: 250px;
+	height: 80px;
+	margin: 0;
+	padding: 10px;
+	display: block;
+	float: left;
+}
+
+#header #logo a {
+	display: block;
+}
+
+#header #logo .image {
+	display: block;
+	float: left;
+	width: 100px;
+	height: auto;
+	animation: rotating 30s linear infinite;
+	margin: -50px 0 0 -50px;
+}
+
+#header #logo .image:hover {
+	/*  transform: rotate(360deg); */
+}
+
+#header #logo .title {
+	height: 60px;
+	padding: 0 0 0 10px;
+	display: block;
+	float: left;
+	color: #91ff55;
+	font-size: 23px;
+	font-weight: 400;
+	line-height: 60px;
+	text-transform: lowercase;
+}
+
+#header #top {
+	float: left;
+	width: 900px;
+	display: block;
+	margin: 0;
+	padding: 0;
+	height: 80px;
+}
+
+#header #top ul.navigation {
+	display: block;
+	width: auto;
+	height: 80px;
+	margin: 0;
+	padding: 20px 0 20px 20px;
+	list-style: none;
+}
+
+#header #top ul.navigation > li {
+	display: block;
+	float: left;
+	width: auto;
+	margin: 0 20px 0 0;
+	padding: 0;
+}
+
+#header #top ul.navigation > li > a {
+	display: block;
+	color: #ffffff;
+	font-size: 18px;
+	line-height: 40px;
+	text-decoration: none;
+	transition: all ease .3s;
+}
+
+#header #top ul.navigation > li > a > i {
+	font-size: 23px;
+}
+
+#header #top ul.navigation > li > a > .title {
+	padding-left: 5px;
+}
+
+#header #top ul.navigation > li:hover > a {
+	color: #91ff55;
+}
+
+#side {
+	width: 250px;
+	height: 100%;
+	background-color: #323232;
+	position: absolute;
+	left: 0;
+	top: 80px;
+	z-index: 90;
+}
+
+#side .module {
+	display: block;
+	width: 100%;
+	height: auto;
+	margin: 0;
+	padding: 20px 0;
+}
+
+#side ul.navigation {
+	display: block;
+	width: 100%;
+	height: auto;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+#side ul.navigation > li {
+	display: block;
+	width: 100%;
+	height: 40px;
+	margin: 0;
+	padding: 0;
+	transition: all ease .3s;
+}
+
+#side ul.navigation > li > a {
+	display: block;
+	width: 100%;
+	height: 40px;
+	margin: 0;
+	padding: 0 10px;
+	line-height: 40px;
+	color: #ffffff;
+	text-decoration: none;
+	border-bottom: 1px solid #4d4d4d;
+}
+
+#side ul.navigation > li:last-child > a {
+	border-bottom: none;	
+}
+
+#side ul.navigation > li > a > i {
+	display: inline-block;
+	width: 20px;
+	font-size: 20px;
+	transition: all ease .3s;
+}
+
+#side ul.navigation > li > a > .title {
+	padding: 0 0 0 10px;
+}
+
+#side ul.navigation > li:hover {
+	background-color: #4d4d4d;
+}
+
+#side ul.navigation > li:hover > a {
+	color: #91ff55;	
+}
+
+#side ul.navigation > li:hover > a > i {
+	padding-left: 5px;
+}
+
+#main {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 20px 20px 20px 270px;
+	background: #ededed;
+	position: absolute;
+	top: 80px;
+	left: 0;
+}
+
+/* Admin Content */
+
+.ansichtList table.kiwiTable {
+	background: #f7f7f7;
+}
+
+.ansichtList table.kiwiTable tr {
+	transition: all ease .2s;
+}
+
+.ansichtList table.kiwiTable tr.entryRow:hover {
+	background-color: #e4e4e4;
+}
+
+.ansichtList table.kiwiTable td span {
+	display: block;
+	height: 30px;
+	line-height: 30px;
+}
+
+.ansichtList table.kiwiTable td a {
+	display: block;
+	height: 30px;
+	line-height: 30px;
+}
+
+table.kiwiTable th.actionLabel,
+table.kiwiTable td.actionCell {
+	width: 100px;
+}
+
+table.kiwiTable th.idLabel {
+	width: 50px;
+}
+
+.ansichtList table.kiwiTable a.action {
+	font-size: 20px;
+}
+
+.ansichtList table.kiwiTable a.action.edit {
+	color: #ffc300;
+}
+
+.ansichtList table.kiwiTable a.action.copy {
+	color: #047f84;
+}
+
+.ansichtList table.kiwiTable a.action.delete {
+	color: #b80000;
+}
+
+.ansichtDetail {
+	padding: 0;
+}
+
+.ansichtDetail.edit span.input-group-addon,
+.ansichtDetail.new span.input-group-addon {
+	min-width: 150px;
+	text-align: left;
+}
+
+.ansichtDetail.edit .btn-default,
+.ansichtDetail.new .btn-default {
+	min-width: 150px;
+}
+
+.ansichtDetail.edit .input-group,
+.ansichtDetail.new .input-group {
+	margin-bottom: 5px;
+}
+
+.ansichtDetail form.kiwiForm {
+	margin-bottom: 15px;
+}
+
+.listTop {
+	width: 100%;
+	height: 50px;
+	margin-bottom: 10px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #8e8e8e;
+}
+
+.listTop ul.listTopLinks {
+	display: block;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.listTop ul.listTopLinks li {
+	width: 200px;
+	height: 35px;
+	margin: 0 5px 0 0;
+	float: left;
+}
+
+.listTop ul.listTopLinks li a {
+	display: block;
+	color: #4d4d4d;
+	transition: all ease .3s;
+}
+
+.listTop ul.listTopLinks li:hover a {
+	border-color: #91ff55;
+}
+
+/* Misc */
+
+.form-control:focus {
+	border-color: #91ff55;
+	outline: 0;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(74, 255, 0, .6);
+			box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(74, 255, 0, .6);
+}
+
+.form-control[readonly]:focus {
+	border-color: #ccc;
+	outline: 0;
+	-webkit-box-shadow: none;
+			box-shadow: none;	
+}
+
+.ui-dialog.ui-widget {
+	background: #f7f7f7;
+}
+
+.ui-widget-content {
+	background: none;
+}
+
+.ui-dialog-buttonset button {
+	display: inline-block;
+	padding: 6px 12px;
+	margin-bottom: 0;
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 1.42857143;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: middle;
+	-ms-touch-action: manipulation;
+	touch-action: manipulation;
+	cursor: pointer;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	background-image: none;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	color: #333;
+	background-color: #fff;
+	border-color: #ccc;
+}
+
+.ui-dialog-titlebar {
+	display: none;
+}
+
+a:focus,
+button.btn.btn-default:focus {
+	outline: 0 !important;
+}
+
+.btn-default.active,
+.btn-default.focus,
+.btn-default:active,
+.btn-default:focus,
+.btn-default:hover,
+.open>.dropdown-toggle.btn-default {
+	color: #333;
+	background-color: #91ff55;
+	border-color: #91ff55;
+}
+
+input[readonly] {
+  background-color: whitesmoke !important;
+}
