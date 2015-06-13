@@ -1,6 +1,78 @@
 <?php
 
 /**
+ * getOptionNameListViaSelect
+ * Holt die Werte fuer optionNameList in der Config aus der Datenbank
+ * @param string $fieldname
+ * @param string $tablename
+ * @param string $order
+ * @param boolean $emptyAlternative
+ * @param string $emptyAlternativeValue
+ * @return string
+ */
+
+function getOptionNameListViaSelect($fieldname, $tablename, $order = 'id ASC', $emptyAlternative = true, $emptyAlternativeValue = '---') {
+	$nameList = getRow('SELECT GROUP_CONCAT(' . $fieldname . ') FROM ' . $tablename . ' ORDER BY ' . $order);
+	$key = 'GROUP_CONCAT(' . $fieldname . ')';
+	$optionNameList = $nameList[$key];
+	if ($emptyAlternative) $optionNameList = $emptyAlternativeValue . ',' . $optionNameList;
+	return $optionNameList;
+}
+
+/**
+ * getOptionValueListViaSelect
+ * Holt die Werte fuer optionValueList in der Config aus der Datenbank
+ * @param string $fieldname
+ * @param string $tablename
+ * @param string $order
+ * @param boolean $emptyAlternative
+ * @param string $emptyAlternativeValue
+ * @return string
+ */
+
+function getOptionValueListViaSelect($fieldname, $tablename, $order = 'id ASC', $emptyAlternative = true, $emptyAlternativeValue = '') {
+	$valueList = getRow('SELECT GROUP_CONCAT(id) FROM ' . $tablename . ' ORDER BY ' . $order);
+	$key = 'GROUP_CONCAT(id)';
+	$optionValueList = $valueList[$key];
+	if ($emptyAlternative) $optionValueList = $emptyAlternativeValue . ',' . $optionValueList;
+	return $optionValueList;
+}
+
+/**
+ * prepareOptionList
+ * Bereitet die optionList fuer die Ausgabe im CMS for
+ * @param array $field
+ * @return array|boolean
+ */
+
+function prepareOptionList($field) {
+	if (isset($field['optionNameList']) && isset($field['optionValueList'])) {
+		
+		if ($field['optionNameList'] != str_replace(',','',$field['optionNameList'])) {
+			$optionNameList = explode(',', $field['optionNameList']);
+		} else {
+			$optionNameList[] = $field['optionNameList'];
+		}
+		
+		if ($field['optionValueList'] != str_replace(',','',$field['optionValueList'])) {
+			$optionValueList = explode(',', $field['optionValueList']);
+		} else {
+			$optionValueList[] = $field['optionValueList'];
+		}
+		
+		foreach ($optionNameList as $nameListId => $nameList) {
+			$options[$nameListId]['name'] = $nameList;
+			$options[$nameListId]['value'] = $optionValueList[$nameListId];
+		} 
+		
+		return $options;
+		
+	} else {
+		return false;
+	}
+}
+
+/**
  * renderListTop
  * Gibt für einen Table die Top Links aus (neuer Eintrag,etc)
  * @param array $table
@@ -72,14 +144,31 @@ function renderDetailEdit($table, $entry) {
 		$action = 'index.php?navigation=' . $_GET['navigation'] . '&sub=' . $_GET['sub'] . '&' . $table['name'] . 'Id=' . $entry['id'] . '&action=edit';
 		echo '<form action="' . $action . '" method="post" class="kiwiForm">';
 		foreach ($table['fields'] as $field) {
+			
 			$disabled = '';
-			if ($field['edit'] == 0) {
-				$disabled = 'readonly';
-			}
+			if ($field['edit'] == 0) $disabled = 'readonly';
+			
 			echo '<div class="input-group">';
- 			echo '<span class="input-group-addon">' . $field['label'] . '</span>';
-			echo '<input type="text" class="form-control" name="row[' . $field['name'] . ']" value="' . $entry[$field['name']] . '" ' . $disabled .'>';
-			echo '</div>';	
+			switch ($field['type']) {
+				default:
+				case 'text':
+					echo '<span class="input-group-addon">' . $field['label'] . '</span>';
+					echo '<input type="text" class="form-control" name="row[' . $field['name'] . ']" value="' . $entry[$field['name']] . '" ' . $disabled .'>';
+					break;
+					
+				case 'select':
+					$options = prepareOptionList($field);
+					echo '<span class="input-group-addon">' . $field['label'] . '</span>';
+					echo '<select class="form-control" name="row[' . $field['name'] . ']" ' . $disabled .'>';
+					foreach ($options as $option) {
+						$selected= '';
+						if ($entry[$field['name']] == $option['value']) $selected = 'selected';
+						echo '<option value="' . $option['value'] . '" ' . $selected . '>' . $option['name'] . '</option>';
+					}
+					echo '</select>';
+					break;
+			}
+			echo '</div>';
 		}
 		echo '<input type="hidden" name="sent" value="1">';
 		echo '<button type="submit" class="btn btn-default">Speichern</button>';
@@ -102,13 +191,30 @@ function renderDetailNew($table) {
 		$action = 'index.php?navigation=' . $_GET['navigation'] . '&sub=' . $_GET['sub'] . '&action=new';
 		echo '<form action="' . $action . '" method="post" class="kiwiForm">';
 		foreach ($table['fields'] as $field) {
+			
 			$disabled = '';
-			if ($field['edit'] == 0) {
-				$disabled = 'readonly';
-			}
+			if ($field['edit'] == 0) $disabled = 'readonly';
+
 			echo '<div class="input-group">';
-			echo '<span class="input-group-addon">' . $field['label'] . '</span>';
-			echo '<input type="text" class="form-control" name="row[' . $field['name'] . ']" ' . $disabled .'>';
+			switch ($field['type']) {
+				default:
+				case 'text':
+					echo '<span class="input-group-addon">' . $field['label'] . '</span>';
+					echo '<input type="text" class="form-control" name="row[' . $field['name'] . ']" ' . $disabled .'>';
+					break;
+					
+				case 'select':
+					$options = prepareOptionList($field);
+					echo '<span class="input-group-addon">' . $field['label'] . '</span>';
+					echo '<select class="form-control" name="row[' . $field['name'] . ']" ' . $disabled .'>';
+					foreach ($options as $option) {
+						$selected= '';
+						if ($field['optionDefaultValue'] == $option['value']) $selected = 'selected';
+						echo '<option value="' . $option['value'] . '" ' . $selected . '>' . $option['name'] . '</option>';
+					}
+					echo '</select>';
+					break;
+			}
 			echo '</div>';
 		}
 		echo '<input type="hidden" name="sent" value="1">';
@@ -551,9 +657,6 @@ function prepareNodes($nodes) {
 			$navigations[$node['navigation']][] = $node;
 		}
 
-		// 		shuffle($navigations['hauptnavigation']);
-		// 		shuffle($navigations['servicenavigation']);
-
 		$result['unsorted'] = $navigations;
 
 		foreach ($navigations as $navigationTitel => $navigation) {
@@ -565,11 +668,22 @@ function prepareNodes($nodes) {
 			$navigations[$navigationTitel] = $navigation;
 			$result['sorted'][$navigationTitel] = $navigation;
 		}
+		
+		$getChildren = $result['sorted'];
+		
+		foreach ($getChildren as $navigationTitel => $navigation) {
+			foreach ($navigation as $navigationsPunktId => $navigationsPunkt) {
+				if ($navigationsPunkt['parentId'] != 0) {
+					$getChildren[$navigationTitel][$navigationsPunkt['parentId']]['nodes'][] = $navigationsPunkt;
+					unset($getChildren[$navigationTitel][$navigationsPunktId]);
+				}
+			}
+		}
 
-
+		return $getChildren;
+	} else {
+		return false;
 	}
-
-	return $result['sorted'];
 }
 
 /**
@@ -588,7 +702,25 @@ function renderTreeView($preparedNodes) {
 				echo '<i class="fa fa-long-arrow-down down1"></i>';
 					foreach ($navigation as $navigationItem) {
 						echo '<li>';
-						echo '<i class="fa fa-long-arrow-right right1"></i><a href="" class="navigationsItemTitel">' . $navigationItem['titel'] . '</a>';
+						echo '<i class="fa fa-long-arrow-right right1"></i><a href="" class="navigationsItemTitel">' . $navigationItem['titel'] . '</a>'; 
+						if (isset($navigationItem['nodes']) && count($navigationItem['nodes'] > 0)) {
+							echo '<ul class="treeview level1 levelNavigationItems">';
+								foreach ($navigationItem['nodes'] as $navigationItem) {
+									echo '<li>';
+									echo '<i class="fa fa-long-arrow-right right1"></i><a href="" class="navigationsItemTitel">' . $navigationItem['titel'] . '</a>';
+									if (isset($navigationItem['nodes']) && count($navigationItem['nodes'] > 0)) {
+										echo '<ul class="treeview level2 levelNavigationItems">';
+										foreach ($navigationItem['nodes'] as $navigationItem) {
+											echo '<li>';
+											echo '<i class="fa fa-long-arrow-right right1"></i><a href="" class="navigationsItemTitel">' . $navigationItem['titel'] . '</a>';
+											echo '</li>';
+										}
+										echo '</ul>';
+									}
+									echo '</li>';
+								}
+							echo '</ul>';
+						}
 						echo '</li>';
 					}
 					

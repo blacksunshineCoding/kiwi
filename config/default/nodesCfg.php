@@ -48,7 +48,10 @@ $table['fields']['position'] = $field;
 unset($field);
 $field['name'] = 'navigation';
 $field['label'] = 'Navigation';
-$field['type'] = 'text';
+$field['type'] = 'select';
+$field['optionNameList'] = 'hauptnavigation,servicenavigation';
+$field['optionValueList'] = 'hauptnavigation,servicenavigation';
+$field['optionDefaultValue'] = 'hauptnavigation';
 $field['edit'] = 1;
 $table['fields']['navigation'] = $field;
 
@@ -62,7 +65,10 @@ $table['fields']['seitenId'] = $field;
 unset($field);
 $field['name'] = 'parentId';
 $field['label'] = 'Parent';
-$field['type'] = 'text';
+$field['type'] = 'select';
+$field['optionNameList'] = getOptionNameListViaSelect('titel', $table['name'], 'id ASC', true, '---');
+$field['optionValueList'] = getOptionValueListViaSelect('id', $table['name'], 'id ASC', true, 0);
+$field['optionDefaultValue'] = 0;
 $field['edit'] = 1;
 $table['fields']['parentId'] = $field;
 
