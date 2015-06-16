@@ -2,24 +2,22 @@
 	<div class="listTop">
 		<?php
 			renderListTop($data['table']);
+			renderHeadline($data['table']['label'], 1);
 		?>
 	</div>
 	<?php
 		if (isset($_GET['sub'])) {
-			if (($_GET['sub'] == 'list' || $_GET['sub'] == 'all') && (!isset($_GET['action']))) {
-// 				de('sitesCmp modulansicht list');
+			if (isset($_GET['action']) && $_GET['action'] == 'all') {
 				include_once dirname(__FILE__) . '/sitesListCmp.php';
 				
-			} elseif (($_GET['sub'] == 'new' && !isset($_GET['action']) || ($_GET['sub'] == 'new' && $_GET['action'] == 'new'))) {
-// 				de('sitesCmp modulansicht new');
+			} elseif (($_GET['sub'] == 'new') || (isset($_GET['action']) && $_GET['action'] = 'new')) {
 				include_once dirname(__FILE__) . '/sitesNewCmp.php';
 				
 			} elseif (isset($_GET['sitesId']) && isset($_GET['action']) && $_GET['action'] == 'edit') {
-// 				de('sitesCmp modulansicht edit');
 				include_once dirname(__FILE__) . '/sitesEditCmp.php';
 				
 			} elseif (isset($_GET['sitesId']) && isset($_GET['action']) && ($_GET['action'] == 'copy' || $_GET['action'] == 'delete')) {
-// 				de('sitesCmp modulansicht list');
+				de(2);
 				include_once dirname(__FILE__) . '/sitesListCmp.php';
 			}
 		}

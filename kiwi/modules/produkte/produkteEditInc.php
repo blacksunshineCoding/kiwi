@@ -4,7 +4,7 @@ $error = '';
 $link = getDbLink();
 
 if (isset($_POST['sent'])) {
-	if (isset($_FILES['bild'])) {
+	if (isset($_FILES['bild']['tmp_name']) && !empty($_FILES['bild']['tmp_name'])) {
 		$dateityp = GetImageSize($_FILES['bild']['tmp_name']);
 		if ($dateityp[2] != 0) {
 			if ($_FILES['bild']['size'] <  1024000) {

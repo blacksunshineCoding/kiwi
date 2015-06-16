@@ -6,8 +6,12 @@ $table['singular'] = 'Navigationspunkt';
 $table['plural'] = 'Navigationspunkte';
 $table['showTop'] = 1;
 $table['icon'] = 'fa fa-outdent';
-$table['topActions'] = 'tree';
+$table['topActions'] = '';
+$table['sideActions'] = 'all,tree,new';
 $table['listActions'] = 'edit,copy,delete';
+$table['icons']['all'] = 'fa fa-list';
+$table['icons']['new'] = 'fa fa-plus-square';
+$table['icons']['tree'] = 'fa fa-outdent';
 $table['fields'] = array();
 
 unset($field);

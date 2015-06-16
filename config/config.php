@@ -1,6 +1,6 @@
 <?php
 // main settings
-$main['template'] = 'default';
+$main['template'] = 'xzite';
 $main['charset'] = 'UTF-8';
 $main['xua'] = 'IE=Edge';
 $main['lang'] = 'de';

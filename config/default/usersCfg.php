@@ -7,7 +7,10 @@ $table['plural'] = 'Benutzer';
 $table['showTop'] = 1;
 $table['icon'] = 'fa fa-users';
 $table['topActions'] = 'all,new';
+$table['sideActions'] = 'all,new';
 $table['listActions'] = 'edit,copy,delete';
+$table['icons']['all'] = 'fa fa-users';
+$table['icons']['new'] = 'fa fa-user-plus';
 $table['fields'] = array();
 
 unset($field);

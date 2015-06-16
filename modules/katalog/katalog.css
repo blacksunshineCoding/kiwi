@@ -3,11 +3,11 @@
 .produktEintrag {
 	margin: 0 0 25px 0;
 	padding: 20px;
-	background: #f7f7f7;
+	background: #626262;
 }
 
 .produktEintragBild {
-	width: 300px;
+	width: 200px;
 	margin: 0 20px 0 0;
 	float: left;
 }
@@ -17,15 +17,44 @@
 	float: left;
 }
 
+.produktEintragMain h3 {
+	color: #f7f7f7;
+	margin: 0 0 15px 0;
+}
+
 .produktEintrag select.form-control {
 	width: 60px;
 	height: 33px;
-	margin: 0;
+	margin: 0 15px 0 0;
+	float: left;
 }
 
 .produktEintrag button.btn.btn-default {
 	margin: 0;
 	height: 32px;
 	display: block;
-	margin-top: 4px;
+	margin-top: 0;
+	float: left;
+}
+
+a.zumWarenkorb,
+a.zurueckProdukte {
+	margin-bottom: 20px;
+}
+
+.warenkorbTable {
+	background-color: #b2b2b2;
+}
+
+.warenkorbTable tr td,
+.warenkorbTable tr th {
+	border-color: #898989 !important;
+}
+
+.warenkorbTable .input-group {
+	width: 200px;
+}
+
+.katalogWarenkorb button {
+	margin-bottom: 15px;
 }

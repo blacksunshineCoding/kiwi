@@ -6,8 +6,11 @@ $table['singular'] = 'Produkt';
 $table['plural'] = 'Produkte';
 $table['showTop'] = 1;
 $table['icon'] = 'fa fa-outdent';
-$table['topActions'] = 'new';
+$table['topActions'] = '';
+$table['sideActions'] = 'all,new';
 $table['listActions'] = 'edit,copy,delete';
+$table['icons']['all'] = 'fa fa-list';
+$table['icons']['new'] = 'fa fa-plus-square';
 $table['fields'] = array();
 
 unset($field);
@@ -44,6 +47,13 @@ $field['label'] = 'Optionen';
 $field['type'] = 'text';
 $field['edit'] = 1;
 $table['fields']['optionen'] = $field;
+
+unset($field);
+$field['name'] = 'preis';
+$field['label'] = 'Preis';
+$field['type'] = 'text';
+$field['edit'] = 1;
+$table['fields']['preis'] = $field;
 
 unset($field);
 $field['name'] = 'bild';

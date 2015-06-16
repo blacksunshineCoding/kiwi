@@ -6,8 +6,11 @@ $table['singular'] = 'Seite';
 $table['plural'] = 'Seiten';
 $table['showTop'] = 1;
 $table['icon'] = 'fa fa-outdent';
-$table['topActions'] = 'new';
+$table['topActions'] = '';
+$table['sideActions'] = 'all,new';
 $table['listActions'] = 'edit,copy,delete';
+$table['icons']['all'] = 'fa fa-list';
+$table['icons']['new'] = 'fa fa-plus-square';
 $table['fields'] = array();
 
 unset($field);
@@ -16,6 +19,16 @@ $field['label'] = 'Id';
 $field['type'] = 'text';
 $field['edit'] = 0;
 $table['fields']['id'] = $field;
+
+unset($field);
+$field['name'] = 'home';
+$field['label'] = 'Startseite';
+$field['type'] = 'select';
+$field['optionNameList'] = 'ja,nein';
+$field['optionValueList'] = '1,0';
+$field['optionDefaultValue'] = 0;
+$field['edit'] = 1;
+$table['fields']['home'] = $field;
 
 unset($field);
 $field['name'] = 'name';

@@ -3,7 +3,7 @@
 		echo '<ul class="navigation">';
 		foreach ($main['tables'] as $table) {
 			if (isset($table['showTop']) && $table['showTop'] == 1) {
-				$href = 'index.php?navigation=' . $table['name'] . '&sub=all';
+				$href = 'index.php?navigation=' . $table['name'] . '&sub=all&action=all';
 				echo '<li>';
 				echo '<a href="' . $href . '">';
 				if (isset($table['icon'])) echo '<i class="' . $table['icon'] . '"></i>';

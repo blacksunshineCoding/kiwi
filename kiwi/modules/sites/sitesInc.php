@@ -19,20 +19,16 @@ if (isset($_GET['sitesId']) && isset($_GET['action']) && $_GET['action'] == 'cop
 }
 
 if (isset($_GET['sub'])) {
-	if (($_GET['sub'] == 'list' || $_GET['sub'] == 'all') && (!isset($_GET['action']))) {
-// 		de('sitesInc modulansicht list');
+	if (isset($_GET['action']) && $_GET['action'] == 'all') {
 		include_once dirname(__FILE__) . '/sitesListInc.php';
 		
-	} elseif (($_GET['sub'] == 'new' && !isset($_GET['action']) || ($_GET['sub'] == 'new' && $_GET['action'] == 'new'))) {
-// 		de('sitesInc modulansicht new');
+	} elseif (($_GET['sub'] == 'new') || (isset($_GET['action']) && $_GET['action'] = 'new')) {
 		include_once dirname(__FILE__) . '/sitesNewInc.php';
 		
 	} elseif (isset($_GET['sitesId']) && isset($_GET['action']) && $_GET['action'] == 'edit') {
-// 		de('sitesInc modulansicht edit');
 		include_once dirname(__FILE__) . '/sitesEditInc.php';
 		
 	} elseif (isset($_GET['sitesId']) && isset($_GET['action']) && ($_GET['action'] == 'copy' || $_GET['action'] == 'delete')) {
-// 		de('sitesInc modulansicht list');
 		include_once dirname(__FILE__) . '/sitesListInc.php';
 	}
 }

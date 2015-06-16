@@ -6,8 +6,11 @@ $table['singular'] = 'Produktkategorie';
 $table['plural'] = 'Produktkategorien';
 $table['showTop'] = 1;
 $table['icon'] = 'fa fa-outdent';
-$table['topActions'] = 'new';
+$table['topActions'] = '';
+$table['sideActions'] = 'all,new';
 $table['listActions'] = 'edit,copy,delete';
+$table['icons']['all'] = 'fa fa-list';
+$table['icons']['new'] = 'fa fa-plus-square';
 $table['fields'] = array();
 
 unset($field);

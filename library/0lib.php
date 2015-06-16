@@ -84,7 +84,7 @@ function renderListTop($table) {
 	$treeLink = 'index.php?navigation=' . $_GET['navigation'] . '&sub=tree';
 	echo '<ul class="listTopLinks">';
 	
-	if ($table['topActions'] != str_replace(',','',$table['topActions'])) {
+	if(strpos($table['topActions'], ',') !== false) {
 		$topActions = explode(',', $table['topActions']);
 	} else {
 		$topActions[] = $table['topActions'];
@@ -108,6 +108,59 @@ function renderListTop($table) {
 				case 'tree':
 					echo '<li class="actionTree">';
 					echo '<a href="' . $treeLink . '" class="btn btn-default">Baumansicht</a>';
+					echo '</li>';
+					break;
+			}
+		}
+	}
+	echo '</ul>';
+}
+
+/**
+ * renderListSide
+ * Gibt für einen Table die Side Links aus (neuer Eintrag,etc)
+ * @param array $table
+ */
+
+function renderListSide($table) {
+	$newLink = 'index.php?navigation=' . $_GET['navigation'] . '&sub=new&action=new';
+	$allLink = 'index.php?navigation=' . $_GET['navigation'] . '&sub=all&action=all';
+	$treeLink = 'index.php?navigation=' . $_GET['navigation'] . '&sub=tree';
+	echo '<ul class="navigation sideNavigation side' . ucfirst($table['name']) . '">';
+
+	if(strpos($table['sideActions'], ',') !== false) {
+		$sideActions = explode(',', $table['sideActions']);
+	} else {
+		$sideActions[] = $table['sideActions'];
+	}
+	
+	if (count($sideActions) > 0) {
+		foreach ($sideActions as $action) {
+			switch ($action) {
+				case 'all':
+					echo '<li class="all">';
+					echo '<a href="' . $allLink . '">';
+					echo '<i class="' . $table['icons']['all'] . '"></i>';
+					echo '<span class="title">Alle ' . $table['plural'] . '</span>';
+					echo '</a>';
+					echo '</li>';
+					break;
+						
+				case 'new':
+					echo '<li class="new">';
+					echo '<a href="' . $newLink . '">';
+					echo '<i class="' . $table['icons']['new'] . '"></i>';
+					echo '<span class="title">Neuer ' . $table['singular'] . '</span>';
+					echo '</a>';
+					echo '</li>';
+					break;
+						
+				case 'tree':
+					echo '<li class="tree">';
+					echo '<a href="' . $treeLink . '">';
+					echo '<i class="' . $table['icons']['tree'] . '"></i>';
+					echo '<span class="title">Baumansicht</span>';
+					echo '</a>';
 					echo '</li>';
 					break;
 			}

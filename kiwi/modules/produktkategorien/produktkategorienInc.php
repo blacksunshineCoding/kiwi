@@ -19,7 +19,7 @@ if (isset($_GET['produktkategorienId']) && isset($_GET['action']) && $_GET['acti
 }
 
 if (isset($_GET['sub'])) {
-	if (($_GET['sub'] == 'list' || $_GET['sub'] == 'all') && (!isset($_GET['action']))) {
+	if (isset($_GET['action']) && $_GET['action'] == 'all') {
 		include_once dirname(__FILE__) . '/produktkategorienListInc.php';
 		
 	} elseif (($_GET['sub'] == 'new' && !isset($_GET['action']) || ($_GET['sub'] == 'new' && $_GET['action'] == 'new'))) {
