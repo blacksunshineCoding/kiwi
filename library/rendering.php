@@ -49,9 +49,9 @@ function renderHeadline($titel, $nr, $class = FALSE, $link = FALSE, $hAttributes
 	}
 	
 	echo '<h' . $nr . ' ' . $class . $hAttributeString . '>'; 
-	if (isset($link)) echo '<a href="' . $link . '"' . $aAttributeString . '>';
+	if ($link) echo '<a href="' . $link . '"' . $aAttributeString . '>';
 	echo $titel;
-	if (isset($link)) echo '</a>';
+	if ($link) echo '</a>';
 	echo '</h' . $nr . '>';
 }
 

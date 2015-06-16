@@ -142,7 +142,7 @@ function renderDetailEdit($table, $entry) {
 
 	if (isset($table['fields']) && count($table['fields']) > 0) {
 		$action = 'index.php?navigation=' . $_GET['navigation'] . '&sub=' . $_GET['sub'] . '&' . $table['name'] . 'Id=' . $entry['id'] . '&action=edit';
-		echo '<form action="' . $action . '" method="post" class="kiwiForm">';
+		echo '<form action="' . $action . '" method="post" enctype="multipart/form-data" class="kiwiForm">';
 		foreach ($table['fields'] as $field) {
 			
 			$disabled = '';
@@ -156,6 +156,10 @@ function renderDetailEdit($table, $entry) {
 					echo '<input type="text" class="form-control" name="row[' . $field['name'] . ']" value="' . $entry[$field['name']] . '" ' . $disabled .'>';
 					break;
 					
+				case 'textarea':
+					echo '<textarea type="text" class="form-control" name="row[' . $field['name'] . ']" placeholder="' . $field['label'] . '"' . $disabled .'>' . $entry[$field['name']] . '</textarea>';
+					break;
+					
 				case 'select':
 					$options = prepareOptionList($field);
 					echo '<span class="input-group-addon">' . $field['label'] . '</span>';
@@ -166,6 +170,14 @@ function renderDetailEdit($table, $entry) {
 						echo '<option value="' . $option['value'] . '" ' . $selected . '>' . $option['name'] . '</option>';
 					}
 					echo '</select>';
+					break;
+					
+				case 'file':
+					echo '<span class="input-group-addon">' . $field['label'] . '</span>';
+					if (!empty($entry[$field['name']])) {
+						echo '<p class="form-control">Bestehende Datei: ' . $entry[$field['name']] . '</p>';
+					}
+					echo '<input type="file" class="form-control" name="' . $field['name'] . '" ' . $disabled .'>';
 					break;
 			}
 			echo '</div>';
@@ -189,7 +201,7 @@ function renderDetailNew($table) {
 
 	if (isset($table['fields']) && count($table['fields']) > 0) {
 		$action = 'index.php?navigation=' . $_GET['navigation'] . '&sub=' . $_GET['sub'] . '&action=new';
-		echo '<form action="' . $action . '" method="post" class="kiwiForm">';
+		echo '<form action="' . $action . '" method="post" enctype="multipart/form-data" class="kiwiForm">';
 		foreach ($table['fields'] as $field) {
 			
 			$disabled = '';
@@ -201,6 +213,10 @@ function renderDetailNew($table) {
 				case 'text':
 					echo '<span class="input-group-addon">' . $field['label'] . '</span>';
 					echo '<input type="text" class="form-control" name="row[' . $field['name'] . ']" ' . $disabled .'>';
+					break;
+					
+				case 'textarea':
+					echo '<textarea type="text" class="form-control" name="row[' . $field['name'] . ']" placeholder="' . $field['label'] . '"' . $disabled .'></textarea>';
 					break;
 					
 				case 'select':
@@ -307,7 +323,7 @@ function renderDataTable($table, $entries) {
 		}
 		renderActionFields($table, $entry=null, 'label');
 		echo '</tr>';
-		foreach ($entries as $entry) {
+		if (count($entries) > 0) foreach ($entries as $entry) {
 			echo '<tr class="entryRow">';
 			foreach ($entry as $entryField) {
 				echo '<td>';
@@ -551,20 +567,47 @@ function templateLogo() {
  * @param Bildpfad $src
  * @param Zielpfad $dest
  */
-function resizePic($img, $width, $height, $src = 'images/uploaded', $dest = 'images/scaled') {
-	// Gr��e und Typ ermitteln
+function resizePic($img, $width, $height, $src = 'uploads', $dest = 'images/scaled') {
+	// Groesse und Typ ermitteln
 	list ($srcWidth, $srcHeight, $srcTyp) = getimagesize($src . '/' . $img);
-
-	// neue Gr��e bestimmen
-	if ($srcWidth >= $srcHeight) {
+	$srcRatio = $srcWidth / $srcHeight;
+	$srcNewRatio = $srcWidth / $width;
+	// neue Groesse bestimmen
+	
+	if ($height == null) {
+		$srcNewRatio = $srcWidth / $width;
 		$newImgWidth = $width;
-		$newImgHeight = $height * $width / $width;
+		$newImgHeight = $srcHeight / $srcNewRatio;
+	} elseif ($width == null) {
+		$srcNewRatio = $srcHeight / $height;
+		$newImgHeight = $height;
+		$newImgWidth = $srcWidth / $srcNewRatio;
+	} else {
+		if ($srcWidth >= $srcHeight) {
+			$newImgWidth = $width;
+			$newImgHeight = $height * $width / $width;
+		}
+		
+		if ($srcWidth < $srcHeight) {
+			$newImgHeight = $width;
+			$newImgWidth = $width * $height / $height;
+		}
 	}
 	
-	if ($srcWidth < $srcHeight) {
-		$newImgHeight = $width;
-		$newImgWidth = $width * $height / $height;
-	}
+// 	if ($width == null) {
+// 		$newImgHeight = $height;
+// 		$newImgWidth = $srcWidth / $ratio;
+// 	}
+	
+// 	if ($srcWidth >= $srcHeight) {
+// 		$newImgWidth = $width;
+// 		$newImgHeight = $height * $width / $width;
+// 	}
+	
+// 	if ($srcWidth < $srcHeight) {
+// 		$newImgHeight = $width;
+// 		$newImgWidth = $width * $height / $height;
+// 	}
 
 	
 	if ($srcTyp == 1) { // GIF
@@ -692,27 +735,36 @@ function prepareNodes($nodes) {
  * @param array $preparedNodes (mittels prepareNodes() vorbereitete Nodes
  */
 function renderTreeView($preparedNodes) {
+	global $data;
 	if (count($preparedNodes) > 0) {
 		echo '<ul class="treeview treeviewRoot level0 levelNavigations">';
 		foreach ($preparedNodes as $navigationTitel => $navigation) {
 			echo '<li class="navigation">';
-			echo '<span class="navigationsTitel"><i class="fa fa-caret-square-o-down"></i>' . $navigationTitel . '</span>';
+			echo '<span class="navigationsTitel">' . $navigationTitel . '</span>';
 			if (count($navigation) > 0) {
 				echo '<ul class="treeview level0 levelNavigationItems">';
-				echo '<i class="fa fa-long-arrow-down down1"></i>';
 					foreach ($navigation as $navigationItem) {
 						echo '<li>';
-						echo '<i class="fa fa-long-arrow-right right1"></i><a href="" class="navigationsItemTitel">' . $navigationItem['titel'] . '</a>'; 
+						echo '<span class="treeItemRow">';
+						echo '<a href="" class="navigationsItemTitel">' . $navigationItem['titel'] . '</a>';
+						renderActionFields($data['table'], $navigationItem);
+						echo '</span>';
 						if (isset($navigationItem['nodes']) && count($navigationItem['nodes'] > 0)) {
 							echo '<ul class="treeview level1 levelNavigationItems">';
 								foreach ($navigationItem['nodes'] as $navigationItem) {
 									echo '<li>';
-									echo '<i class="fa fa-long-arrow-right right1"></i><a href="" class="navigationsItemTitel">' . $navigationItem['titel'] . '</a>';
+									echo '<span class="treeItemRow">';
+									echo '<a href="" class="navigationsItemTitel">' . $navigationItem['titel'] . '</a>';
+									renderActionFields($data['table'], $navigationItem);
+									echo '</span>';
 									if (isset($navigationItem['nodes']) && count($navigationItem['nodes'] > 0)) {
 										echo '<ul class="treeview level2 levelNavigationItems">';
 										foreach ($navigationItem['nodes'] as $navigationItem) {
 											echo '<li>';
-											echo '<i class="fa fa-long-arrow-right right1"></i><a href="" class="navigationsItemTitel">' . $navigationItem['titel'] . '</a>';
+											echo '<span class="treeItemRow">';
+											echo '<a href="" class="navigationsItemTitel">' . $navigationItem['titel'] . '</a>';
+											renderActionFields($data['table'], $navigationItem);
+											echo '</span>';
 											echo '</li>';
 										}
 										echo '</ul>';
@@ -729,6 +781,99 @@ function renderTreeView($preparedNodes) {
 			echo '</li>';
 		}
 		echo '</ul>';
+	}
+}
+
+function renderNavigation($navigation) {
+	global $main;
+	if (count($navigation) > 0) {
+		echo '<ul class="navigation">';
+			foreach ($navigation as $navigationItem) {
+				echo '<li>';
+// 					de($navigationItem);
+					if ($navigationItem['seitenId'] != 0) {
+						$seite = $main['sites'][$navigationItem['seitenId']];
+					}
+					echo '<a href="'. getNodeLink($navigationItem) . '">' . $navigationItem['titel'] . '</a>';
+					renderNavigationLevel($navigationItem);
+				echo '</li>';
+			}	
+		echo '</ul>';
+	}
+}
+
+function renderNavigationLevel($level) {
+	global $main;
+	if (isset($level['nodes']) && count($level['nodes']) > 0) {
+		echo '<ul class="navigation sub">';
+			foreach ($level['nodes'] as $navigationItem) {
+				echo '<li>';
+					echo '<a href="' . getNodeLink($navigationItem) . '">' . $navigationItem['titel'] . '</a>';
+					renderNavigationLevel($navigationItem);
+				echo '</li>';
+			}	
+		echo '</ul>';
+	}
+	
+}
+
+/**
+ * idAsIndex
+ * Praeperiert einen Array so das das Feld [id] als Index verwendet wird
+ * @param array $array
+ * @return array
+ */
+
+function idAsIndex($array) {
+	if (count($array) > 0) {
+		$newArray = array();
+		foreach ($array as $arrayEintragId => $arrayEintrag) {
+			$newArray[$arrayEintrag['id']] = $arrayEintrag;
+		}
+		return $newArray;
+	}
+}
+
+function getNodeLink($node) {
+	if ($node['typ'] == 'site') {
+		$link = getSiteLink($node['seitenId']);
+	} else {
+		$link = $node['url'];
+	}
+	return $link;
+}
+
+function getSiteLink($id) {
+	$link = 'index.php?nodesId=' . $id;
+	return $link;
+}
+
+function renderSite($site) {
+	global $main;
+	global $data;
+	renderHeadline($site['titel'], 1);
+	if ($site['module'] != '0') {
+		$moduleCmp = dirname(__FILE__) . '/../' . $site['module'] . 'Cmp.php';
+		if (file_exists($moduleCmp)) {
+			include_once $moduleCmp;
+		}
+	}
+}
+
+/**
+ * getFileName
+ * holt den Filenamen aus einem Datei-Datenbankfeld. Mit $nr wird der gewuenschte Index angegeben
+ * @param string $file
+ * @param int $nr
+ * @return string|boolean
+ */
+
+function getFileName($file, $nr) {
+	if (strpos($file, '||') !== false) {
+		$explode = explode('||', $file);
+		return $explode[$nr];
+	} else {
+		return false;
 	}
 }
 

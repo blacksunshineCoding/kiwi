@@ -8,8 +8,16 @@
 	<body>
 		<div id="template">
 			<header id="header">##HEADER</header>
-			<nav id="navigation">##NAVIGATION</nav>
-			<section id="main">##MAIN</section>
+			<nav id="navigation">
+				<?php
+					renderNavigation($main['navigations']['hauptnavigation']);
+				?>
+			</nav>
+			<section id="main">
+				<?php
+					include_once dirname(__FILE__) . '/modules/siteCmp.php';
+				?>
+			</section>
 			<footer id="footer">##FOOTER</footer>
 		</div>
 	</body>

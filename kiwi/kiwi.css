@@ -162,6 +162,13 @@ button {
 	color: #91ff55;
 }
 
+.kiwiModule.side .choose {
+	padding: 0 10px;
+	color: #ffffff;
+	border-top: 1px solid #4d4d4d;
+	border-bottom: 1px solid #4d4d4d;	
+}
+
 #side {
 	width: 250px;
 	height: 100%;
@@ -317,6 +324,14 @@ table.kiwiTable th.idLabel {
 .ansichtDetail.edit .input-group,
 .ansichtDetail.new .input-group {
 	margin-bottom: 5px;
+	width: 100%;
+}
+
+.ansichtDetail.edit textarea.form-control,
+.ansichtDetail.new textarea.form-control {
+	margin-bottom: 5px;
+	width: 100%;
+	min-height: 80px;
 }
 
 .ansichtDetail form.kiwiForm {
@@ -329,13 +344,63 @@ ul.treeviewRoot {
 	list-style: none;
 }
 
-ul.treeviewRoot .navigationsTitel i {
-	padding-right: 5px;
+ul.treeviewRoot span.treeItemRow {
+	display: block;
+	margin: 0 0 5px 0;
+	padding: 5px 12px;
+	transition: all ease .3s;
+}
+
+ul.treeviewRoot span.treeItemRow:hover {
+	background-color: #f7f7f7;
+}
+
+ul.treeviewRoot li a.navigationsItemTitel {
+	display: inline-block;
+	height: auto;
+	line-height: 25px;
+	padding: 0 10px 0 0;
+	color: #323232;
+	margin: 0 10px 0 0;
+	border-right: 1px solid #4d4d4d;
+}
+
+ul.treeviewRoot li a {
+	font-size: 15px;
+}
+
+ul.treeviewRoot li a.action {
+	padding: 0 10px 0 0;
+	font-size: 17px;
+}
+
+ul.treeviewRoot li a.action.edit {
+	color: #ffc300;
+}
+
+ul.treeviewRoot li a.action.copy {
+	color: #047f84;
+}
+
+ul.treeviewRoot li a.action.delete {
+	color: #b80000;
+}
+
+ul.treeviewRoot .navigationsTitel {
+	display: block;
+	line-height: 25px;
+	font-size: 17px;
+	font-weight: 600;
+	padding: 0 0 5px 0;
+	margin: 0 0 5px 0;
+}
+
+ul.treeviewRoot .navigation ul {
 }
 
 ul.treeviewRoot ul.level0 {
 	list-style: none;
-	padding: 0 0 0 25px;
+	padding: 0 0 0 15px;
 	position: relative;
 }
 
@@ -356,12 +421,12 @@ ul.treeviewRoot ul.level0 .right1 {
 
 ul.treeviewRoot ul.level1 {
 	list-style: none;
-	padding: 0 0 0 25px;
+	padding: 0 0 0 15px;
 }
 
 ul.treeviewRoot ul.level2 {
 	list-style: none;
-	padding: 0 0 0 25px;
+	padding: 0 0 0 15px;
 }
 
 .listTop {

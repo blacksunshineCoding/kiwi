@@ -56,11 +56,31 @@ $field['edit'] = 1;
 $table['fields']['navigation'] = $field;
 
 unset($field);
+$field['name'] = 'typ';
+$field['label'] = 'Typ';
+$field['type'] = 'select';
+$field['optionNameList'] = 'Seite,URL';
+$field['optionValueList'] = 'site,url';
+$field['optionDefaultValue'] = 'site';
+$field['edit'] = 1;
+$table['fields']['navigation'] = $field;
+
+unset($field);
 $field['name'] = 'seitenId';
 $field['label'] = 'Seite';
-$field['type'] = 'text';
+$field['type'] = 'select';
+$field['optionNameList'] = getOptionNameListViaSelect('titel', 'sites', 'id ASC', true, '---');
+$field['optionValueList'] = getOptionValueListViaSelect('id', 'sites', 'id ASC', true, 0);
+$field['optionDefaultValue'] = 0;
 $field['edit'] = 1;
 $table['fields']['seitenId'] = $field;
+
+unset($field);
+$field['name'] = 'url';
+$field['label'] = 'Link';
+$field['type'] = 'text';
+$field['edit'] = 1;
+$table['fields']['url'] = $field;
 
 unset($field);
 $field['name'] = 'parentId';

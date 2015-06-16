@@ -20,6 +20,9 @@ $main['ieJsFiles'][] = 'js/respond.min.js';
 // including table configs
 include_once dirname(__FILE__) . '/default/usersCfg.php';
 include_once dirname(__FILE__) . '/default/nodesCfg.php';
+include_once dirname(__FILE__) . '/default/sitesCfg.php';
+include_once dirname(__FILE__) . '/default/produktkategorienCfg.php';
+include_once dirname(__FILE__) . '/default/produkteCfg.php';
 
 // including classes
 // include_once dirname(__FILE__) . '/classes/meineklasse.class.php';

@@ -9,7 +9,7 @@
 				include_once($navName);
 			}
 		} else {
-			renderParagraph('Wählen sie einen Navigationspunkt aus.');
+			renderParagraph('Wählen sie einen Navigationspunkt aus.', 'choose');
 		}
 	?>
 </div>
