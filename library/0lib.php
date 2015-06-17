@@ -169,6 +169,17 @@ function renderListSide($table) {
 	echo '</ul>';
 }
 
+
+function trimText ($string,$lenght) {
+    if(strlen($string) > $lenght) {
+        $string = substr($string,0,$lenght)."...";
+        $string_ende = strrchr($string, " ");
+        $string = str_replace($string_ende," ...", $string);
+    }
+    return $string;
+}
+
+
 /**
  * renderFeedback
  * Gibt einen Bootstrap Alert aus
@@ -197,7 +208,6 @@ function renderDetailEdit($table, $entry) {
 		$action = 'index.php?navigation=' . $_GET['navigation'] . '&sub=' . $_GET['sub'] . '&' . $table['name'] . 'Id=' . $entry['id'] . '&action=edit';
 		echo '<form action="' . $action . '" method="post" enctype="multipart/form-data" class="kiwiForm">';
 		foreach ($table['fields'] as $field) {
-			
 			$disabled = '';
 			if ($field['edit'] == 0) $disabled = 'readonly';
 			
@@ -316,7 +326,7 @@ function renderActionFields($table, $entry, $type='link') {
 					
 				case 'edit':
 					if ($type == 'label') {
-						echo '<th class="actionLabel edit">Bearbeiten</th>';
+						echo '<th class="actionLabel edit"></th>';
 					} else {
 						$href = 'index.php?navigation=' . $_GET['navigation'] . '&sub=' . $_GET['sub'] . '&' . $table['name'] . 'Id=' . $entry['id'] . '&action=edit';
 						echo '<td class="actionCell edit">';
@@ -329,7 +339,7 @@ function renderActionFields($table, $entry, $type='link') {
 					
 				case 'delete':
 					if ($type == 'label') {
-						echo '<th class="actionLabel delete">Entfernen</th>';
+						echo '<th class="actionLabel delete"></th>';
 					} else {
 						$href = 'index.php?navigation=' . $_GET['navigation'] . '&sub=' . $_GET['sub'] . '&' . $table['name'] . 'Id=' . $entry['id'] . '&action=delete';
 						echo '<td class="actionCell delete">';
@@ -342,7 +352,7 @@ function renderActionFields($table, $entry, $type='link') {
 					
 				case 'copy':
 					if ($type == 'label') {
-						echo '<th class="actionLabel copy">Kopieren</th>';
+						echo '<th class="actionLabel copy"></th>';
 					} else {
 						$href = 'index.php?navigation=' . $_GET['navigation'] . '&sub=' . $_GET['sub'] . '&' . $table['name'] . 'Id=' . $entry['id'] . '&action=copy';
 						echo '<td class="actionCell copy">';
@@ -380,7 +390,7 @@ function renderDataTable($table, $entries) {
 			echo '<tr class="entryRow">';
 			foreach ($entry as $entryField) {
 				echo '<td>';
-				echo '<span class="field">' . $entryField . '</span>';
+				echo '<span class="field">' . trimText($entryField, 30) . '</span>';
 				echo '</td>';
 			}
 			renderActionFields($table, $entry, 'link');
@@ -794,7 +804,7 @@ function renderTreeView($preparedNodes) {
 		foreach ($preparedNodes as $navigationTitel => $navigation) {
 			echo '<li class="navigation">';
 			echo '<span class="navigationsTitel">' . $navigationTitel . '</span>';
-			if (count($navigation) > 0) {
+			if (isset($navigation) && count($navigation) > 0) {
 				echo '<ul class="treeview level0 levelNavigationItems">';
 					foreach ($navigation as $navigationItem) {
 						echo '<li>';
@@ -842,8 +852,9 @@ function renderNavigation($navigation) {
 	if (count($navigation) > 0) {
 		echo '<ul class="navigation">';
 			foreach ($navigation as $navigationItem) {
-				echo '<li>';
-// 					de($navigationItem);
+				$class = '';
+				if (isset($navigationItem['klasse'])) $class = ' class="' . $navigationItem['klasse'] . '"';
+				echo '<li' . $class . '>';
 					if ($navigationItem['seitenId'] != 0) {
 						$seite = $main['sites'][$navigationItem['seitenId']];
 					}
@@ -904,7 +915,7 @@ function getSiteLink($id) {
 function renderSite($site) {
 	global $main;
 	global $data;
-	renderHeadline($site['titel'], 1);
+	renderHeadline($site['titel'], 2, 'siteTitle');
 	if ($site['module'] != '0') {
 		$moduleCmp = dirname(__FILE__) . '/../' . $site['module'] . 'Cmp.php';
 		if (file_exists($moduleCmp)) {

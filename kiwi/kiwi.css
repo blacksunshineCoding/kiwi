@@ -284,7 +284,7 @@ button {
 
 table.kiwiTable th.actionLabel,
 table.kiwiTable td.actionCell {
-	width: 100px;
+	width: 45px;
 }
 
 table.kiwiTable th.idLabel {

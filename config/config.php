@@ -10,8 +10,9 @@ $main['description'] = 'Kiwi - Ein freies Content Management System';
 $main['keywords'] = 'kiwi, cms, content management system';
 
 // including css and js files
-$main['cssFiles'][] = 'style.css';
 $main['cssFiles'][] = 'css/bootstrap.min.css';
+$main['cssFiles'][] = 'css/font-awesome.min.css';
+$main['cssFiles'][] = 'style.css';
 $main['jsFiles'][] = 'js/jquery-1.11.3.min.js';
 $main['jsFiles'][] = 'js/bootstrap.min.js';
 $main['ieJsFiles'][] = 'js/html5shiv.min.js';

@@ -1,5 +1,5 @@
 <?php
-renderHeadline('Warenkorb', 1);
+renderHeadline('Warenkorb', 3);
 
 if (isset($_SESSION['produkte'])) {
 	echo '<div class="katalogWarenkorb">';
@@ -11,6 +11,7 @@ if (isset($_SESSION['produkte'])) {
 		echo '<th>Größe</th>';
 		echo '<th>Anzahl</th>';
 		echo '<th>Preis</th>';
+		echo '<th>Signatur</th>';
 		echo '<th>Entfernen</th>';
 	echo '</tr>';
 	$gesamtPreis = 0;
@@ -33,7 +34,7 @@ if (isset($_SESSION['produkte'])) {
 // 		de($produktEintrag);
 		echo '<td>' . $produktEintrag['titel'] . '</td>';
 		echo '<td>';
-		echo '<select name="produkte[' . $produkt['id'] . '][size]" class="form-control">';
+		echo '<select name="produkte[' . $produkt['id'] . '][size]" class="form-control produktSize">';
 		foreach ($optionValues as $value) {
 			$checked = '';
 			if ($produkt['size'] == $value) $checked = 'selected="selected"';
@@ -42,10 +43,22 @@ if (isset($_SESSION['produkte'])) {
 		echo '</select>';
 		 //. $produkt['size'] .
 		echo '</td>';
-		echo '<td><input type="number" name="produkte[' . $produkt['id'] . '][anzahl]" value="' . $produkt['anzahl'] . '"  class="form-control"></td>';
+		echo '<td><input type="number" name="produkte[' . $produkt['id'] . '][anzahl]" value="' . $produkt['anzahl'] . '"  class="form-control produktAnzahl"></td>';
 		echo '<td>' . $preis . '</td>';
 		echo '<td>';
-			echo '<div class="input-group">';
+			$signaturChecked = '';
+			if (isset($_SESSION['produkte'][$produkt['id']]['signatur']) && $_SESSION['produkte'][$produkt['id']]['signatur'] == 1) {
+				$signaturChecked = 'checked="checked"';
+			}
+			echo '<div class="input-group produktSignatur">';
+			echo '<span class="input-group-addon">';
+			echo '<input type="checkbox" name="produkte[' . $produkt['id'] . '][signatur]" value="1" ' . $signaturChecked . '>';
+			echo '</span>';
+			echo '<span class="form-control">Shirt signieren (EUR 200,-) </span>';
+			echo '</div>';
+		echo '</td>';
+		echo '<td>';
+			echo '<div class="input-group produktEntfernen">';
 				echo '<span class="input-group-addon">';
 					echo '<input type="checkbox" name="produkte[' . $produkt['id'] . '][entfernen]" value="1">';
 				echo '</span>';
@@ -56,30 +69,89 @@ if (isset($_SESSION['produkte'])) {
 	}
 	echo '</table>';
 	
-	echo '<div class="warenkorbGesamtkosten alert alert-info">';
-	echo '<b>Produktkosten (exklusive Versandkosten):</b>&nbsp;<span class="preis">EUR&nbsp;' . number_format($gesamtPreis, 2) . '</span>';
+	$deChecked = '';
+	$atChecked = '';
+	$chChecked = '';
+	
+	if (isset($_SESSION['land'])) {
+		switch ($_SESSION['land']) {
+		
+			default:
+			case 'Deutschland':
+				$deChecked = ' selected="selected"';
+				break;
+				
+			case 'Österreich':
+				$atChecked = ' selected="selected"';
+				break;
+				
+			case 'Schweiz':
+				$chChecked = ' selected="selected"';
+				break;
+		}
+	} else {
+		$deChecked = ' selected="selected"';
+	}
+	
+	echo '<div class="input-group chooseLand">';
+	echo '<select name="land" class="form-control">';
+	echo '<option value="Deutschland"' . $deChecked . '>Deutschland</option>';
+	echo '<option value="Österreich"' . $atChecked . '>Österreich</option>';
+	echo '<option value="Schweiz"' . $chChecked . '>Schweiz</option>';
+	echo '</select>';
 	echo '</div>';
 	
 	echo '<button type="submit" name="aktualisieren" value="1" class="btn btn-default">Warenkorb aktualisieren</button>';
 	echo '</form>';
 	echo '</div>';
 	
+	echo '<div class="warenkorbGesamtkosten alert alert-info">';
+	echo '<b>Produktkosten (exklusive Versandkosten):</b>&nbsp;<span class="preis">EUR&nbsp;' . number_format($gesamtPreis, 2) . '</span>';
+	echo '</div>';
+	
 	$shirtAnzahl = 0;
+	$versandkosten = 0;
 	
 	foreach ($_SESSION['produkte'] as $produktId => $produkt) {
 		if ($produkt['produktkategorie'] == 2) {
 			$shirtAnzahl = $shirtAnzahl + $produkt['anzahl'];
 		}
 	}
-	
-	if ($shirtAnzahl > 2) {
-		echo '<div class="alert alert-warning">';
-		renderParagraph('Es können maxmimal 2 Shirts pro Bestellung bestellt werden. Wenn du mehr Shirts willst musst du eine extra Bestellung machen');
-		echo '</div>';
+
+	if (isset($_SESSION['land'])) {
+		if ($_SESSION['land'] == 'Österreich' || $_SESSION['land'] == 'Schweiz') {
+			$versandkostenFaktor = 4.00;
+		} else {
+			$versandkostenFaktor = 2.50;
+		}
 	} else {
-		echo '<a href="index.php?ansicht=kassa" class="btn btn-default">Zur Kassa</a>';
+		$versandkostenFaktor = 2.50;
 	}
 	
+	$versandkosten = $shirtAnzahl * $versandkostenFaktor;
+	
+	if ($versandkosten > 10) {
+		$versandkosten = 10;
+	}
+	
+	$_SESSION['gesamtpreis'] = $versandkosten + $gesamtPreis;
+	
+	echo '<div class="warenkorbVersandkosten alert alert-info">';
+	echo '<b>Versandkosten:</b>&nbsp;<span class="preis">EUR&nbsp;' . number_format($versandkosten, 2) . '</span>';
+	echo '</div>';
+	
+	echo '<div class="warenkorbGesamtkostenFinal alert alert-info">';
+	echo '<b>Gesamtkosten:</b>&nbsp;<span class="preis">EUR&nbsp;' . number_format($versandkosten + $gesamtPreis, 2) . '</span>';
+	echo '</div>';
+	
+
+	if ($shirtAnzahl > 2) {
+		echo '<div class="alert alert-warning">';
+		renderParagraph('Pro 2 Shirts werden ' . $versandkostenFaktor . ' &euro; Versandkosten berechnet. Die maximalen Versandkosten betragen 10,00 &euro;');
+		echo '</div>';
+	}
+	
+	echo '<a href="index.php?ansicht=kassa" class="btn btn-default">Zur Kassa</a>';
 	
 } else {
 	renderParagraph('Keine Produkte im Warenkorb');

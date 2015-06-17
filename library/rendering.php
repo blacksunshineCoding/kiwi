@@ -76,7 +76,7 @@ function renderParagraph($text, $class = FALSE, $pAttributes = FALSE) {
 	}
 	
 	echo '<p ' . $class . ' ' . $pAttributeString . '>';
-	echo $text;
+	echo nl2br($text);
 	echo '</p>';
 }
 

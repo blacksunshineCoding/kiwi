@@ -64,7 +64,7 @@ $table['fields']['bild'] = $field;
 
 unset($field);
 $field['name'] = 'produktkategorieId';
-$field['label'] = 'Produktkategorie';
+$field['label'] = 'Kategorie';
 $field['type'] = 'select';
 $field['optionNameList'] = getOptionNameListViaSelect('titel', 'produktkategorien', 'id ASC', true, '---');
 $field['optionValueList'] = getOptionValueListViaSelect('id', 'produktkategorien', 'id ASC', true, 0);

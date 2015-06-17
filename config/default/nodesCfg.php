@@ -67,7 +67,7 @@ $field['optionNameList'] = 'Seite,URL';
 $field['optionValueList'] = 'site,url';
 $field['optionDefaultValue'] = 'site';
 $field['edit'] = 1;
-$table['fields']['navigation'] = $field;
+$table['fields']['typ'] = $field;
 
 unset($field);
 $field['name'] = 'seitenId';
