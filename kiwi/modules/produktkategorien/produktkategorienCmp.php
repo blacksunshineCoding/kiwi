@@ -1,3 +1,25 @@
+<?php
+if (isset($_GET['action'])) {
+	switch ($_GET['action']) {
+		default:
+		case 'all':
+			$modulansicht = 'list';
+			break;
+				
+		case 'new':
+			$modulansicht = 'new';
+			break;
+				
+		case 'edit':
+			$modulansicht = 'edit';
+			break;
+	}
+} else {
+	$modulansicht = 'list';
+}
+
+$produktkategorienCmpFile = dirname(__FILE__) . '/produktkategorien' . ucfirst($modulansicht) . 'Cmp.php';
+?>
 <div class="modul produktkategorien produktkategorienMain">
 	<div class="listTop">
 		<?php
@@ -6,19 +28,8 @@
 		?>
 	</div>
 	<?php
-		if (isset($_GET['sub'])) {
-			if (isset($_GET['action']) && $_GET['action'] == 'all') {
-				include_once dirname(__FILE__) . '/produktkategorienListCmp.php';
-				
-			} elseif (($_GET['sub'] == 'new' && !isset($_GET['action']) || ($_GET['sub'] == 'new' && $_GET['action'] == 'new'))) {
-				include_once dirname(__FILE__) . '/produktkategorienNewCmp.php';
-				
-			} elseif (isset($_GET['produktkategorienId']) && isset($_GET['action']) && $_GET['action'] == 'edit') {
-				include_once dirname(__FILE__) . '/produktkategorienEditCmp.php';
-				
-			} elseif (isset($_GET['produktkategorienId']) && isset($_GET['action']) && ($_GET['action'] == 'copy' || $_GET['action'] == 'delete')) {
-				include_once dirname(__FILE__) . '/produktkategorienListCmp.php';
-			}
+		if (file_exists($produktkategorienCmpFile)) {
+			include_once($produktkategorienCmpFile);
 		}
 	?>
 </div>

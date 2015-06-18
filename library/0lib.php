@@ -79,8 +79,8 @@ function prepareOptionList($field) {
  */
 
 function renderListTop($table) {
-	$newLink = 'index.php?navigation=' . $_GET['navigation'] . '&sub=' . $_GET['sub'] . '&action=new';
-	$allLink = 'index.php?navigation=' . $_GET['navigation'] . '&sub=' . $_GET['sub'] . '&action=all';
+	$newLink = 'index.php?navigation=' . $_GET['navigation'] . '&action=new';
+	$allLink = 'index.php?navigation=' . $_GET['navigation'] . '&action=all';
 	$treeLink = 'index.php?navigation=' . $_GET['navigation'] . '&sub=tree';
 	echo '<ul class="listTopLinks">';
 	
@@ -123,9 +123,9 @@ function renderListTop($table) {
  */
 
 function renderListSide($table) {
-	$newLink = 'index.php?navigation=' . $_GET['navigation'] . '&sub=new&action=new';
-	$allLink = 'index.php?navigation=' . $_GET['navigation'] . '&sub=all&action=all';
-	$treeLink = 'index.php?navigation=' . $_GET['navigation'] . '&sub=tree';
+	$newLink = 'index.php?navigation=' . $_GET['navigation'] . '&action=new';
+	$allLink = 'index.php?navigation=' . $_GET['navigation'] . '&action=all';
+	$treeLink = 'index.php?navigation=' . $_GET['navigation'] . '&action=tree';
 	echo '<ul class="navigation sideNavigation side' . ucfirst($table['name']) . '">';
 
 	if(strpos($table['sideActions'], ',') !== false) {
@@ -205,7 +205,7 @@ function renderFeedback($feedback) {
 function renderDetailEdit($table, $entry) {
 
 	if (isset($table['fields']) && count($table['fields']) > 0) {
-		$action = 'index.php?navigation=' . $_GET['navigation'] . '&sub=' . $_GET['sub'] . '&' . $table['name'] . 'Id=' . $entry['id'] . '&action=edit';
+		$action = 'index.php?navigation=' . $_GET['navigation'] . '&' . $table['name'] . 'Id=' . $entry['id'] . '&action=edit';
 		echo '<form action="' . $action . '" method="post" enctype="multipart/form-data" class="kiwiForm">';
 		foreach ($table['fields'] as $field) {
 			$disabled = '';
@@ -263,7 +263,7 @@ function renderDetailEdit($table, $entry) {
 function renderDetailNew($table) {
 
 	if (isset($table['fields']) && count($table['fields']) > 0) {
-		$action = 'index.php?navigation=' . $_GET['navigation'] . '&sub=' . $_GET['sub'] . '&action=new';
+		$action = 'index.php?navigation=' . $_GET['navigation'] . '&action=new';
 		echo '<form action="' . $action . '" method="post" enctype="multipart/form-data" class="kiwiForm">';
 		foreach ($table['fields'] as $field) {
 			
@@ -328,7 +328,7 @@ function renderActionFields($table, $entry, $type='link') {
 					if ($type == 'label') {
 						echo '<th class="actionLabel edit"></th>';
 					} else {
-						$href = 'index.php?navigation=' . $_GET['navigation'] . '&sub=' . $_GET['sub'] . '&' . $table['name'] . 'Id=' . $entry['id'] . '&action=edit';
+						$href = 'index.php?navigation=' . $_GET['navigation'] . '&' . $table['name'] . 'Id=' . $entry['id'] . '&action=edit';
 						echo '<td class="actionCell edit">';
 						echo '<a href="' . $href . '" class="action edit">';
 						echo '<i class="fa fa-pencil"></i>';
@@ -341,7 +341,7 @@ function renderActionFields($table, $entry, $type='link') {
 					if ($type == 'label') {
 						echo '<th class="actionLabel delete"></th>';
 					} else {
-						$href = 'index.php?navigation=' . $_GET['navigation'] . '&sub=' . $_GET['sub'] . '&' . $table['name'] . 'Id=' . $entry['id'] . '&action=delete';
+						$href = 'index.php?navigation=' . $_GET['navigation'] . '&' . $table['name'] . 'Id=' . $entry['id'] . '&action=delete';
 						echo '<td class="actionCell delete">';
 						echo '<a href="' . $href . '" class="action delete">';
 						echo '<i class="fa fa-trash-o"></i>';
@@ -354,7 +354,7 @@ function renderActionFields($table, $entry, $type='link') {
 					if ($type == 'label') {
 						echo '<th class="actionLabel copy"></th>';
 					} else {
-						$href = 'index.php?navigation=' . $_GET['navigation'] . '&sub=' . $_GET['sub'] . '&' . $table['name'] . 'Id=' . $entry['id'] . '&action=copy';
+						$href = 'index.php?navigation=' . $_GET['navigation'] . '&' . $table['name'] . 'Id=' . $entry['id'] . '&action=copy';
 						echo '<td class="actionCell copy">';
 						echo '<a href="' . $href . '" class="action copy">';
 						echo '<i class="fa fa-files-o"></i>';

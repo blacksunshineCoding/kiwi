@@ -3,30 +3,51 @@ $data['table'] = $main['tables']['users'];
 $deleteFeedback = '';
 $copyFeedback = '';
 
-if (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['usersId'])) {
-	deleteRow('id', $_GET['usersId'], $data['table']['name']);
-	$deleteFeedback['type'] = 'info';
-	$deleteFeedback['text'] = 'Der ' . $data['table']['singular'] . ' wurde erfolgreich gelöscht.';
-}
-
-if (isset($_GET['usersId']) && isset($_GET['action']) && $_GET['action'] == 'copy') {
-	$copyEntry = getRow('SELECT * FROM users WHERE id = ' . sqlEscape($_GET['usersId']));
-	unset($copyEntry['id']);
-	$copyEntry['benutzername'] .= ' (Kopie)';
-	insertRow($copyEntry, $data['table']['name']);
-	$copyFeedback['type'] = 'info';
-	$copyFeedback['text'] = 'Der ' . $data['table']['singular'] . ' wurde erfolgreich kopiert.';
-}
-
-if (isset($_GET['action']) && $_GET['action'] == 'edit' && isset($_GET['usersId'])) {
-	include_once dirname(__FILE__) . '/usersEditInc.php';
-	
-} elseif ((isset($_GET['action']) && $_GET['action'] == 'new') || (isset($_GET['sub']) && $_GET['sub'] == 'new')) {
-	include_once dirname(__FILE__) . '/usersNewInc.php';
-	
-} elseif (isset($_GET['sub']) && $_GET['sub'] == 'own') {
-	include_once dirname(__FILE__) . '/usersOwnInc.php';
-	
+if (isset($_GET['action'])) {
+	switch ($_GET['action']) {
+		default:
+		case 'all':
+			$modulansicht = 'list';
+			break;
+			
+		case 'new':
+			$modulansicht = 'new';
+			break;
+			
+		case 'own':
+			$modulansicht = 'own';
+			break;
+			
+		case 'edit':
+			$modulansicht = 'edit';
+			break;
+			
+		case 'delete':
+			$modulansicht = 'list';			
+			if (isset($_GET['usersId'])) {
+				deleteRow('id', $_GET['usersId'], $data['table']['name']);
+				$deleteFeedback['type'] = 'info';
+				$deleteFeedback['text'] = 'Der ' . $data['table']['singular'] . ' wurde erfolgreich gelöscht.';
+			}
+			break;
+			
+		case 'copy':
+			$modulansicht = 'list';
+			if (isset($_GET['usersId'])) {
+				$copyEntry = getRow('SELECT * FROM users WHERE id = ' . sqlEscape($_GET['usersId']));
+				unset($copyEntry['id']);
+				$copyEntry['benutzername'] .= ' (Kopie)';
+				insertRow($copyEntry, $data['table']['name']);
+				$copyFeedback['type'] = 'info';
+				$copyFeedback['text'] = 'Der ' . $data['table']['singular'] . ' wurde erfolgreich kopiert.';
+			}
+			break;
+	}
 } else {
-	include_once dirname(__FILE__) . '/usersListInc.php';
+	$modulansicht = 'list';
+}
+
+$usersIncFile = dirname(__FILE__) . '/users' . ucfirst($modulansicht) . 'Inc.php';
+if (file_exists($usersIncFile)) {
+	include_once($usersIncFile);
 }

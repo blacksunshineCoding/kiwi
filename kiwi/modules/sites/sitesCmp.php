@@ -1,3 +1,25 @@
+<?php
+if (isset($_GET['action'])) {
+	switch ($_GET['action']) {
+		default:
+		case 'all':
+			$modulansicht = 'list';
+			break;
+				
+		case 'new':
+			$modulansicht = 'new';
+			break;
+				
+		case 'edit':
+			$modulansicht = 'edit';
+			break;
+	}
+} else {
+	$modulansicht = 'list';
+}
+
+$sitesCmpFile = dirname(__FILE__) . '/sites' . ucfirst($modulansicht) . 'Cmp.php';
+?>
 <div class="modul sites sitesMain">
 	<div class="listTop">
 		<?php
@@ -6,20 +28,8 @@
 		?>
 	</div>
 	<?php
-		if (isset($_GET['sub'])) {
-			if (isset($_GET['action']) && $_GET['action'] == 'all') {
-				include_once dirname(__FILE__) . '/sitesListCmp.php';
-				
-			} elseif (($_GET['sub'] == 'new') || (isset($_GET['action']) && $_GET['action'] = 'new')) {
-				include_once dirname(__FILE__) . '/sitesNewCmp.php';
-				
-			} elseif (isset($_GET['sitesId']) && isset($_GET['action']) && $_GET['action'] == 'edit') {
-				include_once dirname(__FILE__) . '/sitesEditCmp.php';
-				
-			} elseif (isset($_GET['sitesId']) && isset($_GET['action']) && ($_GET['action'] == 'copy' || $_GET['action'] == 'delete')) {
-				de(2);
-				include_once dirname(__FILE__) . '/sitesListCmp.php';
-			}
+		if (file_exists($sitesCmpFile)) {
+			include_once($sitesCmpFile);
 		}
 	?>
 </div>
