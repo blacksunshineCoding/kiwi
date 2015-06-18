@@ -24,6 +24,7 @@ include_once dirname(__FILE__) . '/default/nodesCfg.php';
 include_once dirname(__FILE__) . '/default/sitesCfg.php';
 include_once dirname(__FILE__) . '/default/produktkategorienCfg.php';
 include_once dirname(__FILE__) . '/default/produkteCfg.php';
+include_once dirname(__FILE__) . '/default/ordersCfg.php';
 
 // including classes
 // include_once dirname(__FILE__) . '/classes/meineklasse.class.php';

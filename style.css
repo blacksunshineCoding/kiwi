@@ -16,6 +16,11 @@ body {
 	font-family: 'Open Sans' !important;
 }
 
+b,
+strong {
+	font-weight: 600 !important;
+}
+
 #template {
 	height: auto;
 	margin: 0 auto;

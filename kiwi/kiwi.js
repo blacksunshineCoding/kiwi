@@ -1,4 +1,7 @@
 $(document).ready(function() {
+	
+//	var windowInner = $(window).innerHeight();
+//	$('#template').height(windowInner);
 
 	$('a.action.delete').on('click', function(e) {
 		var link = this;

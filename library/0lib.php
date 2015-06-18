@@ -377,7 +377,7 @@ function renderActionFields($table, $entry, $type='link') {
 function renderDataTable($table, $entries) {
 	if (isset($table['fields']) && count($entries) > 0) {
 	
-		echo '<table class="table kiwiTable users">';
+		echo '<table class="table kiwiTable">';
 		echo '<tr class="labelRow">';
 		foreach ($table['fields'] as $field) {
 			echo '<th class="' . $field['name'] . 'Label">';

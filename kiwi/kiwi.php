@@ -46,6 +46,7 @@
 					include_once dirname(__FILE__) . '/modules/mainCmp.php';
 				?>
 			</section>
+			<div class="clear"></div>
 		</div>
 	</body>
 </html>

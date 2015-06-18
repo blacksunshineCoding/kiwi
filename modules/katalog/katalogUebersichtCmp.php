@@ -1,6 +1,6 @@
 <?php
-echo '<div class="katalogKasse katalogAbschluss">';
-renderHeadline('Abschluss', 2);
+echo '<div class="katalogKasse katalogUebersicht">';
+renderHeadline('Übersicht', 2);
 
 if (isset($_SESSION['produkte'])) {
 	echo '<div class="kassaProduktzusammenfassung">';
@@ -30,7 +30,7 @@ if (isset($_SESSION['produkte'])) {
 				}
 				
 				$allProduktePreis = $allProduktePreis + $gesamtpreis;
-				
+		
 				echo '<tr>';
 					echo '<td>' . $realProdukt['titel'] . '</td>';
 					echo '<td>EUR ' . str_replace(',', '.', $realProdukt['preis']) . '</td>';
@@ -82,20 +82,44 @@ if (isset($_SESSION['produkte'])) {
 			echo '</tr>';
 		echo '</table>';
 	echo '</div>';
+	echo '<div class="kassaBezahlung kassaVersand">';
+	renderHeadline('Bezahlung und Versand', 3);
+	?>
+	<div class="input-group">
+		<span class="title">Zahlungsmethode:&nbsp;</span>
+		<span class="content">PayPal</span>
+	</div>
+	<div class="input-group">
+		<span class="title">Versandmethode:&nbsp;</span>
+		<span class="content">Deutsche Post</span>
+	</div>
+	<?php
+	echo '</div>';
+	echo '<div class="kassaVersandadresse">';
+	renderHeadline('Versandadresse', 3);
+	$adress = $_SESSION['adresse'];
+	echo $adress['vorname'] . ' ' . $adress['nachname'] . '<br>';
+	echo $adress['strasse'] . ' ' . $adress['hausnummer'] . '<br>';
 	
-	$finalFeedback['type'] = 'success';
-	$finalFeedback['text'] = '<b>Deine Bestellung wurde erfolgreich abgeschlossen!</b><br>';
-	$finalFeedback['text'] .= '<p>Vielen Dank für deine Bestellung! Du bekommst eine Email mit der Bestätigung und den Zahlungsanweisungen.<br>Sobald das Geld eingetroffen ist werden benachrichtigt und ebenfalls wenn dein Paket versendet wurde.</p>';
-	renderFeedback($finalFeedback);
-	
-	if ($_SESSION['orderComplete'] == 1) {
-		unset($_SESSION['produkte']);
-		unset($_SESSION['gesamtpreis']);
-		unset($_SESSION['land']);
-		unset($_SESSION['completeSteps']);
-		unset($_SESSION['adresse']);
-		unset($_SESSION['orderComplete']);
+	if (isset($adress['adresszusatz']) && !empty($adress['adresszusatz'])) {
+		echo $adress['adresszusatz'] . '<br>';
 	}
+	echo $adress['plz'] . ' ' . $adress['ort'] . '<br>';
+	echo $adress['land'];
+	echo '</div>';
+	
+	echo '<div class="kassaSonstige">';
+	renderHeadline('Sonstige Daten', 3);
+	echo '<b>Emailadresse:</b> ' . $adress['emailadresse'] . '<br>';
+	echo '<b>Anmerkung:</b> ' . $adress['anmerkung'];
+	echo '</div>';
+	
+	echo '<a href="index.php?ansicht=abschluss" class="btn btn-default">Bestellung abschließen</a>';
+	
 
+	
+	
+} else {
+	renderParagraph('Keine Produkte im Warenkorb');
 }
 echo '</div>';

@@ -247,19 +247,21 @@ button {
 
 #main {
 	width: 100%;
-	height: auto;
+	height: 100%;
 	margin: 0;
 	padding: 20px 20px 20px 270px;
 	background: #ededed;
-	position: absolute;
-	top: 80px;
-	left: 0;
+	position: relative;
 }
 
 /* Admin Content */
 
 .ansichtList table.kiwiTable {
 	background: #f7f7f7;
+	display: block;
+	overflow-x: visible;
+	overflow-y: scroll !important;
+	-webkit-overflow-scrolling: touch;
 }
 
 .ansichtList table.kiwiTable tr {

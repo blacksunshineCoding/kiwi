@@ -1,5 +1,6 @@
 <?php
 	if (count($main['tables']) > 0) {
+		echo '<div class="top">';
 		echo '<ul class="navigation">';
 		foreach ($main['tables'] as $table) {
 			if (isset($table['showTop']) && $table['showTop'] == 1) {
@@ -12,6 +13,7 @@
 				echo '</li>';
 			}
 		}
+		echo '</ul>';
 		echo '</div>';
 		echo '<div class="clear"></div>';
 	}

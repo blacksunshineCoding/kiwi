@@ -151,7 +151,7 @@ if (isset($_SESSION['produkte'])) {
 		echo '</div>';
 	}
 	
-	echo '<a href="index.php?ansicht=kassa" class="btn btn-default">Zur Kassa</a>';
+	echo '<a href="index.php?ansicht=daten" class="btn btn-default">Zur Dateneingabe</a>';
 	
 } else {
 	renderParagraph('Keine Produkte im Warenkorb');

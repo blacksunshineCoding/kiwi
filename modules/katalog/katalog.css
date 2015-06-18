@@ -1,5 +1,7 @@
 @CHARSET "UTF-8";
 
+/* Produktliste */
+
 .produktEintrag {
 	position: relative;
 	margin: 0 0 25px 0;
@@ -69,6 +71,102 @@ a.zurueckProdukte {
 	margin-bottom: 20px;
 }
 
+/* Schritte */
+
+.katalogSchritte {
+	margin: 0 0 25px 0;
+}
+
+.katalogSchritte ul.stepsNavigation {
+	display: block;
+	width: 100%;
+	height: 60px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	border-top: 1px solid #7a7a7a;
+	border-bottom: 1px solid #7a7a7a;
+}
+
+.katalogSchritte ul.stepsNavigation > li.step {
+	display: block;
+	position: relative;
+	float: left;
+	width: 300px;
+	height: 60px;
+	margin: 0;
+	padding: 0 10px;
+	transition: all ease .45s;
+}
+
+.katalogSchritte ul.stepsNavigation > li.step > span.arrow {
+	display: block;
+	position: absolute;
+	top: 10px;
+	right: -25px;
+	width: 40px;
+	height: 40px;
+	opacity: .5;
+	background-image: url('../../images/stepArrow.png');
+	background-repeat: no-repeat;
+	background-size: 40px 40px;
+}
+
+.katalogSchritte ul.stepsNavigation > li.step.complete span.arrow {
+	background-image: url('../../images/stepArrowBlue.png');
+	opacity: 1;
+}
+
+.katalogSchritte ul.stepsNavigation > li.step.aktiv span.arrow {
+	background-image: url('../../images/stepArrowGreen.png');
+	opacity: 1;
+}
+
+.katalogSchritte ul.stepsNavigation > li.step.complete > a {
+	color: #03a9f4;
+}
+
+.katalogSchritte ul.stepsNavigation > li.step.aktiv > a {
+	color: #8bc34a;
+}
+
+.katalogSchritte ul.stepsNavigation > li.step:hover,
+.katalogSchritte ul.stepsNavigation > li.step.aktiv {
+	/* background-color: #f7f7f7; */
+}
+
+.katalogSchritte ul.stepsNavigation > li.step:last-child span.arrow,
+.katalogSchritte ul.stepsNavigation > li.step.stepAbschluss span.arrow {
+	display: none;
+}
+
+.katalogSchritte ul.stepsNavigation > li.step > span.number {
+	display: block;
+	margin: 10px auto 0 auto;
+	padding: 4px;
+	background-color: #f7f7f7;
+	border-radius: 50%;
+	width: 30px;
+	height: 30px;
+	text-align: center;
+	line-height: 25px;
+	transition: all ease .45s;
+}
+
+.katalogSchritte ul.stepsNavigation > li.step > a {
+	display: block;
+	color: #7a7a7a;
+	line-height: 60px;
+	text-decoration: none;
+	text-align: center;
+	height: 60px;
+	margin: 0 30px;
+	font-size: 17px;
+	font-weight: 300;
+}
+
+/* Warenkorb */
+
 .warenkorbTable {
 }
 
@@ -116,12 +214,27 @@ a.zurueckProdukte {
 	margin-bottom: 5px;
 }
 
+
+/* Dateneingabe */
+
+.kassaAdresse .alert.alert-danger {
+	margin-top: 25px;
+}
+
+/* Uebersicht */
+
+.kassaBezahlung span.title {
+	font-weight: 600;
+}
+
 /* Kassa */
 
 .katalogKasse .kassaProduktzusammenfassung,
 .katalogKasse .kassaAdresse,
 .katalogKasse .kassaBezahlung,
-.katalogKasse .kassaVersand {
+.katalogKasse .kassaVersand,
+.katalogKasse .kassaVersandadresse,
+.katalogKasse .kassaSonstige {
   margin-bottom: 50px;
 }
 

@@ -1,12 +1,28 @@
 <?php
 if (isset($_GET['produkteId'])) {
 	$modulansicht = 'detail';
-} elseif (isset($_GET['ansicht']) && $_GET['ansicht'] == 'warenkorb') {
-	$modulansicht = 'warenkorb';
-
-} elseif (isset($_GET['ansicht']) && $_GET['ansicht'] == 'kassa') {
-	$modulansicht = 'kassa';
 	
+} elseif (isset($_GET['ansicht'])) {
+	
+	switch ($_GET['ansicht']) {
+		
+		case 'warenkorb':
+			$modulansicht = 'warenkorb';
+			break;
+		
+		case 'daten':
+			$modulansicht = 'daten';
+			break;
+			
+		case 'uebersicht':
+			$modulansicht = 'uebersicht';
+			break;
+			
+		case 'abschluss':
+			$modulansicht = 'kassa';
+			break;
+	}
+
 } else {
 	$modulansicht = 'liste';
 }

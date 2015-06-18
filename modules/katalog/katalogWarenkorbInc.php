@@ -5,6 +5,7 @@ if (isset($_SESSION['produkte']) && count($_SESSION['produkte']) > 0) {
 		$preis = getRow('SELECT preis FROM produkte WHERE id ="' . sqlEscape($produktId) . '"');
 		$_SESSION['produkte'][$produktId]['preis'] = $preis['preis'];
 	}
+	
 }
 
 if (isset($_POST['aktualisieren']) && $_POST['aktualisieren'] == 1) {
