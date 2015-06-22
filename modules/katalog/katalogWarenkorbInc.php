@@ -1,4 +1,5 @@
 <?php
+$data['lagerbestandFeedback'] = '';
 
 if (isset($_SESSION['produkte']) && count($_SESSION['produkte']) > 0) {
 	foreach ($_SESSION['produkte'] as $produktId => $produkt) {
@@ -19,6 +20,14 @@ if (isset($_POST['aktualisieren']) && $_POST['aktualisieren'] == 1) {
 			if (isset($_SESSION['produkte'][$warenkorbProduktId]['id'])) {
 				$_SESSION['produkte'][$warenkorbProduktId]['anzahl'] = $warenkorbProdukt['anzahl'];
 				$_SESSION['produkte'][$warenkorbProduktId]['size'] = $warenkorbProdukt['size'];
+				
+				$produktSizeVorhanden = getRow('SELECT * FROM produktvarianten WHERE produktId = ' . $produktId . ' AND variante LIKE "Größe" AND varianteOption LIKE "' . sqlEscape($warenkorbProdukt['size'])  . '"');
+				
+				if ($warenkorbProdukt['anzahl'] > $produktSizeVorhanden['lagerbestand']) {
+					$_SESSION['produkte'][$warenkorbProduktId]['anzahl'] = $produktSizeVorhanden['lagerbestand'];
+					$data['lagerbestandFeedback']['type'] = 'warning';
+					$data['lagerbestandFeedback']['text'] = 'Die gewünschte Menge des Produktes ist größer als der Lagerbestand, die Menge wurde auf die vorrätige Menge reduziert';
+				}
 				
 				if (isset($_POST['produkte'][$warenkorbProduktId]['signatur']) && $_POST['produkte'][$warenkorbProduktId]['signatur'] == 1) {
 					$_SESSION['produkte'][$warenkorbProduktId]['signatur'] = 1;

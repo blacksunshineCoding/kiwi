@@ -1,10 +1,10 @@
 <?php
 echo '<div class="katalogKasse katalogUebersicht">';
-renderHeadline('Übersicht', 2);
+renderHeadline('Übersicht', 3);
 
 if (isset($_SESSION['produkte'])) {
 	echo '<div class="kassaProduktzusammenfassung">';
-		renderHeadline('Produktzusammenfasung', 3);
+		renderHeadline('Produktzusammenfasung', 4);
 		$shirtAnzahl = 0;
 		echo '<table class="table kassaTable">';
 			echo '<tr>';
@@ -51,7 +51,16 @@ if (isset($_SESSION['produkte'])) {
 				$versandkostenFaktor = 2.50;
 			}
 			
-			$versandkosten = $shirtAnzahl * $versandkostenFaktor;
+			if ($shirtAnzahl <= 2) {
+				$versandkosten = $versandkostenFaktor;
+			} else {
+				if ($shirtAnzahl % 2 == 0) {
+					$versandkosten = ($shirtAnzahl/2) * $versandkostenFaktor;
+				} else {
+					$versandkosten = (($shirtAnzahl+1)/2) * $versandkostenFaktor;
+				}
+				
+			}
 			
 			if ($versandkosten > 10) {
 				$versandkosten = 10;
@@ -83,21 +92,21 @@ if (isset($_SESSION['produkte'])) {
 		echo '</table>';
 	echo '</div>';
 	echo '<div class="kassaBezahlung kassaVersand">';
-	renderHeadline('Bezahlung und Versand', 3);
+	renderHeadline('Bezahlung und Versand', 4);
+	$adress = $_SESSION['adresse'];
 	?>
 	<div class="input-group">
 		<span class="title">Zahlungsmethode:&nbsp;</span>
-		<span class="content">PayPal</span>
+		<span class="content"><?php echo $adress['zahlungsmethode']; ?></span>
 	</div>
 	<div class="input-group">
 		<span class="title">Versandmethode:&nbsp;</span>
-		<span class="content">Deutsche Post</span>
+		<span class="content"><?php echo $adress['versandmethode']; ?></span>
 	</div>
 	<?php
 	echo '</div>';
 	echo '<div class="kassaVersandadresse">';
-	renderHeadline('Versandadresse', 3);
-	$adress = $_SESSION['adresse'];
+	renderHeadline('Versandadresse', 4);
 	echo $adress['vorname'] . ' ' . $adress['nachname'] . '<br>';
 	echo $adress['strasse'] . ' ' . $adress['hausnummer'] . '<br>';
 	
@@ -109,7 +118,7 @@ if (isset($_SESSION['produkte'])) {
 	echo '</div>';
 	
 	echo '<div class="kassaSonstige">';
-	renderHeadline('Sonstige Daten', 3);
+	renderHeadline('Sonstige Daten', 4);
 	echo '<b>Emailadresse:</b> ' . $adress['emailadresse'] . '<br>';
 	echo '<b>Anmerkung:</b> ' . $adress['anmerkung'];
 	echo '</div>';

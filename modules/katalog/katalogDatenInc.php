@@ -65,9 +65,18 @@ if (isset($_POST['abschicken'])) {
 				$_SESSION['land'] = $_POST['adresse']['land'];
 			}
 			
-			if (!isset($_POST['adresse']['land']) || empty($_POST['adresse']['land'])) {
+			if (!isset($_POST['adresse']['emailadresse']) || empty($_POST['adresse']['emailadresse'])) {
 				$allErrors['emailadresse'] = true;
 				$data['emailadresseClass'] = 'failure';
+			} elseif(isset($_POST['adresse']['emailadresse']) && !empty($_POST['adresse']['emailadresse'])) {
+				if (!validEmail($_POST['adresse']['emailadresse'])) {
+					$allErrors['emailadresse'] = true;
+					$data['emailadresseClass'] = 'failure';
+						
+					$data['emailadresseValid'] = false;
+					$data['emailadresseFeedback']['type'] = 'danger';
+					$data['emailadresseFeedback']['text'] = 'Die eingegebene Emailadresse ist ungültig';
+				}
 			}
 			
 			$_SESSION['adresse'] = $_POST['adresse'];

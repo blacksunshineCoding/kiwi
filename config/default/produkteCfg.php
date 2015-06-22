@@ -11,6 +11,8 @@ $table['sideActions'] = 'all,new';
 $table['listActions'] = 'edit,copy,delete';
 $table['icons']['all'] = 'fa fa-list';
 $table['icons']['new'] = 'fa fa-plus-square';
+$table['childtableList'] = 'produktvarianten';
+$table['childtables']['produktvarianten']['parentIdField'] = 'produktId';
 $table['fields'] = array();
 
 unset($field);

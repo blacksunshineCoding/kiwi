@@ -30,7 +30,7 @@ if (isset($_SESSION['produkte'])) {
 		}
 		
 
-		echo '<tr class="warenkorbEintrag">';
+		echo '<tr class="warenkorbEintrag" data-produktid="' . $produktEintrag['id'] . '">';
 // 		de($produktEintrag);
 		echo '<td>' . $produktEintrag['titel'] . '</td>';
 		echo '<td>';
@@ -44,7 +44,7 @@ if (isset($_SESSION['produkte'])) {
 		 //. $produkt['size'] .
 		echo '</td>';
 		echo '<td><input type="number" name="produkte[' . $produkt['id'] . '][anzahl]" value="' . $produkt['anzahl'] . '"  class="form-control produktAnzahl"></td>';
-		echo '<td>' . $preis . '</td>';
+		echo '<td>EUR ' . $preis . '</td>';
 		echo '<td>';
 			$signaturChecked = '';
 			if (isset($_SESSION['produkte'][$produkt['id']]['signatur']) && $_SESSION['produkte'][$produkt['id']]['signatur'] == 1) {
@@ -105,6 +105,8 @@ if (isset($_SESSION['produkte'])) {
 	echo '</form>';
 	echo '</div>';
 	
+	renderFeedback($data['lagerbestandFeedback']);
+	
 	echo '<div class="warenkorbGesamtkosten alert alert-info">';
 	echo '<b>Produktkosten (exklusive Versandkosten):</b>&nbsp;<span class="preis">EUR&nbsp;' . number_format($gesamtPreis, 2) . '</span>';
 	echo '</div>';
@@ -128,7 +130,16 @@ if (isset($_SESSION['produkte'])) {
 		$versandkostenFaktor = 2.50;
 	}
 	
-	$versandkosten = $shirtAnzahl * $versandkostenFaktor;
+	if ($shirtAnzahl <= 2) {
+		$versandkosten = $versandkostenFaktor;
+	} else {
+		if ($shirtAnzahl % 2 == 0) {
+			$versandkosten = ($shirtAnzahl/2) * $versandkostenFaktor;
+		} else {
+			$versandkosten = (($shirtAnzahl+1)/2) * $versandkostenFaktor;
+		}
+		
+	}
 	
 	if ($versandkosten > 10) {
 		$versandkosten = 10;

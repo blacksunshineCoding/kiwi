@@ -28,6 +28,7 @@ html {
 	height: 100%;
 	margin: 0;
 	padding: 0;
+	background-color: #ededed;
 }
 
 body {
@@ -264,6 +265,10 @@ button {
 	-webkit-overflow-scrolling: touch;
 }
 
+.ansichtList table.kiwiTable.tableMin {
+	display: table;
+}
+
 .ansichtList table.kiwiTable tr {
 	transition: all ease .2s;
 }
@@ -274,7 +279,7 @@ button {
 
 .ansichtList table.kiwiTable td span {
 	display: block;
-	height: 30px;
+	min-height: 30px;
 	line-height: 30px;
 }
 
@@ -319,6 +324,11 @@ table.kiwiTable th.idLabel {
 	text-align: left;
 }
 
+.ordersMain .ansichtDetail.edit span.input-group-addon,
+.ordersMain .ansichtDetail.new span.input-group-addon {
+	width: 200px;
+}
+
 .ansichtDetail.edit .btn-default,
 .ansichtDetail.new .btn-default {
 	min-width: 150px;
@@ -334,7 +344,7 @@ table.kiwiTable th.idLabel {
 .ansichtDetail.new textarea.form-control {
 	margin-bottom: 5px;
 	width: 100%;
-	min-height: 80px;
+	min-height: 150px;
 }
 
 .ansichtDetail form.kiwiForm {
@@ -466,6 +476,27 @@ ul.treeviewRoot ul.level2 {
 
 .listTop ul.listTopLinks li:hover a {
 	border-color: #91ff55;
+}
+
+/* Childtables */
+
+.ansichtDetail h4.newChildtableAdd {
+	cursor: pointer;
+}
+
+.ansichtDetail .newChildtable {
+	display: none;
+	margin-bottom: 20px;
+}
+
+.ansichtDetail .childTableEntry {
+	margin-bottom: 10px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #4d4d4d;
+}
+
+.ansichtDetail .allChildTables {
+	padding-left: 25px;
 }
 
 /* Misc */

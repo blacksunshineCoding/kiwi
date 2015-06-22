@@ -5,7 +5,9 @@ $table['label'] = 'Bestellungen';
 $table['singular'] = 'Bestellung';
 $table['plural'] = 'Bestellungen';
 $table['showTop'] = 1;
+$table['onlyMinList'] = 1;
 $table['icon'] = 'fa fa-outdent';
+$table['minFieldList'] = 'bestellnummer,vorname,nachname,zahlungErhalten,versendet,bestelldatum';
 $table['topActions'] = '';
 $table['sideActions'] = 'all';
 $table['listActions'] = 'edit,delete';
@@ -19,6 +21,13 @@ $field['label'] = 'Id';
 $field['type'] = 'text';
 $field['edit'] = 0;
 $table['fields']['id'] = $field;
+
+unset($field);
+$field['name'] = 'bestellnummer';
+$field['label'] = 'Bestellnummer';
+$field['type'] = 'text';
+$field['edit'] = 0;
+$table['fields']['bestellnummer'] = $field;
 
 unset($field);
 $field['name'] = 'vorname';
@@ -132,6 +141,7 @@ $field['type'] = 'select';
 $field['optionNameList'] = 'ja,nein';
 $field['optionValueList'] = '1,0';
 $field['optionDefaultValue'] = 0;
+$field['showNameInList'] = 1;
 $field['edit'] = 1;
 $table['fields']['zahlungErhalten'] = $field;
 
@@ -142,6 +152,7 @@ $field['type'] = 'select';
 $field['optionNameList'] = 'ja,nein';
 $field['optionValueList'] = '1,0';
 $field['optionDefaultValue'] = 0;
+$field['showNameInList'] = 1;
 $field['edit'] = 1;
 $table['fields']['versendet'] = $field;
 
@@ -149,21 +160,21 @@ unset($field);
 $field['name'] = 'bestelldatum';
 $field['label'] = 'Bestelldatum';
 $field['type'] = 'text';
-$field['edit'] = 1;
+$field['edit'] = 0;
 $table['fields']['bestelldatum'] = $field;
 
 unset($field);
 $field['name'] = 'zahlungsdatum';
 $field['label'] = 'Zahlungsdatum';
 $field['type'] = 'text';
-$field['edit'] = 1;
+$field['edit'] = 0;
 $table['fields']['zahlungsdatum'] = $field;
 
 unset($field);
 $field['name'] = 'versanddatum';
 $field['label'] = 'Versanddatum';
 $field['type'] = 'text';
-$field['edit'] = 1;
+$field['edit'] = 0;
 $table['fields']['versanddatum'] = $field;
 
 unset($field);

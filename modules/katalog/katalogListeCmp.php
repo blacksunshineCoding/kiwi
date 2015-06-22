@@ -3,9 +3,12 @@
 
 if (isset($data['produkte']['entries']) && count($data['produkte']['entries']) > 0) {
 	foreach ($data['produkte']['entries'] as $entry) {
-		echo '<article class="produktEintrag">';
+// 		de($entry['varianten']);
+		echo '<article class="produktEintrag" data-produktid="' . $entry['id'] . '">';
 			echo '<div class="produktEintragBild">';
+				echo '<a href="uploads/' . getFileName($entry['bild'], 0) . '" data-lightbox="produkte">';
 				echo '<img src="' . resizePic(getFileName($entry['bild'], 0), 200, null) . '">';
+				echo '</a>';
 			echo '</div>';
 			echo '<div class="produktEintragMain">';
 				renderHeadline($entry['titel'], 3, false, false);
@@ -17,8 +20,9 @@ if (isset($data['produkte']['entries']) && count($data['produkte']['entries']) >
 					echo '<input type="hidden" name="produkt[preis]" value="' . $entry['preis'] . '">';
 					echo '<input type="hidden" name="produkt[produktkategorie]" value="' . $entry['produktkategorieId'] . '">';
 					echo '<input type="hidden" name="warenkorb" value="1">';
-					$sizeValues = explode(',', $entry['optionen']);
-					echo '<select name="produkt[size]" class="form-control">';
+					$sizeValues = $entry['varianten']['Größe']['optionList'];
+// 					de($sizeValues);
+					echo '<select name="produkt[size]" class="form-control produktSize">';
 					foreach ($sizeValues as $value) {
 						echo '<option value="' . $value . '">' . $value. '</option>';
 					}
@@ -27,6 +31,7 @@ if (isset($data['produkte']['entries']) && count($data['produkte']['entries']) >
 					echo '<div class="clear"></div>';
 				echo '</form>';
 				echo '<div class="clear"></div>';
+				echo '<div class="lagerbestandInfo"></div>';
 				if (isset($data['feedback'][$entry['id']])) {
 					renderFeedback($data['feedback'][$entry['id']]);
 				}
@@ -37,3 +42,11 @@ if (isset($data['produkte']['entries']) && count($data['produkte']['entries']) >
 }
 
 echo '<a href="' . $data['warenkorbLink'] . '" class="zumWarenkorb btn btn-default">Zum Warenkorb</a>';
+
+if (isset($data['lagerbestaende']) && (count($data['lagerbestaende']) > 0)) {
+	echo '<div id="lagerbestaende">';
+	foreach ($data['lagerbestaende'] as $lagerbestand) {
+		echo '<input type="hidden" data-produktid="' . $lagerbestand['produktId'] . '" data-variante="' . $lagerbestand['variante'] . '" data-option="' . $lagerbestand['varianteOption'] . '" data-lagerbestand="' . $lagerbestand['lagerbestand'] . '">';
+	}
+	echo '</div>';
+}

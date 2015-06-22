@@ -98,3 +98,11 @@ $katalogCmpFile = dirname(__FILE__) . '/katalog' . ucfirst($modulansicht) . 'Cmp
 if (file_exists($katalogCmpFile)) {
 	include_once($katalogCmpFile);
 }
+
+if (isset($data['lagerbestaende']) && (count($data['lagerbestaende']) > 0)) {
+	echo '<div id="lagerbestaende">';
+	foreach ($data['lagerbestaende'] as $lagerbestand) {
+		echo '<input type="hidden" data-produktid="' . $lagerbestand['produktId'] . '" data-variante="' . $lagerbestand['variante'] . '" data-option="' . $lagerbestand['varianteOption'] . '" data-lagerbestand="' . $lagerbestand['lagerbestand'] . '">';
+	}
+	echo '</div>';
+}

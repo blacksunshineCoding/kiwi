@@ -47,7 +47,7 @@
 }
 
 .produktEintrag select.form-control {
-	width: 60px;
+	width: 80px;
 	height: 33px;
 	margin: 0 15px 0 0;
 	float: left;
@@ -92,7 +92,7 @@ a.zurueckProdukte {
 	display: block;
 	position: relative;
 	float: left;
-	width: 300px;
+	width: 25%;
 	height: 60px;
 	margin: 0;
 	padding: 0 10px;
@@ -227,6 +227,12 @@ a.zurueckProdukte {
 	font-weight: 600;
 }
 
+.kassaAnmerkung textarea.form-control {
+	width: 500px;
+	height: 80px;
+	margin: 0 0 10px 0;
+}
+
 /* Kassa */
 
 .katalogKasse .kassaProduktzusammenfassung,
@@ -291,4 +297,10 @@ a.zurueckProdukte {
 
 .katalogKasse .form-control {
 	width: 350px;
+}
+
+/* Sonstiges */
+
+#lagerbestaende {
+	visibility: hidden;
 }

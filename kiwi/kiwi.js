@@ -1,7 +1,6 @@
 $(document).ready(function() {
 	
-//	var windowInner = $(window).innerHeight();
-//	$('#template').height(windowInner);
+//	$('body, #template, #main, #side').height($('html').height());
 
 	$('a.action.delete').on('click', function(e) {
 		var link = this;
@@ -18,5 +17,9 @@ $(document).ready(function() {
 	        }
 		});
 	});
+	
+	$('h4.newChildtableAdd').click(function() {
+		$('.newChildtable').slideToggle();
+	})
 
 });

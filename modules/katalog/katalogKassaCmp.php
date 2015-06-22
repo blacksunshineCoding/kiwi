@@ -1,10 +1,10 @@
 <?php
 echo '<div class="katalogKasse katalogAbschluss">';
-renderHeadline('Abschluss', 2);
+renderHeadline('Abschluss', 3);
 
 if (isset($_SESSION['produkte'])) {
 	echo '<div class="kassaProduktzusammenfassung">';
-		renderHeadline('Produktzusammenfasung', 3);
+		renderHeadline('Bestellzusammenfassung', 4);
 		$shirtAnzahl = 0;
 		echo '<table class="table kassaTable">';
 			echo '<tr>';
@@ -51,7 +51,16 @@ if (isset($_SESSION['produkte'])) {
 				$versandkostenFaktor = 2.50;
 			}
 			
-			$versandkosten = $shirtAnzahl * $versandkostenFaktor;
+			if ($shirtAnzahl <= 2) {
+				$versandkosten = $versandkostenFaktor;
+			} else {
+				if ($shirtAnzahl % 2 == 0) {
+					$versandkosten = ($shirtAnzahl/2) * $versandkostenFaktor;
+				} else {
+					$versandkosten = (($shirtAnzahl+1)/2) * $versandkostenFaktor;
+				}
+				
+			}
 			
 			if ($versandkosten > 10) {
 				$versandkosten = 10;
@@ -84,17 +93,18 @@ if (isset($_SESSION['produkte'])) {
 	echo '</div>';
 	
 	$finalFeedback['type'] = 'success';
-	$finalFeedback['text'] = '<b>Deine Bestellung wurde erfolgreich abgeschlossen!</b><br>';
-	$finalFeedback['text'] .= '<p>Vielen Dank für deine Bestellung! Du bekommst eine Email mit der Bestätigung und den Zahlungsanweisungen.<br>Sobald das Geld eingetroffen ist werden benachrichtigt und ebenfalls wenn dein Paket versendet wurde.</p>';
+	$finalFeedback['text'] = $data['orderText'];
 	renderFeedback($finalFeedback);
 	
 	if ($_SESSION['orderComplete'] == 1) {
+		
 		unset($_SESSION['produkte']);
 		unset($_SESSION['gesamtpreis']);
 		unset($_SESSION['land']);
 		unset($_SESSION['completeSteps']);
 		unset($_SESSION['adresse']);
 		unset($_SESSION['orderComplete']);
+		unset($_SESSION['zahlungsmethode']);
 	}
 
 }

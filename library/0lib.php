@@ -38,6 +38,21 @@ function getOptionValueListViaSelect($fieldname, $tablename, $order = 'id ASC', 
 	return $optionValueList;
 }
 
+function prepareOption($field) {
+	if (($field['type'] == 'select') && (isset($field['showNameInList']) && $field['showNameInList'] == 1)) {
+		$optionNames = explodeList($field['optionNameList']);
+		$valueNames = explodeList($field['optionValueList']);
+		
+		foreach ($optionNames as $optionNameId => $optionName) {
+			$values[$valueNames[$optionNameId]] = $optionName;
+		}
+		
+		return $values;
+	} else {
+		return false;
+	}
+}
+
 /**
  * prepareOptionList
  * Bereitet die optionList fuer die Ausgabe im CMS for
@@ -203,10 +218,12 @@ function renderFeedback($feedback) {
  */
 
 function renderDetailEdit($table, $entry) {
+	global $main;
 
 	if (isset($table['fields']) && count($table['fields']) > 0) {
 		$action = 'index.php?navigation=' . $_GET['navigation'] . '&' . $table['name'] . 'Id=' . $entry['id'] . '&action=edit';
 		echo '<form action="' . $action . '" method="post" enctype="multipart/form-data" class="kiwiForm">';
+		echo '<div class="mainEntry">';
 		foreach ($table['fields'] as $field) {
 			$disabled = '';
 			if ($field['edit'] == 0) $disabled = 'readonly';
@@ -220,7 +237,7 @@ function renderDetailEdit($table, $entry) {
 					break;
 					
 				case 'textarea':
-					echo '<textarea type="text" class="form-control" name="row[' . $field['name'] . ']" placeholder="' . $field['label'] . '"' . $disabled .'>' . $entry[$field['name']] . '</textarea>';
+					echo '<textarea type="text" class="form-control" name="row[' . $field['name'] . ']" placeholder="' . $field['label'] . '"' . $disabled .'>' . prepareTextarea($entry[$field['name']]) . '</textarea>';
 					break;
 					
 				case 'select':
@@ -244,6 +261,110 @@ function renderDetailEdit($table, $entry) {
 					break;
 			}
 			echo '</div>';
+		}
+		echo '</div>';
+		if (isset($table['childtables'])) {
+			$childTableList = explodeList($table['childtableList']);
+			if (isset($childTableList) && !empty($childTableList) && is_array($childTableList)) {
+				echo '<div class="allChildTables">';
+				foreach ($childTableList as $childTable) {
+					if (isset($table['childtables'][$childTable])) {
+						renderHeadline($main['tables'][$childTable]['label'], 3);
+						
+						if (isset($entry[$childTable])) {
+							foreach ($entry[$childTable] as $existingChildtableId => $existingChildtable) {
+								echo '<div class="childTableEntry">';
+								$childtableFields = $main['tables'][$childTable]['fields'];
+								foreach ($childtableFields as $childtableField) {
+									$disabled = '';
+									if ($childtableField['edit'] == 0) $disabled = 'readonly';
+										
+									echo '<div class="input-group">';
+									switch ($childtableField['type']) {
+										default:
+										case 'text':
+											echo '<span class="input-group-addon">' . $childtableField['label'] . '</span>';
+											echo '<input type="text" class="form-control" name="row[childtables][' . $childTable . '][' . $existingChildtable['id'] . '][' . $childtableField['name'] . ']" value="' . $entry[$childTable][$existingChildtableId][$childtableField['name']] . '" ' . $disabled .'>';
+											break;
+												
+										case 'textarea':
+											echo '<textarea type="text" class="form-control" name="row[childtables][' . $childTable . '][' . $existingChildtable['id'] . '][' . $childtableField['name'] . ']" placeholder="' . $childtableField['label'] . '"' . $disabled .'>' . prepareTextarea($entry[$childTable][$existingChildtableId][$childtableField['name']]) . '</textarea>';
+											break;
+												
+										case 'select':
+											$options = prepareOptionList($childtableField);
+											echo '<span class="input-group-addon">' . $childtableField['label'] . '</span>';
+											echo '<select class="form-control" name="row[childtables][' . $childTable . '][' . $existingChildtable['id'] . '][' . $childtableField['name'] . ']" ' . $disabled .'>';
+											foreach ($options as $option) {
+												$selected= '';
+												if ($entry[$childTable][$existingChildtableId][$childtableField['name']] == $option['value']) $selected = 'selected';
+												echo '<option value="' . $option['value'] . '" ' . $selected . '>' . $option['name'] . '</option>';
+											}
+											echo '</select>';
+											break;
+												
+										case 'file':
+											echo '<span class="input-group-addon">' . $childtableField['label'] . '</span>';
+											if (!empty($entry[$childTable][$existingChildtableId][$childtableField['name']])) {
+												echo '<p class="form-control">Bestehende Datei: ' . $entry[$childTable][$existingChildtableId][$childtableField['name']] . '</p>';
+											}
+											echo '<input type="file" class="form-control" name="row[childtables][' . $childTable . '][' . $existingChildtable['id'] . '][' . $childtableField['name'] . ']" ' . $disabled .'>';
+											break;
+									}
+									echo '</div>';
+								}
+								echo '<div class="input-group">';
+									echo '<span class="input-group-addon">Eintrag löschen</span>';
+									echo '<div class="form-control"><input type="checkbox" name="row[childtables][' . $childTable . '][' . $existingChildtable['id'] . '][delete]" value="1"></div>';
+								echo '</div>';
+								
+								echo '</div>';
+							}
+						}
+						
+						renderHeadline('<i class="fa fa-plus-square-o"></i> Neur Eintrag', 4, 'newChildtableAdd');
+						echo '<div class="newChildtable">';
+						if (isset($main['tables'][$childTable]['fields'])) foreach ($main['tables'][$childTable]['fields'] as $fieldId => $field) {
+							$childtableField = $main['tables'][$childTable]['fields'];
+							$disabled = '';
+							if ($field['edit'] == 0) $disabled = 'readonly';
+							
+							echo '<div class="input-group">';
+							switch ($field['type']) {
+								default:
+								case 'text':
+									echo '<span class="input-group-addon">' . $field['label'] . '</span>';
+									echo '<input type="text" class="form-control" name="row[' . $childTable . '][new][' . $field['name'] . ']" ' . $disabled .'>';
+									break;
+										
+								case 'textarea':
+									echo '<textarea type="text" class="form-control" name="row[' . $childTable . '][new][' . $field['name'] . ']" placeholder="' . $field['label'] . '"' . $disabled .'></textarea>';
+									break;
+										
+								case 'select':
+									$options = prepareOptionList($field);
+									echo '<span class="input-group-addon">' . $field['label'] . '</span>';
+									echo '<select class="form-control" name="row[' . $childTable  . '][new][' . $field['name'] . ']" ' . $disabled .'>';
+									foreach ($options as $option) {
+										$selected= '';
+										if ($field['optionDefaultValue'] == $option['value']) $selected = 'selected';
+										echo '<option value="' . $option['value'] . '" ' . $selected . '>' . $option['name'] . '</option>';
+									}
+									echo '</select>';
+									break;
+										
+								case 'file':
+									echo '<span class="input-group-addon">' . $field['label'] . '</span>';
+									echo '<input type="file" class="form-control" name="row[' . $childTable . '][new][' . $field['name'] . ']" ' . $disabled .'>';
+									break;
+							}
+							echo '</div>';
+						}
+						echo '</div>';
+					}
+				}
+				echo '</div>';
+			}
 		}
 		echo '<input type="hidden" name="sent" value="1">';
 		echo '<button type="submit" class="btn btn-default">Speichern</button>';
@@ -292,6 +413,11 @@ function renderDetailNew($table) {
 						echo '<option value="' . $option['value'] . '" ' . $selected . '>' . $option['name'] . '</option>';
 					}
 					echo '</select>';
+					break;
+					
+				case 'file':
+					echo '<span class="input-group-addon">' . $field['label'] . '</span>';
+					echo '<input type="file" class="form-control" name="' . $field['name'] . '" ' . $disabled .'>';
 					break;
 			}
 			echo '</div>';
@@ -376,28 +502,108 @@ function renderActionFields($table, $entry, $type='link') {
 
 function renderDataTable($table, $entries) {
 	if (isset($table['fields']) && count($entries) > 0) {
+		
+		if ((!isset($table['onlyMinList'])) || isset($table['onlyMinList']) && $table['onlyMinList'] == 0) {
 	
-		echo '<table class="table kiwiTable">';
-		echo '<tr class="labelRow">';
-		foreach ($table['fields'] as $field) {
-			echo '<th class="' . $field['name'] . 'Label">';
-			echo '<span class="fieldLabel">' . $field['label'] . '</span>';
-			echo '</th>';
-		}
-		renderActionFields($table, $entry=null, 'label');
-		echo '</tr>';
-		if (count($entries) > 0) foreach ($entries as $entry) {
-			echo '<tr class="entryRow">';
-			foreach ($entry as $entryField) {
-				echo '<td>';
-				echo '<span class="field">' . trimText($entryField, 30) . '</span>';
-				echo '</td>';
+			echo '<table class="table tableFull kiwiTable">';
+			echo '<tr class="labelRow">';
+			foreach ($table['fields'] as $field) {
+				echo '<th class="' . $field['name'] . 'Label">';
+				echo '<span class="fieldLabel">' . $field['label'] . '</span>';
+				echo '</th>';
 			}
-			renderActionFields($table, $entry, 'link');
+			renderActionFields($table, $entry=null, 'label');
 			echo '</tr>';
-	
+			if (count($entries) > 0) foreach ($entries as $entryId => $entry) {
+				echo '<tr class="entryRow">';
+				foreach ($entry as $entryFieldId => $entryField) {
+
+					if (prepareOption($table['fields'][$entryFieldId])) {
+						$fieldList = prepareOption($table['fields'][$entryFieldId]);
+						$newFieldName = $fieldList[$entryField];
+					} else {
+						$newFieldName = trimText($entryField, 100);
+					}
+					
+					echo '<td>';
+					echo '<span class="field">' . $newFieldName . '</span>';
+					echo '</td>';
+				}
+				renderActionFields($table, $entry, 'link');
+				echo '</tr>';
+		
+			}
+			echo '</table>';
+		
 		}
-		echo '</table>';
+
+		if (isset($table['minFieldList']) || isset($table['minList']) && $table['minList'] == 1) {
+			$minFieldList = explodeList($table['minFieldList']);
+			echo '<table class="table tableMin kiwiTable">';
+			echo '<tr class="labelRow">';
+			foreach ($minFieldList as $labelField) {
+				echo '<th class="' . $table['fields'][$labelField]['name'] . 'Label">' . $table['fields'][$labelField]['label'] . '</th>';
+			}
+			renderActionFields($table, $entry=null, 'label');
+			echo '</tr>';
+			foreach ($entries as $entryId => $entry) {
+				echo '<tr class="entryRow">';
+				foreach ($entry as $entryFieldId => $entryField) {
+					if (in_array($entryFieldId, $minFieldList)) {
+						
+						if (prepareOption($table['fields'][$entryFieldId])) {
+							$fieldList = prepareOption($table['fields'][$entryFieldId]);
+							$newFieldName = $fieldList[$entryField];
+						} else {
+							$newFieldName = trimText($entryField, 100);
+						}
+						
+						echo '<td>';
+						echo '<span class="field">' . $newFieldName . '</span>';
+						echo '</td>';
+					}
+				}
+				renderActionFields($table, $entry, 'link');
+				echo '</tr>';
+				
+			}
+			echo '</table>';
+		}
+	}
+}
+
+function validEmail($email) {
+	if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+function prepareTextarea($text) {
+	if(strpos($text, '<br>') !== false) {
+		$text = str_ireplace('<br>', '&#13;&#10;', $text);
+	}
+	return $text;
+}
+
+/**
+ * explodeList
+ * Wandelt eine kommaseperierte Liste in einen Array um, wenn nur ein Feld angegeben ist landet es ebenfalls in einem Array (als einziger Eintrag)
+ * @param string $fieldList
+ * @return array|boolean
+ */
+
+function explodeList($fieldList) {
+	if (isset($fieldList)) {
+		if(strpos($fieldList, ',') !== false) {
+			$list = explode(',', $fieldList);
+		} else {
+			$list[] = $fieldList;
+		}
+		return $list;
+	} else {
+		return false;
 	}
 }
 

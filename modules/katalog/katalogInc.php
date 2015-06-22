@@ -1,4 +1,6 @@
 <?php
+$data['lagerbestaende'] = getRows('SELECT * FROM produktvarianten');
+
 if (isset($_GET['produkteId'])) {
 	$modulansicht = 'detail';
 	
