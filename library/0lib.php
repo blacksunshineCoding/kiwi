@@ -1122,6 +1122,7 @@ function renderSite($site) {
 	global $main;
 	global $data;
 	renderHeadline($site['titel'], 2, 'siteTitle');
+	renderParagraph($site['text'], 'siteText');
 	if ($site['module'] != '0') {
 		$moduleCmp = dirname(__FILE__) . '/../' . $site['module'] . 'Cmp.php';
 		if (file_exists($moduleCmp)) {

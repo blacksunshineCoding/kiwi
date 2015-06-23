@@ -12,13 +12,21 @@
 					<a class="logo" href=".">
 						<img src="images/logo57kkk.png">
 					</a>
-					<h1>57KKK Store</h1>
 				</div>
 				<nav id="navigation" class="container">
 					<a href="javascript:toggleNav();" class="toggleNav"><i class="fa fa-bars"></i></a>
 					<?php
 						renderNavigation($main['navigations']['hauptnavigation']);
 					?>
+					<span class="warenkorbCount">
+						<?php
+							if (isset($_SESSION['produkte']) && (count($_SESSION['produkte']) != 0)) {
+								echo count($_SESSION['produkte']);
+							} else {
+								echo 0;
+							}
+						?>
+					</span>
 				</nav>
 			</header>
 			<section id="main" class="container">

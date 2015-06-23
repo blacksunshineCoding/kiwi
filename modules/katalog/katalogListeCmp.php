@@ -1,17 +1,15 @@
 <?php
-// echo '<a href="' . $data['warenkorbLink'] . '" class="zumWarenkorb btn btn-default">Zum Warenkorb</a>';
-
 if (isset($data['produkte']['entries']) && count($data['produkte']['entries']) > 0) {
 	foreach ($data['produkte']['entries'] as $entry) {
-// 		de($entry['varianten']);
 		echo '<article class="produktEintrag" data-produktid="' . $entry['id'] . '">';
-			echo '<div class="produktEintragBild">';
+			echo '<div class="produktEintragBild col-md-3 col-sm-3 col-xs-12">';
 				echo '<a href="uploads/' . getFileName($entry['bild'], 0) . '" data-lightbox="produkte">';
 				echo '<img src="' . resizePic(getFileName($entry['bild'], 0), 200, null) . '">';
 				echo '</a>';
 			echo '</div>';
-			echo '<div class="produktEintragMain">';
+			echo '<div class="produktEintragMain col-md-9 col-sm-9 col-xs-12">';
 				renderHeadline($entry['titel'], 3, false, false);
+				renderSpan('Art.-Nr.:' . $entry['artikelnummer'], 'artikelnummer');
 				renderParagraph($entry['text'], 'produktEintragText');
 				echo '<span class="btn btn-success produktEintragPreis">EUR ' . $entry['preis'] . '</span>';
 				echo '<form action="" method="post" class="produktEintragForm">';
@@ -21,7 +19,6 @@ if (isset($data['produkte']['entries']) && count($data['produkte']['entries']) >
 					echo '<input type="hidden" name="produkt[produktkategorie]" value="' . $entry['produktkategorieId'] . '">';
 					echo '<input type="hidden" name="warenkorb" value="1">';
 					$sizeValues = $entry['varianten']['Größe']['optionList'];
-// 					de($sizeValues);
 					echo '<select name="produkt[size]" class="form-control produktSize">';
 					foreach ($sizeValues as $value) {
 						echo '<option value="' . $value . '">' . $value. '</option>';

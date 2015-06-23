@@ -15,7 +15,7 @@ function orderMail($order, $type) {
 				$text .= 'Versandmethode: ' . $order['versandmethode'] . '<br>';
 				$text .= 'Gesamtpreis: EUR ' . $order['gesamtpreis'] . '<br><br>';
 				
-				$text .= 'Überweise bitte den Gesamtpreis von <b>EUR ' . $order['gesamtpreis'] . '</b> mit dem Vermerk der Bestellnummer <b>' . $order['bestellnummer'] . '</b>';
+				$text .= 'Überweise bitte den Gesamtpreis von <b>EUR ' . $order['gesamtpreis'] . '</b> mit dem Vermerk der Bestellnummer <b>' . $order['bestellnummer'] . '</b> ';
 				
 				if ($order['zahlungsmethode'] == 'PayPal') {
 					$text .= 'mit PayPal an folgende Adresse:<br>';

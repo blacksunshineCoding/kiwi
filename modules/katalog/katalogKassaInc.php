@@ -31,6 +31,9 @@ if (isset($_SESSION['produkte'])) {
 			
 			$variante = getRow('SELECT * FROM produktvarianten WHERE produktId = "' . $realProdukt['id'] . '" AND variante LIKE "Größe" AND varianteOption LIKE "' . $sessionProdukt['size'] . '"');
 			$variante['lagerbestand'] = intval($variante['lagerbestand']) - intval($sessionProdukt['anzahl']);
+			if ($variante['lagerbestand'] < 0) {
+				$variante['lagerbestand'] = 0;
+			}
 			updateRow($variante, 'id', $variante['id'], 'produktvarianten');
 	
 		}
@@ -109,9 +112,9 @@ if (isset($_SESSION['produkte'])) {
 		$text .= 'Versandmethode: ' . $row['versandmethode'] . '<br>';
 		$text .= 'Gesamtpreis: EUR ' . $row['gesamtpreis'] . '<br><br>';
 		
-		$text .= 'Überweise bitte den Gesamtpreis von <b>EUR ' . $row['gesamtpreis'] . '</b> mit dem Vermerk der Bestellnummer <b>' . $row['bestellnummer'] . '</b>';
+		$text .= 'Überweise bitte den Gesamtpreis von <b>EUR ' . $row['gesamtpreis'] . '</b> mit dem Vermerk der Bestellnummer <b>' . $row['bestellnummer'] . '</b> ';
 		
-		if ($order['zahlungsmethode'] == 'PayPal') {
+		if ($row['zahlungsmethode'] == 'PayPal') {
 			$text .= 'mit PayPal an folgende Adresse:<br>';
 			$text .= 'broke@57kkk.tk<br>';
 		} else {

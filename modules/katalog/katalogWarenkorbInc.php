@@ -47,3 +47,15 @@ if (isset($_POST['aktualisieren']) && $_POST['aktualisieren'] == 1) {
 
 $data['produkte'] = idAsIndex(getRows('SELECT * FROM produkte'));
 
+foreach ($data['produkte'] as $produktEintragId => $produktEintrag) {
+	$varianten = getRows('SELECT * FROM produktvarianten WHERE produktId = ' . $produktEintrag['id'] . ' ORDER BY id ASC');
+	if ((isset($varianten)) && is_array($varianten) && (count($varianten) != 0)) {
+		unset($variantenNew);
+		foreach ($varianten as $varianteId => $variante) {
+			$variantenNew[$variante['variante']]['entries'][] = $variante;
+			$variantenNew[$variante['variante']]['optionList'][] = $variante['varianteOption'];
+		}
+		$data['produkte'][$produktEintragId]['varianten'] = $variantenNew;
+	}
+
+}

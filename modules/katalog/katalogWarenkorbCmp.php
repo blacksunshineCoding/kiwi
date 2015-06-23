@@ -5,8 +5,10 @@ if (isset($_SESSION['produkte'])) {
 	echo '<div class="katalogWarenkorb">';
 	echo '<a href="index.php" class="zurueckProdukte btn btn-default">Zurück zu den Produkten</a>';
 	echo '<form action="index.php?ansicht=warenkorb" method="post">';
+	echo '<div class="warenkorbWrap">';
 	echo '<table class="table warenkorbTable">';
 	echo '<tr>';
+		echo '<th>Art.-Nr.</th>';
 		echo '<th>Produkt</th>';
 		echo '<th>Größe</th>';
 		echo '<th>Anzahl</th>';
@@ -31,11 +33,12 @@ if (isset($_SESSION['produkte'])) {
 		
 
 		echo '<tr class="warenkorbEintrag" data-produktid="' . $produktEintrag['id'] . '">';
-// 		de($produktEintrag);
+		echo '<td>' . $produktEintrag['artikelnummer'] . '</td>';
 		echo '<td>' . $produktEintrag['titel'] . '</td>';
 		echo '<td>';
 		echo '<select name="produkte[' . $produkt['id'] . '][size]" class="form-control produktSize">';
-		foreach ($optionValues as $value) {
+		$sizeValues = $produktEintrag['varianten']['Größe']['optionList'];
+		foreach ($sizeValues as $value) {
 			$checked = '';
 			if ($produkt['size'] == $value) $checked = 'selected="selected"';
 			echo '<option value="' . $value . '" ' . $checked . '>' . $value . '</option>';
@@ -68,6 +71,7 @@ if (isset($_SESSION['produkte'])) {
 		echo '</tr>';
 	}
 	echo '</table>';
+	echo '</div>';
 	
 	$deChecked = '';
 	$atChecked = '';

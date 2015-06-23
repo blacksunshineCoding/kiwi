@@ -23,6 +23,13 @@ $field['edit'] = 0;
 $table['fields']['id'] = $field;
 
 unset($field);
+$field['name'] = 'artikelnummer';
+$field['label'] = 'Artikelnummer';
+$field['type'] = 'text';
+$field['edit'] = 1;
+$table['fields']['artikelnummer'] = $field;
+
+unset($field);
 $field['name'] = 'name';
 $field['label'] = 'Name';
 $field['type'] = 'text';
@@ -73,6 +80,13 @@ $field['optionValueList'] = getOptionValueListViaSelect('id', 'produktkategorien
 $field['optionDefaultValue'] = 0;
 $field['edit'] = 1;
 $table['fields']['produktkategorieId'] = $field;
+
+unset($field);
+$field['name'] = 'position';
+$field['label'] = 'Position';
+$field['type'] = 'text';
+$field['edit'] = 1;
+$table['fields']['position'] = $field;
 
 unset($field);
 $field['name'] = 'online';

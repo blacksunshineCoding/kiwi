@@ -8,6 +8,7 @@ if (isset($_SESSION['produkte'])) {
 		$shirtAnzahl = 0;
 		echo '<table class="table kassaTable">';
 			echo '<tr>';
+				echo '<th class="thArtikelnummer">Art.-Nr.</th>';
 				echo '<th class="thProdukt">Produkt</th>';
 				echo '<th class="thEinzel">Einzelpreis</th>';
 				echo '<th class="thSize">Größe/Option</th>';
@@ -32,6 +33,7 @@ if (isset($_SESSION['produkte'])) {
 				$allProduktePreis = $allProduktePreis + $gesamtpreis;
 		
 				echo '<tr>';
+					echo '<td>' . $realProdukt['artikelnummer'] . '</td>';
 					echo '<td>' . $realProdukt['titel'] . '</td>';
 					echo '<td>EUR ' . str_replace(',', '.', $realProdukt['preis']) . '</td>';
 					echo '<td>' . $sessionProdukt['size'] . '</td>';
@@ -72,6 +74,7 @@ if (isset($_SESSION['produkte'])) {
 				echo '<td class="rowNoBorder"></td>';
 				echo '<td class="rowNoBorder"></td>';
 				echo '<td class="rowNoBorder"></td>';
+				echo '<td class="rowNoBorder"></td>';
 				echo '<td class="allProdukteLabel labelSpan" colspan="2">Gesamtpreis (exklusive Versandkosten):</td>';
 				echo '<td class="allProduktePreis preisRight">EUR ' . number_format($allProduktePreis, 2) . '</td>';
 			echo '</tr>';
@@ -79,10 +82,12 @@ if (isset($_SESSION['produkte'])) {
 				echo '<td class="rowNoBorder"></td>';
 				echo '<td class="rowNoBorder"></td>';
 				echo '<td class="rowNoBorder"></td>';
+				echo '<td class="rowNoBorder"></td>';
 				echo '<td class="versandkostenLabel labelSpan" colspan="2">Versandkosten:</td>';
 				echo '<td class="versandkostenPreis preisRight">EUR ' . number_format($versandkosten, 2) . '</td>';
 			echo '</tr>';
 			echo '<tr class="rowGesamtkosten">';
+				echo '<td class="rowNoBorder"></td>';
 				echo '<td class="rowNoBorder"></td>';
 				echo '<td class="rowNoBorder"></td>';
 				echo '<td class="rowNoBorder"></td>';

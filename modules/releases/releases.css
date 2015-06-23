@@ -82,3 +82,44 @@
 	display: block;
 	font-weight: 400;
 }
+
+/* Detail */
+
+.releaseDetail .releaseDetailCover {
+	margin: 0 0 25px 0;
+}
+
+.releaseDetail .releaseDetailCover a {
+	display: block;
+}
+
+.releaseDetail .releaseDetailCover a img {
+	width: 100%;
+	height: auto;
+}
+
+
+
+.releaseDetail .releaseDetailHead {
+	border-bottom: 1px solid #7a7a7a;
+	padding: 0 0 15px 0;
+	margin: 0 0 15px 0;
+}
+
+.releaseDetail .releaseDetailHead h4.interpret {
+	margin: 0 0 10px 0;
+}
+
+.releaseDetail .releaseDetailHead h3.titel {
+	margin: 0 !important;
+}
+
+.releaseDetail .releaseDetailText h5.tracklist {
+	margin: 0 0 5px 0;
+	font-weight: 600;
+}
+
+.releaseDetail .releaseDetailDownload {
+	padding: 15px 0 0 0;
+	border-top: 1px solid #7a7a7a;
+}
