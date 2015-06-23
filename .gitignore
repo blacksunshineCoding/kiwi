@@ -3,6 +3,4 @@
 *.prefs
 .settings/org.eclipse.wst.common.project.facet.core.xml
 images/scaled/
-images/uploads/
-images\scaled\
-images\uploads\
+uploads/
