@@ -2,6 +2,7 @@
 
 /**
  * getOptionNameListViaSelect
+ * 
  * Holt die Werte fuer optionNameList in der Config aus der Datenbank
  * @param string $fieldname
  * @param string $tablename
@@ -10,7 +11,6 @@
  * @param string $emptyAlternativeValue
  * @return string
  */
-
 function getOptionNameListViaSelect($fieldname, $tablename, $order = 'id ASC', $emptyAlternative = true, $emptyAlternativeValue = '---') {
 	$nameList = getRow('SELECT GROUP_CONCAT(' . $fieldname . ') FROM ' . $tablename . ' ORDER BY ' . $order);
 	$key = 'GROUP_CONCAT(' . $fieldname . ')';
@@ -21,6 +21,7 @@ function getOptionNameListViaSelect($fieldname, $tablename, $order = 'id ASC', $
 
 /**
  * getOptionValueListViaSelect
+ * 
  * Holt die Werte fuer optionValueList in der Config aus der Datenbank
  * @param string $fieldname
  * @param string $tablename
@@ -29,7 +30,6 @@ function getOptionNameListViaSelect($fieldname, $tablename, $order = 'id ASC', $
  * @param string $emptyAlternativeValue
  * @return string
  */
-
 function getOptionValueListViaSelect($fieldname, $tablename, $order = 'id ASC', $emptyAlternative = true, $emptyAlternativeValue = '') {
 	$valueList = getRow('SELECT GROUP_CONCAT(id) FROM ' . $tablename . ' ORDER BY ' . $order);
 	$key = 'GROUP_CONCAT(id)';
@@ -38,6 +38,12 @@ function getOptionValueListViaSelect($fieldname, $tablename, $order = 'id ASC', 
 	return $optionValueList;
 }
 
+/**
+ * prepareOption
+ * 
+ * @param unknown $field
+ * @return unknown|boolean
+ */
 function prepareOption($field) {
 	if (($field['type'] == 'select') && (isset($field['showNameInList']) && $field['showNameInList'] == 1)) {
 		$optionNames = explodeList($field['optionNameList']);
@@ -55,11 +61,11 @@ function prepareOption($field) {
 
 /**
  * prepareOptionList
- * Bereitet die optionList fuer die Ausgabe im CMS for
+ * 
+ * Bereitet die optionList fuer die Ausgabe im CMS vor
  * @param array $field
  * @return array|boolean
  */
-
 function prepareOptionList($field) {
 	if (isset($field['optionNameList']) && isset($field['optionValueList'])) {
 		
@@ -89,10 +95,10 @@ function prepareOptionList($field) {
 
 /**
  * renderListTop
+ * 
  * Gibt für einen Table die Top Links aus (neuer Eintrag,etc)
  * @param array $table
  */
-
 function renderListTop($table) {
 	$newLink = 'index.php?navigation=' . $_GET['navigation'] . '&action=new';
 	$allLink = 'index.php?navigation=' . $_GET['navigation'] . '&action=all';
@@ -133,10 +139,10 @@ function renderListTop($table) {
 
 /**
  * renderListSide
+ * 
  * Gibt für einen Table die Side Links aus (neuer Eintrag,etc)
  * @param array $table
  */
-
 function renderListSide($table) {
 	$newLink = 'index.php?navigation=' . $_GET['navigation'] . '&action=new';
 	$allLink = 'index.php?navigation=' . $_GET['navigation'] . '&action=all';
@@ -184,7 +190,14 @@ function renderListSide($table) {
 	echo '</ul>';
 }
 
-
+/**
+ * trimText
+ * 
+ * Schneidet einen Text auf eine bestimmte Laenge ab und hängt eine Ellipse (...) an. Ist der Text gleich kurz oder kuerzer als die angegebene Laenge wird der Text nicht gekuerzt
+ * @param unknown $string
+ * @param unknown $lenght
+ * @return mixed
+ */
 function trimText ($string,$lenght) {
     if(strlen($string) > $lenght) {
         $string = substr($string,0,$lenght)."...";
@@ -197,11 +210,11 @@ function trimText ($string,$lenght) {
 
 /**
  * renderFeedback
- * Gibt einen Bootstrap Alert aus
+ * 
+ * Gibt einen Feedback Meldung im Bootstrap Style aus
  * @param string $feedback['text']
  * @param string $feedback['type'] (success,info,warning,danger)
  */
-
 function renderFeedback($feedback) {
 	if (isset($feedback['text']) && isset($feedback['type'])) {
 		echo '<div class="alert alert-' . $feedback['type'] . '" role="alert">';
@@ -212,11 +225,11 @@ function renderFeedback($feedback) {
 
 /**
  * renderDetailEdit
+ * 
  * gibt ein Formular zum Bearbeiten eines Eintrages aus
  * @param array $table
  * @param array $entry
  */
-
 function renderDetailEdit($table, $entry) {
 	global $main;
 
@@ -376,11 +389,11 @@ function renderDetailEdit($table, $entry) {
 
 /**
  * renderDetailNew
+ * 
  * gibt ein Formular zum Erstellen eines neuen Eintrages aus
  * @param array $table
  * @param array $entry
  */
-
 function renderDetailNew($table) {
 
 	if (isset($table['fields']) && count($table['fields']) > 0) {
@@ -432,12 +445,12 @@ function renderDetailNew($table) {
 
 /**
  * renderActionFields
+ * 
  * wird innerhalb von renderDataTable aufgerufen um die Aktionsfelder/links auszugeben.
  * @param array $table
  * @param array $entry
  * @param string $type
  */
-
 function renderActionFields($table, $entry, $type='link') {
 	if (isset($table['listActions'])) {
 		if ($table['listActions'] != str_replace(',','',$table['listActions'])) {
@@ -495,11 +508,11 @@ function renderActionFields($table, $entry, $type='link') {
 
 /**
  * renderDataTable
+ * 
  * Gibt im CMS einen Table anhand der mitgegebenen Table Config und Eintraegen aus
  * @param array $table
  * @param array $entries
  */
-
 function renderDataTable($table, $entries) {
 	if (isset($table['fields']) && count($entries) > 0) {
 		
@@ -572,6 +585,13 @@ function renderDataTable($table, $entries) {
 	}
 }
 
+/**
+ * validEmail
+ * 
+ * Prueft ob eine Emailadresse valide ist
+ * @param unknown $email
+ * @return boolean
+ */
 function validEmail($email) {
 	if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
 		return true;
@@ -580,6 +600,13 @@ function validEmail($email) {
 	}
 }
 
+/**
+ * prepareTextarea
+ * 
+ * Bereitet einen Text der HTML-Breaks enthaelt fuer die Ausgabe in einer Textarea aus indem die Breaks in technische Umbrueche umgewandelt werden
+ * @param unknown $text
+ * @return mixed
+ */
 function prepareTextarea($text) {
 	if(strpos($text, '<br>') !== false) {
 		$text = str_ireplace('<br>', '&#13;&#10;', $text);
@@ -589,11 +616,11 @@ function prepareTextarea($text) {
 
 /**
  * explodeList
+ * 
  * Wandelt eine kommaseperierte Liste in einen Array um, wenn nur ein Feld angegeben ist landet es ebenfalls in einem Array (als einziger Eintrag)
  * @param string $fieldList
  * @return array|boolean
  */
-
 function explodeList($fieldList) {
 	if (isset($fieldList)) {
 		if(strpos($fieldList, ',') !== false) {
@@ -609,10 +636,10 @@ function explodeList($fieldList) {
 
 /**
  * signedIn
+ * 
  * Prueft ob ein User eingeloggt ist
  * @return boolean
  */
-
 function signedIn() {
 	if (isset($_SESSION['user']['id'])) {
 		return true;
@@ -623,6 +650,7 @@ function signedIn() {
 
 /**
  * includeTemplate
+ * 
  * Prueft ob die in $main['template'] festgelegte Datei existiert und bindet sie ein
  */
 function includeTemplate() {
@@ -638,6 +666,7 @@ function includeTemplate() {
 
 /**
  * includeHead
+ * 
  * Bindet die im Head benoetigte Dateien ein (0headCmp.php)
  */
 function includeHead() {
@@ -647,6 +676,7 @@ function includeHead() {
 
 /**
  * includeContent
+ * 
  * Bindet die Datei fuer die Content-Ausgabe ein (0seiteCmp.php)
  */
 function includeContent() {
@@ -656,6 +686,7 @@ function includeContent() {
 
 /**
  * includeCssFiles
+ * 
  * Bindet alle im Array $main['cssFiles'] festgelegten CSS-Dateien ein
  */
 function includeCssFiles() {
@@ -667,6 +698,7 @@ function includeCssFiles() {
 
 /**
  * includeIeJsFiles
+ * 
  * Bindet alle im Array $main['cssFiles'] festgelegten CSS-Dateien ein
  */
 function includeIeJsFiles() {
@@ -684,6 +716,7 @@ function includeIeJsFiles() {
 
 /**
  * includeMediaQueries
+ * 
  * Bindet alle im Array $main['mediaQueries'] festgelegten CSS-Dateien als Mediaquerie ein
  */
 function includeMediaQueries() {
@@ -694,6 +727,7 @@ function includeMediaQueries() {
 
 /**
  * includeJsFiles
+ * 
  * Bindet alle im Array $main['jsFiles'] festgelegten CSS-Dateien ein
  */
 function includeJsFiles() {
@@ -703,6 +737,11 @@ function includeJsFiles() {
 	}	
 }
 
+/**
+ * includeConfigFiles
+ * 
+ * Bindet die in $main['configFiles'] definierten Config-Files ein
+ */
 function includeConfigFiles() {
 	global $main;
 	foreach ($main['configFiles'] as $cfgFile) {
@@ -712,6 +751,7 @@ function includeConfigFiles() {
 
 /**
  * setMetaCharset
+ * 
  * Legt den in $main['charset'] definierten Charset fest
  */
 function setMetaCharset() {
@@ -721,8 +761,8 @@ function setMetaCharset() {
 
 /**
  * setViewport
- * Legt den in $main['viewport'] definierten Viewport fest
- * z.B. width=device-width
+ * 
+ * Legt den in $main['viewport'] definierten Viewport fest (z.B. width=device-width)
  */
 function setViewport() {
 	global $main;
@@ -731,6 +771,7 @@ function setViewport() {
 
 /**
  * setTitle
+ * 
  * Legt den in $main['titel'] definierten Titel fest
  */
 function setTitle() {
@@ -740,6 +781,7 @@ function setTitle() {
 
 /**
  * setLogoContent
+ * 
  * Gibt den Logo/Headertext als H3 und Paragraph aus ($main['headerTitel']/['headerPhrase']
  */
 function setLogoContent() {
@@ -750,6 +792,7 @@ function setLogoContent() {
 
 /**
  * setMetaTags
+ * 
  * Legt die im Array $main['metaData'] definierten Metadaten fest
  */
 function setMetaTags() {
@@ -767,7 +810,8 @@ function setMetaTags() {
 
 /**
  * getFilesFromDir
- * Gibt alle Dateien/Ordner im angegebenen Verzeichnis aus (geht vom Web-Root aus)
+ * 
+ * Gibt alle Dateien/Ordner im angegebenen Verzeichnis aus (geht vom Web-Root aus). "." und ".." werden ignoriert
  * @param Verzeichnis $dir
  */
 function getFilesFromDir($dir) {
@@ -780,6 +824,7 @@ function getFilesFromDir($dir) {
 
 /**
  * renderGallery
+ * 
  * Gibt alle im Array $images enthaltenen Bilder mit angegebener Hoehe und Breite als Galerie aus.
  * Hoehe und Breite sind in Pixel anzugeben
  * @param array $images
@@ -810,31 +855,16 @@ function renderGallery($images, $width = NULL, $height = NULL) {
 	}
 	echo '</div>';
 }
-	
-
-/******* Template Engine ********/
-
-function templateHead() {
-	include dirname(__FILE__) . '/head.php';
-}
-
-function templateLogo() {
-	global $main;
-	echo '<h1>' . $main['headerTitel'] . '</h1>';
-	echo '<p>' . $main['headerPhrase'] . '</p>';
-}
-	
-
-/******* Images ********/
 
 /**
- * resizePic 
+ * resizePic
+ * 
  * Skaliert ein Bild und gibt den neuen Pfad zurueck
- * @param Bildname $img
- * @param Breite $width
- * @param Hoehe $height
- * @param Bildpfad $src
- * @param Zielpfad $dest
+ * @param string $img
+ * @param integer $width
+ * @param integer $height
+ * @param string $src
+ * @param string $dest
  */
 function resizePic($img, $width, $height, $src = 'uploads', $dest = 'images/scaled') {
 	// Groesse und Typ ermitteln
@@ -914,11 +944,11 @@ function resizePic($img, $width, $height, $src = 'uploads', $dest = 'images/scal
 
 /**
  * make_comparer
+ * 
  * Sortiert mehrdimensionale Arrays durch tieferliegende Ebenen. Wird in prepareNodes verwendet.
  * @author http://stackoverflow.com/questions/96759/how-do-i-sort-a-multidimensional-array-in-php#answer-16788610
  * @return number
  */
-
 function make_comparer() {
 	// Normalize criteria up front so that the comparer finds everything tidy
 	$criteria = func_get_args();
@@ -959,10 +989,10 @@ function make_comparer() {
 
 /**
  * preparenodes
+ * 
  * Sortiert alle Nodes nach Navigation (hauptnavigation,servicenavigation,etc) und diese nach Position. Es werden auch die ganzen Ebenen mittels ParentId erstellt (TODO!)
  * @param array $nodes
  */
-
 function prepareNodes($nodes) {
 	if (count($nodes) > 0) {
 		foreach ($nodes as $node) {
@@ -1000,6 +1030,7 @@ function prepareNodes($nodes) {
 
 /**
  * renderTreeView
+ * 
  * Gibt die Nodes im CMS in der Baumansicht aus
  * @param array $preparedNodes (mittels prepareNodes() vorbereitete Nodes
  */
@@ -1053,6 +1084,12 @@ function renderTreeView($preparedNodes) {
 	}
 }
 
+/**
+ * renderNavigation
+ * 
+ * Gibt eine im CMS erstellte Navigation aus
+ * @param unknown $navigation
+ */
 function renderNavigation($navigation) {
 	global $main;
 	if (count($navigation) > 0) {
@@ -1072,6 +1109,12 @@ function renderNavigation($navigation) {
 	}
 }
 
+/**
+ * renderNavigationLevel
+ * 
+ * Gibt einen einzelnen Navigationslevel aus. Wird hauptsaechlich in renderNavigation() verwendet
+ * @param unknown $level
+ */
 function renderNavigationLevel($level) {
 	global $main;
 	if (isset($level['nodes']) && count($level['nodes']) > 0) {
@@ -1089,11 +1132,11 @@ function renderNavigationLevel($level) {
 
 /**
  * idAsIndex
+ * 
  * Praeperiert einen Array so das das Feld [id] als Index verwendet wird
  * @param array $array
  * @return array
  */
-
 function idAsIndex($array) {
 	if (count($array) > 0) {
 		$newArray = array();
@@ -1104,6 +1147,13 @@ function idAsIndex($array) {
 	}
 }
 
+/**
+ * getNodeLink
+ * 
+ * Gibt den entsprechenden Link zu einem Node zurueck
+ * @param unknown $node
+ * @return unknown
+ */
 function getNodeLink($node) {
 	if ($node['typ'] == 'site') {
 		$link = getSiteLink($node['seitenId']);
@@ -1113,11 +1163,24 @@ function getNodeLink($node) {
 	return $link;
 }
 
+/**
+ * getSiteLink
+ * 
+ * Gibt einen Link zur einer Seite Anhand von einer (Node) Id zurueck
+ * @param unknown $id
+ * @return string
+ */
 function getSiteLink($id) {
 	$link = 'index.php?nodesId=' . $id;
 	return $link;
 }
 
+/**
+ * renderSeite
+ * 
+ * Gibt eine Seite aus und bindet entsprechende Module Cmps ein
+ * @param unknown $site
+ */
 function renderSite($site) {
 	global $main;
 	global $data;
@@ -1133,12 +1196,12 @@ function renderSite($site) {
 
 /**
  * getFileName
+ * 
  * holt den Filenamen aus einem Datei-Datenbankfeld. Mit $nr wird der gewuenschte Index angegeben
  * @param string $file
  * @param int $nr
  * @return string|boolean
  */
-
 function getFileName($file, $nr) {
 	if (strpos($file, '||') !== false) {
 		$explode = explode('||', $file);
