@@ -16,6 +16,7 @@
 		<script src="../js/jquery-1.11.3.min.js"></script>
 		<script src="../js/jquery-ui.min.js"></script>
 		<script src="../js/bootstrap.min.js"></script>
+		<script src="tinymce/tinymce.min.js"></script>
 		<script src="kiwi.js"></script>
 		<title>Kiwi - Administration</title>
 	</head>

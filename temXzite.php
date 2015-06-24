@@ -6,6 +6,7 @@
 		?>
 	</head>
 	<body>
+		<div id="fb-root"></div>
 		<div id="template">
 			<header id="header">
 				<div id="logo">
@@ -35,6 +36,9 @@
 				?>
 			</section>
 			<footer id="footer" class="container">
+				<div id="facebook">
+					<div class="fb-like" data-href="https://www.facebook.com/stoffdrueckerelite" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true"></div>
+				</div>
 				<p class="copyright">
 					&copy; Programmierung und Design von <a href="&#109;&#97;&#x69;&#108;&#x74;&#111;&#x3a;&#x73;&#116;&#101;&#102;&#97;&#110;&#95;&#103;&#x72;&#x75;&#98;&#x65;&#114;&#x32;&#64;&#x67;&#109;&#120;&#x2e;&#97;&#x74;">Black Sunshine</a>
 				</p>

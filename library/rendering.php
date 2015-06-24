@@ -80,6 +80,12 @@ function renderParagraph($text, $class = FALSE, $pAttributes = FALSE) {
 	echo '</p>';
 }
 
+function renderRichtext($text) {
+	echo '<div class="richtext">';
+	echo $text;
+	echo '</div>';
+}
+
 /**
  * renderSpan
  * Gibt einen String als Span aus. Es kann eine Klasse oder Attribute (als Array) mitgegeben werden.

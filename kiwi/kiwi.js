@@ -1,5 +1,11 @@
 $(document).ready(function() {
 	
+	tinymce.init({
+		selector: 'textarea.richtextarea',
+		language: 'de',
+		skin: 'charcoal'
+	});
+	
 //	$('body, #template, #main, #side').height($('html').height());
 
 	$('a.action.delete').on('click', function(e) {

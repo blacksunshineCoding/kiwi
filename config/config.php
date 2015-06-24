@@ -6,8 +6,15 @@ $main['xua'] = 'IE=Edge';
 $main['lang'] = 'de';
 $main['favicon'] = 'favicon.ico';
 $main['title'] = '57KKK';
-$main['description'] = '57KKK Store';
-$main['keywords'] = '57kkk, store, xzite, yves, rap, music, cds, shirts';
+$main['description'] = 'Hier gibt es keine Liebeslieder das ist Untergrundmukke';
+$main['keywords'] = '57KKK, Shop, Store, xZiTe, Yves, Kay Kani, timderboss, Rap, Musik, CDs, Shirts';
+$main['ogType'] = 'website';
+$main['fbtitle'] = '57KKK';
+$main['fburl'] = 'http://blacksunshine.cc/57kkk/';
+$main['fbimage'] = 'images/57kkk-fbimage.jpg';
+$main['longdescription'] = 'Broke, aber dope. 57-KKK ist die Gang. Stoffdrückerelite. Deine Lieblingspfandhustler.
+Koks für die Welt. Gewaltsextrashrap. Musik mit Aussage. Labels sind schwul.
+Vom Jointstümmel bis zur Skyline. #emofotzenundpepanstattnuttenundkoks';
 
 // including css and js files
 $main['cssFiles'][] = 'css/bootstrap.min.css';
@@ -21,16 +28,18 @@ $main['jsFiles'][] = 'js/main.js';
 $main['ieJsFiles'][] = 'js/html5shiv.min.js';
 $main['ieJsFiles'][] = 'js/respond.min.js';
 
+// including classes
+include_once dirname(__FILE__) . '/classes/Table.class.php';
+include_once dirname(__FILE__) . '/classes/Field.class.php';
+
 // including table configs
 include_once dirname(__FILE__) . '/default/usersCfg.php';
 include_once dirname(__FILE__) . '/default/nodesCfg.php';
 include_once dirname(__FILE__) . '/default/sitesCfg.php';
-include_once dirname(__FILE__) . '/default/produkteCfg.php';
-include_once dirname(__FILE__) . '/default/produktkategorienCfg.php';
-include_once dirname(__FILE__) . '/default/variantenCfg.php';
-include_once dirname(__FILE__) . '/default/ordersCfg.php';
-include_once dirname(__FILE__) . '/default/releasesCfg.php';
-include_once dirname(__FILE__) . '/default/galeriebilderCfg.php';
-
-// including classes
-// include_once dirname(__FILE__) . '/classes/meineklasse.class.php';
+include_once dirname(__FILE__) . '/produkteCfg.php';
+include_once dirname(__FILE__) . '/produktkategorienCfg.php';
+include_once dirname(__FILE__) . '/variantenCfg.php';
+include_once dirname(__FILE__) . '/ordersCfg.php';
+include_once dirname(__FILE__) . '/releasesCfg.php';
+include_once dirname(__FILE__) . '/galeriebilderCfg.php';
+include_once dirname(__FILE__) . '/settingsCfg.php';

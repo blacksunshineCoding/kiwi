@@ -189,6 +189,11 @@ strong {
 	padding: 0 0 20px 0;
 }
 
+#facebook {
+	width: 165px;
+	margin: 0 auto 20px auto;
+}
+
 #footer p {
 	color: #7a7a7a;
 	text-align: center;

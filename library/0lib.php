@@ -253,6 +253,10 @@ function renderDetailEdit($table, $entry) {
 					echo '<textarea type="text" class="form-control" name="row[' . $field['name'] . ']" placeholder="' . $field['label'] . '"' . $disabled .'>' . prepareTextarea($entry[$field['name']]) . '</textarea>';
 					break;
 					
+				case 'richtextarea':
+					echo '<textarea type="text" class="form-control richtextarea" name="row[' . $field['name'] . ']" placeholder="' . $field['label'] . '"' . $disabled .'>' . $entry[$field['name']] . '</textarea>';
+					break;
+					
 				case 'select':
 					$options = prepareOptionList($field);
 					echo '<span class="input-group-addon">' . $field['label'] . '</span>';
@@ -416,6 +420,10 @@ function renderDetailNew($table) {
 					echo '<textarea type="text" class="form-control" name="row[' . $field['name'] . ']" placeholder="' . $field['label'] . '"' . $disabled .'></textarea>';
 					break;
 					
+				case 'richtextarea':
+					echo '<textarea type="text" class="form-control richtextarea" name="row[' . $field['name'] . ']" placeholder="' . $field['label'] . '"' . $disabled .'></textarea>';
+					break;
+					
 				case 'select':
 					$options = prepareOptionList($field);
 					echo '<span class="input-group-addon">' . $field['label'] . '</span>';
@@ -527,7 +535,7 @@ function renderDataTable($table, $entries) {
 			}
 			renderActionFields($table, $entry=null, 'label');
 			echo '</tr>';
-			if (count($entries) > 0) foreach ($entries as $entryId => $entry) {
+			if (is_array($entries) && count($entries) > 0) foreach ($entries as $entryId => $entry) {
 				echo '<tr class="entryRow">';
 				foreach ($entry as $entryFieldId => $entryField) {
 
@@ -1185,7 +1193,8 @@ function renderSite($site) {
 	global $main;
 	global $data;
 	renderHeadline($site['titel'], 2, 'siteTitle');
-	renderParagraph($site['text'], 'siteText');
+// 	renderParagraph($site['text'], 'siteText');
+	renderRichtext($site['text']);
 	if ($site['module'] != '0') {
 		$moduleCmp = dirname(__FILE__) . '/../' . $site['module'] . 'Cmp.php';
 		if (file_exists($moduleCmp)) {
