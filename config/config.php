@@ -16,6 +16,16 @@ $main['longdescription'] = 'Broke, aber dope. 57-KKK ist die Gang. Stoffdrücker
 Koks für die Welt. Gewaltsextrashrap. Musik mit Aussage. Labels sind schwul.
 Vom Jointstümmel bis zur Skyline. #emofotzenundpepanstattnuttenundkoks';
 
+// module list (mvc)
+$main['moduleValues'] = '0';
+$main['moduleValues'] .= ',mvcModules/katalog/katalog';
+$main['moduleValues'] .= ',mvcModules/releases/releases';
+$main['moduleValues'] .= ',mvcModules/galerie/galerie';
+$main['moduleNames'] = '---';
+$main['moduleNames'] .= ',Katalog';
+$main['moduleNames'] .= ',Releases';
+$main['moduleNames'] .= ',Galerie';
+
 // including css and js files
 $main['cssFiles'][] = 'css/bootstrap.min.css';
 $main['cssFiles'][] = 'css/font-awesome.min.css';

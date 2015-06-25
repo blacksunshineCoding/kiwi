@@ -60,4 +60,13 @@ $field->optionValueList = '0,modules/katalog/katalog,modules/releases/releases,m
 $field->optionDefaultValue = '0';
 $table->add($field);
 
+$field = new Field();
+$field->name = 'mvcModule';
+$field->label = 'Module (MVC)';
+$field->type = 'select';
+$field->optionNameList = $main['moduleNames'];
+$field->optionValueList = $main['moduleValues'];
+$field->optionDefaultValue = '0';
+$table->add($field);
+
 $main['tables']['sites'] = $table->get();

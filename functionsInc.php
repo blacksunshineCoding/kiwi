@@ -22,12 +22,12 @@ function orderMail($order, $type) {
 					$text .= 'broke@57kkk.tk<br>';
 				} else {
 					$text .= 'via Banküberweisung auf folgendes Konto:<br>';
-					$text .= 'xZite<br>';
-					$text .= 'Kontonummer: XXXXX<br>';
-					$text .= 'Bankleitzahl: XXXXX<br>';
-					$text .= 'Bank: XXXXX<br>';
-					$text .= 'IBAN: XXXX-XXXX-XXXX-XXXX-XXX<br>';
-					$text .= 'BIC/SWIFT: XXXXX<br>';
+					$text .= 'Chris<br>';
+					$text .= 'Kontonummer: 1008785900<br>';
+					$text .= 'Bankleitzahl: 46062817<br>';
+					$text .= 'Bank: Volksbank Bigge-Lenne<br>';
+					$text .= 'IBAN: DE18 4606 2817 1008 7859 00<br>';
+					$text .= 'BIC/SWIFT: GENODEM1SMA<br>';
 				}
 				
 				$text .= '<br>';

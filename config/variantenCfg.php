@@ -5,6 +5,7 @@ $table->label = 'Varianten';
 $table->singular = 'Variante';
 $table->plural = 'Varianten';
 $table->icon = 'fa fa-outdent';
+$table->showTop = 0;
 $table->topActions = '';
 $table->sideActions = 'all,new';
 $table->listActions = 'edit,copy,delete';

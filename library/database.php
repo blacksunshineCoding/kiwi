@@ -94,7 +94,7 @@ function getRows($query) {
 	    while ($row = mysqli_fetch_assoc($result)) {
 	       $row2[] = $row;
 	    }
-	    return $row2;
+	    return idAsKey($row2);
 	} else {
 		return FALSE;
 	}
@@ -240,5 +240,22 @@ function deleteRow($keyField, $key, $table) {
 function sqlEscape($string) {
 	$link = getDbLink();
 	return mysqli_real_escape_string($link, $string);
+}
+
+/**
+ * idAsKey
+ *
+ * Praeperiert einen Array so das das Feld [id] als Index verwendet wird
+ * @param array $array
+ * @return array
+ */
+function idAsKey($array) {
+	if (count($array) > 0) {
+		$newArray = array();
+		foreach ($array as $arrayEintragId => $arrayEintrag) {
+			$newArray[$arrayEintrag['id']] = $arrayEintrag;
+		}
+		return $newArray;
+	}
 }
 ?>

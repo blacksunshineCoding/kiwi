@@ -14,8 +14,6 @@ foreach ($data['produkte']['entries'] as $produktEintragId => $produktEintrag) {
 	
 }
 
-// de($data);
-
 if (isset($_POST['warenkorb'])) {
 	$_POST['produkt']['anzahl'] = 1;
 	$_SESSION['produkte'][$_POST['produkt']['id']] = $_POST['produkt'];
@@ -24,6 +22,7 @@ if (isset($_POST['warenkorb'])) {
 	$data['feedback'][$_POST['produkt']['id']]['text'] = 'Das Produkt wurde zum Warenkorb hinzugefügt';
 }
 
+$data['warenkorbLink'] = 'index.php?ansicht=warenkorb';
 
 if (isset($_GET['nodesId'])) {
 	$data['warenkorbLink'] = 'index.php?nodesId=' . $_GET['nodesId'] . '&ansicht=warenkorb';

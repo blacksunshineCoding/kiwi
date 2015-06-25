@@ -1201,6 +1201,11 @@ function renderSite($site) {
 			include_once $moduleCmp;
 		}
 	}
+	if ($site['mvcModule'] != '0') {
+		$moduleMain = dirname(__FILE__) . '/../' . $site['mvcModule'] . '.php';
+// 		de($moduleMain);
+		if (file_exists($moduleMain)) include_once $moduleMain;
+	}
 }
 
 /**

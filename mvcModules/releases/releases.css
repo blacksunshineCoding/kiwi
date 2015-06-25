@@ -1,0 +1,136 @@
+@CHARSET 'UTF-8';
+
+/********************************/
+/* name: 		releases.css	*/
+/* usage:		module/releases */
+/* contents:	Liste			*/
+/*				Detail			*/
+/********************************/
+
+
+/*********** Liste **************/
+
+.releasesList {
+	margin: 0 0 25px 0;
+}
+
+.releasesList .releaseEintrag {
+	position: relative;
+	margin: 0 0 25px 0;
+	padding: 10px;
+	background-color: #f7f7f7;
+	border: 1px solid #898989;
+	border-bottom: 6px solid #898989;
+	transition: all ease .4s;
+}
+
+.releasesList .releaseEintrag .releaseEintragBild {
+	position: relative;
+	min-height: 250px;
+	margin: 0 0 10px 0;
+	border-bottom: 3px solid #898989;
+}
+
+.releasesList .releaseEintrag .releaseEintragBild img {
+	width: 100%;
+	height: auto;
+	margin: auto;
+}
+
+.releasesList .releaseEintrag .releaseEintragBild .bildOverlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	opacity: .25;
+	background-color: #fff;
+	transition: all ease .4s;
+} 
+
+.releasesList .releaseEintrag:hover {
+	background-color: #e8e8e8;
+}
+
+.releasesList .releaseEintrag:hover .releaseEintragBild .bildOverlay {
+	opacity: 0;
+}
+
+.releasesList .releaseEintrag .releaseEintragBild a {
+	display: block;
+}
+
+#main .releasesList .releaseEintragTitel {
+	border-bottom: 3px solid #898989;
+}
+
+#main .releasesList .releaseEintragTitel h3 {
+	margin: 0 0 5px 0;
+	color: #333;
+	font-size: 16px;
+	font-weight: 300;
+	letter-spacing: 1px;
+	text-align: center;
+	text-transform: uppercase;
+}
+
+#main .releasesList .releaseEintragTitel h3 a {
+	color: #7a7a7a !important;
+	text-decoration: none !important;
+}
+
+#main .releasesList .releaseEintragTitel h3 span.interpret {
+	display: block;
+	margin: 0 0 10px 0;
+	font-size: 14px;
+	text-transform: none;
+}
+
+#main .releasesList .releaseEintragTitel h3 span.title {
+	display: block;
+	font-weight: 400;
+}
+
+
+/*********** Detail *************/
+
+.releaseDetail .releaseDetailCover {
+	margin: 0 0 25px 0;
+}
+
+.releaseDetail .releaseDetailCover a {
+	display: block;
+}
+
+.releaseDetail .releaseDetailCover a img {
+	width: 100%;
+	height: auto;
+}
+
+.releaseDetail .releaseDetailHead {
+	margin: 0 0 15px 0;
+	padding: 0 0 15px 0;
+	border-bottom: 1px solid #7a7a7a;
+}
+
+.releaseDetail .releaseDetailHead h4.interpret {
+	margin: 0 0 10px 0;
+}
+
+.releaseDetail .releaseDetailHead h3.titel {
+	margin: 0 !important;
+}
+
+.releaseDetail .releaseDetailText h5.tracklist {
+	margin: 0 0 5px 0;
+	font-weight: 600;
+}
+
+.releaseDetail .releaseDetailDownload {
+	padding: 15px 0 0 0;
+	border-top: 1px solid #7a7a7a;
+}
+
+.releaseDetail .releaseDetailBackButton {
+	margin: 20px 0 0 0;
+}
