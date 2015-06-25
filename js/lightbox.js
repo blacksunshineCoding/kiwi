@@ -136,7 +136,8 @@
         self.album.push({
           link: $link.attr('href'),
           title: $link.attr('data-title'),
-          text: $link.attr('data-text')
+          text: $link.attr('data-text'),
+          galerieid: $link.attr('data-id')
         });
       }
 
@@ -182,6 +183,12 @@
     // Hide most UI elements in preparation for the animated resizing of the lightbox.
     Lightbox.prototype.changeImage = function(imageNumber) {
       var self = this;
+      var newImage = self.album[imageNumber];
+      
+		$.ajax({
+			url: 'mvcModules/galerie/galerieCountAjax.php?id=' + newImage.galerieid
+		}).done(function() {
+		});
 
       this.disableKeyboardNav();
       var $image = this.$lightbox.find('.lb-image');

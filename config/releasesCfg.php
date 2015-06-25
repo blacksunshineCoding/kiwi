@@ -61,4 +61,20 @@ $field->label = 'Datei';
 $field->type = 'file';
 $table->add($field);
 
+$field = new Field();
+$field->name = 'downloads';
+$field->label = 'Downloads';
+$field->type = 'text';
+$field->edit = 0;
+$table->add($field);
+
+$field = new Field();
+$field->name = 'online';
+$field->label = 'Online';
+$field->type = 'select';
+$field->optionNameList = 'ja,nein';
+$field->optionValueList = '1,0';
+$field->optionDefaultValue = 1;
+$table->add($field);
+
 $main['tables']['releases'] = $table->get();
