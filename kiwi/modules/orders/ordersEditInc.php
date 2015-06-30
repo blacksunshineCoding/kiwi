@@ -1,7 +1,4 @@
 <?php
-$feedback = '';
-$link = getDbLink();
-
 if (isset($_POST['sent'])) {
 	
 	if ($_POST['row']['zahlungErhalten'] == 1 && $_POST['row']['zahlungsdatum'] == 0) {
@@ -14,9 +11,9 @@ if (isset($_POST['sent'])) {
 		orderMail($_POST['row'], 'sent');
 	}
 	
-	updateRow($_POST['row'], 'id', $_POST['row']['id'], $data['table']['name']);
-	$feedback['type'] = 'success';
-	$feedback['text'] = 'Der ' . $data['table']['singular'] . ' wurde erfolgreich gespeichert';
+	$db->updateRow($_POST['row'], 'id', $_POST['row']['id'], $data['table']['name']);
+	$editFeedback['type'] = 'success';
+	$editFeedback['text'] = 'Der ' . $data['table']['singular'] . ' wurde erfolgreich gespeichert';
 }
 
-$entry = getRow('SELECT * FROM orders WHERE id = ' . sqlEscape($_GET['ordersId']));
+$entry = $db->getRow('SELECT * FROM ' . $data['table']['name'] . ' WHERE id = ' . $db->escape($_GET[$data['table']['name'] . 'Id']));

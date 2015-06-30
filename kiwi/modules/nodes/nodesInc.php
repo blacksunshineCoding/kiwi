@@ -2,6 +2,8 @@
 $data['table'] = $main['tables']['nodes'];
 $deleteFeedback = '';
 $copyFeedback = '';
+$newFeedback = '';
+$editFeedback = '';
 
 if (isset($_GET['action'])) {
 	switch ($_GET['action']) {
@@ -24,22 +26,22 @@ if (isset($_GET['action'])) {
 				
 		case 'delete':
 			$modulansicht = 'list';
-			if (isset($_GET['nodesId'])) {
-				deleteRow('id', $_GET['nodesId'], $data['table']['name']);
+			if (isset($_GET[$data['table']['name'] . 'Id'])) {
+				$db->deleteRow('id', $_GET[$data['table']['name'] . 'Id'], $data['table']['name']);
 				$deleteFeedback['type'] = 'info';
-				$deleteFeedback['text'] = 'Der ' . $data['table']['singular'] . ' wurde erfolgreich gelöscht.';
+				$deleteFeedback['text'] = $data['table']['singular'] . ' wurde erfolgreich gelöscht.';
 			}
 			break;
 				
 		case 'copy':
 			$modulansicht = 'list';
-			if (isset($_GET['nodesId'])) {
-				$copyEntry = getRow('SELECT * FROM nodes WHERE id = ' . sqlEscape($_GET['nodesId']));
+			if (isset($_GET[$data['table']['name'] . 'Id'])) {
+				$copyEntry = $db->getRow('SELECT * FROM ' . $data['table']['name'] . ' WHERE id = ' . $db->escape($_GET[$data['table']['name'] . 'Id']));
 				unset($copyEntry['id']);
 				$copyEntry['titel'] .= ' (Kopie)';
-				insertRow($copyEntry, $data['table']['name']);
+				$db->insertRow($copyEntry, $data['table']['name']);
 				$copyFeedback['type'] = 'info';
-				$copyFeedback['text'] = 'Der ' . $data['table']['singular'] . ' wurde erfolgreich kopiert.';
+				$copyFeedback['text'] = $data['table']['singular'] . ' wurde erfolgreich kopiert.';
 			}
 			break;
 	}
@@ -47,7 +49,7 @@ if (isset($_GET['action'])) {
 	$modulansicht = 'list';
 }
 
-$nodesIncFile = dirname(__FILE__) . '/nodes' . ucfirst($modulansicht) . 'Inc.php';
-if (file_exists($nodesIncFile)) {
-	include_once($nodesIncFile);
+$incFile = dirname(__FILE__) . '/' . $data['table']['name'] . ucfirst($modulansicht) . 'Inc.php';
+if (file_exists($incFile)) {
+	include_once($incFile);
 }

@@ -2,13 +2,15 @@
 $table = new Table();
 $table->name = 'produktkategorien';
 $table->label = 'Produktkategorien';
+$table->newLabel = 'Neue Produktkategorie';
 $table->singular = 'Produktkategorie';
 $table->plural = 'Produktkategorien';
-$table->icon = 'fa fa-outdent';
+$table->icon = 'fa fa-th-large';
 $table->topActions = '';
 $table->sideActions = 'all,new';
 $table->listActions = 'edit,copy,delete';
-$table->icons['all'] = 'fa fa-list';
+$table->order = 'id ASC';
+$table->icons['all'] = 'fa fa-th-large';
 $table->icons['new'] = 'fa fa-plus-square';
 
 $field = new Field();

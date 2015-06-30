@@ -11,16 +11,20 @@ if (isset($_GET['action'])) {
 			break;
 			
 		case 'new':
-			$modulansicht = 'new';
+			if (isset($_POST['sent'])) {
+				$modulansicht = 'list';
+			} else {
+				$modulansicht = 'new';
+			}
 			break;
 	}
 } else {
 	$modulansicht = 'list';
 }
 
-$galeriebilderCmpFile = dirname(__FILE__) . '/galeriebilder' . ucfirst($modulansicht) . 'Cmp.php';
+$cmpFile = dirname(__FILE__) . '/' . $data['table']['name'] . ucfirst($modulansicht) . 'Cmp.php';
 ?>
-<div class="modul galeriebilder galeriebilderMain">
+<div class="modul <?php echo $data['table']['name'] . ' ' . $data['table']['name'] . 'Main'; ?>">
 	<div class="listTop">
 		<?php
 			renderListTop($data['table']);
@@ -28,8 +32,8 @@ $galeriebilderCmpFile = dirname(__FILE__) . '/galeriebilder' . ucfirst($modulans
 		?>
 	</div>
 	<?php
-		if (file_exists($galeriebilderCmpFile)) {
-			include_once($galeriebilderCmpFile);
+		if (file_exists($cmpFile)) {
+			include_once($cmpFile);
 		}
 	?>
 </div>

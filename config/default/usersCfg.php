@@ -2,12 +2,14 @@
 $table = new Table();
 $table->name = 'users';
 $table->label = 'Benutzer';
+$table->newLabel = 'Neuer Benutzer';
 $table->singular = 'Benutzer';
 $table->plural = 'Benutzer';
 $table->icon = 'fa fa-users';
 $table->topActions = 'all,new';
 $table->sideActions = 'all,new';
 $table->listActions = 'edit,copy,delete';
+$table->order = 'id ASC';
 $table->icons['all'] = 'fa fa-users';
 $table->icons['new'] = 'fa fa-user-plus';
 

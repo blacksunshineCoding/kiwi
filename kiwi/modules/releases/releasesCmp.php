@@ -11,16 +11,20 @@ if (isset($_GET['action'])) {
 			break;
 			
 		case 'new':
-			$modulansicht = 'new';
+			if (isset($_POST['sent']) && !isset($dateiUploadFeedback) && !isset($bildUploadFeedback)) {
+				$modulansicht = 'list';
+			} else {
+				$modulansicht = 'new';
+			}
 			break;
 	}
 } else {
 	$modulansicht = 'list';
 }
 
-$releasesCmpFile = dirname(__FILE__) . '/releases' . ucfirst($modulansicht) . 'Cmp.php';
+$cmpFile = dirname(__FILE__) . '/' . $data['table']['name'] . ucfirst($modulansicht) . 'Cmp.php';
 ?>
-<div class="modul releasess releasesMain">
+<div class="modul <?php echo $data['table']['name'] . ' ' . $data['table']['name'] . 'Main'; ?>">
 	<div class="listTop">
 		<?php
 			renderListTop($data['table']);
@@ -28,8 +32,8 @@ $releasesCmpFile = dirname(__FILE__) . '/releases' . ucfirst($modulansicht) . 'C
 		?>
 	</div>
 	<?php
-		if (file_exists($releasesCmpFile)) {
-			include_once($releasesCmpFile);
+		if (file_exists($cmpFile)) {
+			include_once($cmpFile);
 		}
 	?>
 </div>

@@ -3,7 +3,7 @@ $data['lagerbestandFeedback'] = '';
 
 if (isset($_SESSION['produkte']) && count($_SESSION['produkte']) > 0) {
 	foreach ($_SESSION['produkte'] as $produktId => $produkt) {
-		$preis = getRow('SELECT preis FROM produkte WHERE id ="' . sqlEscape($produktId) . '"');
+		$preis = $db->getRow('SELECT preis FROM produkte WHERE id ="' . $db->escape($produktId) . '"');
 		$_SESSION['produkte'][$produktId]['preis'] = $preis['preis'];
 	}
 	
@@ -21,8 +21,7 @@ if (isset($_POST['aktualisieren']) && $_POST['aktualisieren'] == 1) {
 				$_SESSION['produkte'][$warenkorbProduktId]['anzahl'] = $warenkorbProdukt['anzahl'];
 				$_SESSION['produkte'][$warenkorbProduktId]['size'] = $warenkorbProdukt['size'];
 				
-				$produktSizeVorhanden = getRow('SELECT * FROM produktvarianten WHERE produktId = ' . $produktId . ' AND variante LIKE "Größe" AND varianteOption LIKE "' . sqlEscape($warenkorbProdukt['size'])  . '"');
-				
+				$produktSizeVorhanden = $db->getRow('SELECT * FROM produktvarianten WHERE produktId = ' . $produktId . ' AND variante LIKE "Größe" AND varianteOption LIKE "' . $db->escape($warenkorbProdukt['size'])  . '"');
 				if ($warenkorbProdukt['anzahl'] > $produktSizeVorhanden['lagerbestand']) {
 					$_SESSION['produkte'][$warenkorbProduktId]['anzahl'] = $produktSizeVorhanden['lagerbestand'];
 					$data['lagerbestandFeedback']['type'] = 'warning';
@@ -45,10 +44,10 @@ if (isset($_POST['aktualisieren']) && $_POST['aktualisieren'] == 1) {
 	}
 }
 
-$data['produkte'] = idAsIndex(getRows('SELECT * FROM produkte'));
+$data['produkte'] = $db->getRows('SELECT * FROM produkte');
 
 foreach ($data['produkte'] as $produktEintragId => $produktEintrag) {
-	$varianten = getRows('SELECT * FROM produktvarianten WHERE produktId = ' . $produktEintrag['id'] . ' ORDER BY id ASC');
+	$varianten = $db->getRows('SELECT * FROM produktvarianten WHERE produktId = ' . $produktEintrag['id'] . ' ORDER BY id ASC');
 	if ((isset($varianten)) && is_array($varianten) && (count($varianten) != 0)) {
 		unset($variantenNew);
 		foreach ($varianten as $varianteId => $variante) {

@@ -1,15 +1,14 @@
 <?php
 	if (isset($_POST['benutzername'])) {
-		$link = getDbLink();
 		$sql = 'SELECT
 					*
 				FROM
 					users
 				WHERE
-					benutzername LIKE "' . mysqli_real_escape_string($link, $_POST['benutzername']) . '"
+					benutzername LIKE "' . $db->escape($_POST['benutzername']) . '"
 				AND
-					passwort LIKE "' . mysqli_real_escape_string($link, $_POST['passwort']) . '"';
-		$user = getRow($sql);
+					passwort LIKE "' . $db->escape($_POST['passwort']) . '"';
+		$user = $db->getRow($sql);
 		
 		if (isset($user['id'])) {
 			$_SESSION['user'] = $user;

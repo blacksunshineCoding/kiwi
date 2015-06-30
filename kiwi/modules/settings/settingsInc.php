@@ -1,5 +1,7 @@
 <?php
 $data['table'] = $main['tables']['settings'];
+$newFeedback = '';
+$editFeedback = '';
 
 if (isset($_GET['action'])) {
 	switch ($_GET['action']) {
@@ -20,7 +22,7 @@ if (isset($_GET['action'])) {
 	$modulansicht = 'list';
 }
 
-$settingsIncFile = dirname(__FILE__) . '/settings' . ucfirst($modulansicht) . 'Inc.php';
-if (file_exists($settingsIncFile)) {
-	include_once($settingsIncFile);
+$incFile = dirname(__FILE__) . '/' . $data['table']['name'] . ucfirst($modulansicht) . 'Inc.php';
+if (file_exists($incFile)) {
+	include_once($incFile);
 }

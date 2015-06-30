@@ -2,15 +2,17 @@
 $table = new Table();
 $table->name = 'orders';
 $table->label = 'Bestellungen';
+$table->newLabel = 'Neue Bestellung';
 $table->singular = 'Bestellung';
 $table->plural = 'Bestellungen';
 $table->onlyMinList = 1;
-$table->icon = 'fa fa-outdent';
+$table->icon = 'fa fa-shopping-cart';
 $table->minFieldList = 'bestellnummer,vorname,nachname,zahlungErhalten,versendet,bestelldatum';
 $table->topActions = '';
 $table->sideActions = 'all';
 $table->listActions = 'edit,delete';
-$table->icons['all'] = 'fa fa-list';
+$table->order = 'id ASC';
+$table->icons['all'] = 'fa fa-shopping-cart';
 $table->icons['new'] = 'fa fa-plus-square';
 $table->fields = array();
 

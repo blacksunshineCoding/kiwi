@@ -1,4 +1,5 @@
 <meta http-equiv="X-UA-Compatible" content="<?php echo $main['xua']; ?>">
+<meta name="viewport" content="<?php echo $main['viewport']; ?>">
 <meta charset="<?php echo $main['charset']; ?>">
 <meta name="description" content="<?php echo $main['description']; ?>">
 <meta name="keywords" content="<?php echo $main['keywords']; ?>">

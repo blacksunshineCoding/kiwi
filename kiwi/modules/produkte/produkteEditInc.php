@@ -1,8 +1,4 @@
 <?php
-$feedback = '';
-$error = '';
-$link = getDbLink();
-
 if (isset($_POST['sent'])) {
 	if (isset($_FILES['bild']['tmp_name']) && !empty($_FILES['bild']['tmp_name'])) {
 		$dateityp = GetImageSize($_FILES['bild']['tmp_name']);
@@ -17,13 +13,13 @@ if (isset($_POST['sent'])) {
 				$_POST['row']['bild'] = $newName . '||' . $_FILES['bild']['name'];
 				
 			} else {
-				$error['type'] = 'danger';
-				$error['text'] = 'Das Bild darf nicht größer als 1.000Kb sein';
+				$uploadFeedback['type'] = 'danger';
+				$uploadFeedback['text'] = 'Das Bild darf nicht größer als 1.000Kb sein';
 			}
 		
 		} else {
-			$error['type'] = 'danger';
-			$error['text'] = 'Das Bild darf nur als Jpeg, PNG oder GIF vorliegen';
+			$uploadFeedback['type'] = 'danger';
+			$uploadFeedback['text'] = 'Das Bild darf nur als Jpeg, PNG oder GIF vorliegen';
 		}
 	}
 	
@@ -36,7 +32,7 @@ if (isset($_POST['sent'])) {
 			if (isset($childtablesNewRow['variante']) && !empty($childtablesNewRow['variante'])) {
 				unset($childtablesNewRow['id']);
 				$childtablesNewRow[ $data['table']['childtables'][$childtableRowListEintrag]['parentIdField'] ] = $_POST['row']['id'];
-				insertRow($childtablesNewRow, $childtableRowListEintrag);
+				$db->insertRow($childtablesNewRow, $childtableRowListEintrag);
 			}
 			unset($_POST['row'][$childtableRowListEintrag]);
 		}
@@ -46,9 +42,9 @@ if (isset($_POST['sent'])) {
 			foreach ($_POST['row']['childtables'] as $existingChildTableName => $existingChildTable) {
 				foreach ($existingChildTable as $existingChildTableEintragId => $existingChildTableEintrag) {
 					if (isset($existingChildTableEintrag['delete']) && $existingChildTableEintrag['delete'] == 1) {
-						deleteRow('id', $existingChildTableEintrag['id'], $existingChildTableName);
+						$db->deleteRow('id', $existingChildTableEintrag['id'], $existingChildTableName);
 					} else {
-						updateRow($existingChildTableEintrag, 'id', $existingChildTableEintrag['id'], $existingChildTableName);
+						$db->updateRow($existingChildTableEintrag, 'id', $existingChildTableEintrag['id'], $existingChildTableName);
 					}
 				}
 			}
@@ -56,19 +52,19 @@ if (isset($_POST['sent'])) {
 		unset($_POST['row']['childtables']);
 	}
 	
-	updateRow($_POST['row'], 'id', $_POST['row']['id'], $data['table']['name']);
-	$feedback['type'] = 'success';
-	$feedback['text'] = 'Der ' . $data['table']['singular'] . ' wurde erfolgreich gespeichert';
+	$db->updateRow($_POST['row'], 'id', $_POST['row']['id'], $data['table']['name']);
+	$editFeedback['type'] = 'success';
+	$editFeedback['text'] = $data['table']['singular'] . ' wurde erfolgreich gespeichert';
 }
 
-$entry = getRow('SELECT * FROM produkte WHERE id = ' . sqlEscape($_GET['produkteId']));
+$entry = $db->getRow('SELECT * FROM ' . $data['table']['name'] . ' WHERE id = ' . $db->escape($_GET[$data['table']['name'] . 'Id']));
 
 if (isset($data['table']['childtables'])) {
 	$childTableList = explodeList($data['table']['childtableList']);
 	foreach ($data['table']['childtables'] as $childTableId => $childTable) {
 		$data['childtable'] = $main['tables'][$childTableId];
 		$query = 'SELECT * FROM ' . $data['childtable']['name'] . ' WHERE ' . $childTable['parentIdField'] . ' = "' . $entry['id'] . '"';
-		$entry[$childTableId] = getRows($query);
+		$entry[$childTableId] = $db->getRows($query);
 		if (empty($entry[$childTableId])) unset($entry[$childTableId]);
 	}
 }

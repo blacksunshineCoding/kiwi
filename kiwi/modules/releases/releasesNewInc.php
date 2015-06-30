@@ -1,10 +1,50 @@
 <?php
-$feedback = '';
-$link = getDbLink();
-
 if (isset($_POST['sent'])) {
+	if (isset($_FILES['bild']['tmp_name']) && !empty($_FILES['bild']['tmp_name'])) {
+		$dateityp = GetImageSize($_FILES['bild']['tmp_name']);
+		if ($dateityp[2] != 0) {
+			if ($_FILES['bild']['size'] <  50924000) {
+				$fileEnding = explode('.', $_FILES['bild']['name']);
+				$fileEnding = $fileEnding[1];
+				$newName = 'musicCover' .  $_POST['row']['id'] . '.' . $fileEnding;
+				$newDir = dirname(__FILE__) . '/../../../uploads/' . $newName;
+				move_uploaded_file($_FILES['bild']['tmp_name'], $newDir);
+	
+				$_POST['row']['bild'] = $newName . '||' . $_FILES['bild']['name'];
+	
+			} else {
+				$bildUploadFeedback['type'] = 'danger';
+				$bildUploadFeedback['text'] = 'Das Bild darf nicht größer als 5.000Kb sein';
+			}
+	
+		} else {
+			$bildUploadFeedback['type'] = 'danger';
+			$bildUploadFeedback['text'] = 'Das Bild darf nur als Jpeg, PNG oder GIF vorliegen';
+		}
+	}
+	
+	if (isset($_FILES['datei']['tmp_name']) && !empty($_FILES['datei']['tmp_name'])) {
+		$dateityp = GetImageSize($_FILES['datei']['tmp_name']);
+		if ($_FILES['datei']['size'] <  500024000) {
+			$fileEnding = explode('.', $_FILES['datei']['name']);
+			$fileEnding = $fileEnding[1];
+			$newName = 'music' .  $_POST['row']['id'] . '.' . $fileEnding;
+			$newDir = dirname(__FILE__) . '/../../../uploads/' . $newName;
+			move_uploaded_file($_FILES['datei']['tmp_name'], $newDir);
+				
+			$_POST['row']['datei'] = $newName . '||' . $_FILES['datei']['name'];
+				
+		} else {
+			$dateiUploadFeedback['type'] = 'danger';
+			$dateiUploadFeedback['text'] = 'Die Datei darf nicht größer als 500Mb sein';
+		}
+	
+	}
+	
 	unset($_POST['row']['id']);
-	insertRow($_POST['row'], $data['table']['name']);
-	$feedback['type'] = 'success';
-	$feedback['text'] = 'Der neue ' . $data['table']['singular'] . ' wurde erfolgreich angelegt.';
+	$db->insertRow($_POST['row'], $data['table']['name']);
+	$newFeedback['type'] = 'success';
+	$newFeedback['text'] = $data['table']['singular'] . ' wurde erfolgreich angelegt.';
 }
+
+$data['entries'] = $db->getRows('SELECT * FROM ' . $data['table']['name'] . ' ORDER BY ' . $data['table']['order']);

@@ -1,3 +1,3 @@
 <?php
-$data['entries'] = getRows('SELECT * FROM nodes');
+$data['entries'] = $db->getRows('SELECT * FROM ' . $data['table']['name']);
 $data['navigations'] = prepareNodes($data['entries']);

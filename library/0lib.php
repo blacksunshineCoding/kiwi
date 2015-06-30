@@ -12,7 +12,8 @@
  * @return string
  */
 function getOptionNameListViaSelect($fieldname, $tablename, $order = 'id ASC', $emptyAlternative = true, $emptyAlternativeValue = '---') {
-	$nameList = getRow('SELECT GROUP_CONCAT(' . $fieldname . ') FROM ' . $tablename . ' ORDER BY ' . $order);
+	global $db;
+	$nameList = $db->getRow('SELECT GROUP_CONCAT(' . $fieldname . ') FROM ' . $tablename . ' ORDER BY ' . $order);
 	$key = 'GROUP_CONCAT(' . $fieldname . ')';
 	$optionNameList = $nameList[$key];
 	if ($emptyAlternative) $optionNameList = $emptyAlternativeValue . ',' . $optionNameList;
@@ -31,7 +32,8 @@ function getOptionNameListViaSelect($fieldname, $tablename, $order = 'id ASC', $
  * @return string
  */
 function getOptionValueListViaSelect($fieldname, $tablename, $order = 'id ASC', $emptyAlternative = true, $emptyAlternativeValue = '') {
-	$valueList = getRow('SELECT GROUP_CONCAT(id) FROM ' . $tablename . ' ORDER BY ' . $order);
+	global $db;
+	$valueList = $db->getRow('SELECT GROUP_CONCAT(id) FROM ' . $tablename . ' ORDER BY ' . $order);
 	$key = 'GROUP_CONCAT(id)';
 	$optionValueList = $valueList[$key];
 	if ($emptyAlternative) $optionValueList = $emptyAlternativeValue . ',' . $optionValueList;
@@ -171,7 +173,12 @@ function renderListSide($table) {
 					echo '<li class="new">';
 					echo '<a href="' . $newLink . '">';
 					echo '<i class="' . $table['icons']['new'] . '"></i>';
-					echo '<span class="title">Neuer ' . $table['singular'] . '</span>';
+					if (isset($table['newLabel'])) {
+						$newLabel = $table['newLabel'];
+					} else {
+						$newLabel = 'Neuer ' . $table['singular'] . '-Eintrag';
+					}
+					echo '<span class="title">' . $newLabel . '</span>';
 					echo '</a>';
 					echo '</li>';
 					break;
@@ -238,6 +245,7 @@ function renderDetailEdit($table, $entry) {
 		echo '<form action="' . $action . '" method="post" enctype="multipart/form-data" class="kiwiForm">';
 		echo '<div class="mainEntry">';
 		foreach ($table['fields'] as $field) {
+			$fieldIdentifier = rand(1337,9999) . $field['name'];
 			$disabled = '';
 			if ($field['edit'] == 0) $disabled = 'readonly';
 			
@@ -254,7 +262,7 @@ function renderDetailEdit($table, $entry) {
 					break;
 					
 				case 'richtextarea':
-					echo '<textarea type="text" class="form-control richtextarea" name="row[' . $field['name'] . ']" placeholder="' . $field['label'] . '"' . $disabled .'>' . $entry[$field['name']] . '</textarea>';
+					echo '<textarea type="text" class="form-control richtextarea" id="' . $fieldIdentifier . '" name="row[' . $field['name'] . ']" placeholder="' . $field['label'] . '"' . $disabled .'>' . $entry[$field['name']] . '</textarea>';
 					break;
 					
 				case 'select':
@@ -267,6 +275,18 @@ function renderDetailEdit($table, $entry) {
 						echo '<option value="' . $option['value'] . '" ' . $selected . '>' . $option['name'] . '</option>';
 					}
 					echo '</select>';
+					break;
+					
+				case 'radio':
+					$options = prepareOptionList($field);
+					echo '<span class="input-group-addon">' . $field['label'] . '</span>';
+					echo '<div class="form-control">';
+					foreach ($options as $option) {
+						$checked = '';
+						if ($entry[$field['name']] == $option['value']) $checked = 'checked';
+						echo '<label class="radio-inline"><input type="radio" name="row[' . $field['name'] . ']" value="' . $option['value'] . '" ' . $checked . '>' . $option['name'] . '</label>';
+					}
+					echo '</div>';
 					break;
 					
 				case 'file':
@@ -293,6 +313,7 @@ function renderDetailEdit($table, $entry) {
 								echo '<div class="childTableEntry">';
 								$childtableFields = $main['tables'][$childTable]['fields'];
 								foreach ($childtableFields as $childtableField) {
+									$fieldIdentifier = rand(1337,9999) . $childtableField['name'];
 									$disabled = '';
 									if ($childtableField['edit'] == 0) $disabled = 'readonly';
 										
@@ -307,6 +328,10 @@ function renderDetailEdit($table, $entry) {
 										case 'textarea':
 											echo '<textarea type="text" class="form-control" name="row[childtables][' . $childTable . '][' . $existingChildtable['id'] . '][' . $childtableField['name'] . ']" placeholder="' . $childtableField['label'] . '"' . $disabled .'>' . prepareTextarea($entry[$childTable][$existingChildtableId][$childtableField['name']]) . '</textarea>';
 											break;
+											
+										case 'richtextarea':
+											echo '<textarea type="text" class="form-control richtextarea" id="' . $fieldIdentifier . '" name="row[childtables][' . $childTable . '][' . $existingChildtable['id'] . '][' . $childtableField['name'] . ']" placeholder="' . $childtableField['label'] . '"' . $disabled .'>' . $entry[$childTable][$existingChildtableId][$childtableField['name']] . '</textarea>';
+											break;
 												
 										case 'select':
 											$options = prepareOptionList($childtableField);
@@ -318,6 +343,18 @@ function renderDetailEdit($table, $entry) {
 												echo '<option value="' . $option['value'] . '" ' . $selected . '>' . $option['name'] . '</option>';
 											}
 											echo '</select>';
+											break;
+											
+										case 'radio':
+											$options = prepareOptionList($childtableField);
+											echo '<span class="input-group-addon">' . $childtableField['label'] . '</span>';
+											echo '<div class="form-control">';
+											foreach ($options as $option) {
+												$checked = '';
+												if ($childtableField['optionDefaultValue'] == $option['value']) $checked = 'checked';
+												echo '<label class="radio-inline"><input type="radio" name="' . $childtableField['name'] . '" value="' . $option['value'] . '" ' . $checked . '>' . $option['name'] . '</label>';
+											}
+											echo '</div>';
 											break;
 												
 										case 'file':
@@ -343,6 +380,7 @@ function renderDetailEdit($table, $entry) {
 						echo '<div class="newChildtable">';
 						if (isset($main['tables'][$childTable]['fields'])) foreach ($main['tables'][$childTable]['fields'] as $fieldId => $field) {
 							$childtableField = $main['tables'][$childTable]['fields'];
+							$fieldIdentifier = rand(1337,9999) . $field['name'];
 							$disabled = '';
 							if ($field['edit'] == 0) $disabled = 'readonly';
 							
@@ -357,6 +395,10 @@ function renderDetailEdit($table, $entry) {
 								case 'textarea':
 									echo '<textarea type="text" class="form-control" name="row[' . $childTable . '][new][' . $field['name'] . ']" placeholder="' . $field['label'] . '"' . $disabled .'></textarea>';
 									break;
+									
+								case 'richtextarea':
+									echo '<textarea type="text" class="form-control richtextarea" id="' . $fieldIdentifier . '" name="row[' . $childTable . '][new][' . $field['name'] . ']" placeholder="' . $field['label'] . '"' . $disabled .'></textarea>';
+									break;
 										
 								case 'select':
 									$options = prepareOptionList($field);
@@ -368,6 +410,18 @@ function renderDetailEdit($table, $entry) {
 										echo '<option value="' . $option['value'] . '" ' . $selected . '>' . $option['name'] . '</option>';
 									}
 									echo '</select>';
+									break;
+									
+								case 'radio':
+									$options = prepareOptionList($field);
+									echo '<span class="input-group-addon">' . $field['label'] . '</span>';
+									echo '<div class="form-control">';
+									foreach ($options as $option) {
+										$checked = '';
+										if ($field['optionDefaultValue'] == $option['value']) $checked = 'checked';
+										echo '<label class="radio-inline"><input type="radio" name="' . $field['name'] . '" value="' . $option['value'] . '" ' . $checked . '>' . $option['name'] . '</label>';
+									}
+									echo '</div>';
 									break;
 										
 								case 'file':
@@ -429,11 +483,23 @@ function renderDetailNew($table) {
 					echo '<span class="input-group-addon">' . $field['label'] . '</span>';
 					echo '<select class="form-control" name="row[' . $field['name'] . ']" ' . $disabled .'>';
 					foreach ($options as $option) {
-						$selected= '';
+						$selected = '';
 						if ($field['optionDefaultValue'] == $option['value']) $selected = 'selected';
 						echo '<option value="' . $option['value'] . '" ' . $selected . '>' . $option['name'] . '</option>';
 					}
 					echo '</select>';
+					break;
+					
+				case 'radio':
+					$options = prepareOptionList($field);
+					echo '<span class="input-group-addon">' . $field['label'] . '</span>';
+					echo '<div class="form-control">';
+					foreach ($options as $option) {
+						$checked = '';
+						if ($field['optionDefaultValue'] == $option['value']) $checked = 'checked';
+						echo '<label class="radio-inline"><input type="radio" name="' . $field['name'] . '" value="' . $option['value'] . '" ' . $checked . '>' . $option['name'] . '</label>';
+					}
+					echo '</div>';
 					break;
 					
 				case 'file':
@@ -543,7 +609,7 @@ function renderDataTable($table, $entries) {
 						$fieldList = prepareOption($table['fields'][$entryFieldId]);
 						$newFieldName = $fieldList[$entryField];
 					} else {
-						$newFieldName = trimText($entryField, 100);
+						$newFieldName = trimText(strip_tags($entryField), 90);
 					}
 					
 					echo '<td>';
@@ -576,7 +642,7 @@ function renderDataTable($table, $entries) {
 							$fieldList = prepareOption($table['fields'][$entryFieldId]);
 							$newFieldName = $fieldList[$entryField];
 						} else {
-							$newFieldName = trimText($entryField, 100);
+							$newFieldName = trimText(strip_tags($entryField), 90);
 						}
 						
 						echo '<td>';
@@ -700,7 +766,7 @@ function includeContent() {
 function includeCssFiles() {
 	global $main;
 	foreach ($main['cssFiles'] as $cssFile) {
-		echo '<link rel="stylesheet" href="' . $cssFile . '" type="text/css">';
+		echo '<link rel="stylesheet" href="' . $cssFile . '" type="text/css">' . "\n";
 	}
 }
 
@@ -712,13 +778,11 @@ function includeCssFiles() {
 function includeIeJsFiles() {
 	global $main;
 	if (count($main['ieJsFiles']) >= 1) {
-		echo '<!--[if lt IE 9]>
-';
+		echo '<!--[if lt IE 9]>' . "\n";
 		foreach ($main['ieJsFiles'] as $ieJsFile) {
-			echo '<script src="' . $ieJsFile . '"></script>
-';
+			echo "\t " . '<script src="' . $ieJsFile . '"></script>' . "\n";
 		}
-		echo '<![endif]-->';
+		echo '<![endif]-->' . "\n";
 	}
 }
 
@@ -730,7 +794,7 @@ function includeIeJsFiles() {
 function includeMediaQueries() {
 	global $main;
 	$mediaquerie = explode('||', $main['mediaQueries']);
-	echo '<link rel="stylesheet" href="' . $mediaquerie[0] . '" media="' . $mediaquerie[1] . '">';
+	echo '<link rel="stylesheet" href="' . $mediaquerie[0] . '" media="' . $mediaquerie[1] . '">' . "\n";
 }
 
 /**
@@ -741,7 +805,7 @@ function includeMediaQueries() {
 function includeJsFiles() {
 	global $main;
 	foreach ($main['jsFiles'] as $jsFile) {
-		echo '<script src="' . $jsFile . '"></script>';
+		echo '<script src="' . $jsFile . '"></script>' . "\n";
 	}	
 }
 
@@ -947,6 +1011,117 @@ function resizePic($img, $width, $height, $src = 'uploads', $dest = 'images/scal
 	} else {
 		return false;
 	}
+}
+
+function picCrop($src, $width, $height, $vpos, $hpos, $opacity=false, $srcPath, $destPath) {
+
+
+	list ($sourceWidth, $sourceHeight, $sourceTyp) = getimagesize($srcPath . '/' . $src);
+
+	switch ($vpos) {
+
+		case 'top':
+			$yPosition = 0;
+			$newHeight = $height;
+			break;
+
+		case 'center':
+			$yPosition = ($sourceHeight - $height) / 2;
+			$newHeight = $height;
+			break;
+
+		case 'bottom':
+			$yPosition = $sourceHeight - $height;
+			$newHeight = $height;
+			break;
+
+
+	}
+
+	switch ($hpos) {
+
+		case 'left':
+			$xPosition = 0;
+			$newWidth = $width;
+			break;
+
+		case 'center':
+			$xPosition = ($sourceWidth - $width) / 2;
+			$newWidth = $width;
+			break;
+
+		case 'right':
+			$xPosition = $sourceWidth - $width;
+			$newWidth = $width;
+			break;
+
+	}
+	
+	/*
+
+	$src = imagecreatefrompng('png-transparent.png');
+	$dst = imagecreatetruecolor(100,100);
+	//sage dem bild, dass es mit alpha kanal arbeiten soll
+	imagesavealpha($dst,true);
+	//fuelle den hintergrund mit voll transparentem schwarz
+	imagefill( $dst, 0, 0, imagecolorallocatealpha( $dst, 0, 0, 0, 127 ) );
+
+	*/
+
+	$tempImage = imagecreatetruecolor($width, $height);
+
+	switch ($sourceTyp) {
+
+		case 1:
+			$resourceImage = imagecreatefromgif($srcPath . '/' . $src);
+			break;
+
+		case 2:
+			$resourceImage = imagecreatefromjpeg($srcPath . '/' . $src);
+			break;
+
+		case 3:
+			$resourceImage = imagecreatefrompng($srcPath . '/' . $src);
+
+			if ($opacity == true) {
+					
+				imagesavealpha($tempImage, true);
+				imagefill( $tempImage, 0, 0, imagecolorallocatealpha( $tempImage, 0, 0, 0, 127 ) );
+					
+			}
+
+			break;
+
+	}
+
+	imagecopy($tempImage, $resourceImage, 0, 0, $xPosition, $yPosition, $width, $height);
+	
+	$fileExplode = explode('.', $src);
+	$fileName = $fileExplode[0];
+	$fileEnding = $fileExplode[1];
+
+	$finalImage = $destPath . '/' . $fileName . '_' . $width . 'x' . $height . '_' . $vpos . '-' . $hpos . '.' . $fileEnding;
+
+	switch ($sourceTyp) {
+
+		case 1:
+			imagegif($tempImage, $finalImage, 90);
+			break;
+
+		case 2:
+			imagejpeg($tempImage, $finalImage, 90);
+			break;
+
+		case 3:
+			imagepng($tempImage, $finalImage, 90);
+			break;
+
+	}
+
+	imagedestroy($resourceImage);
+
+	return $finalImage;
+
 }
 
 
@@ -1164,7 +1339,7 @@ function idAsIndex($array) {
  */
 function getNodeLink($node) {
 	if ($node['typ'] == 'site') {
-		$link = getSiteLink($node['seitenId']);
+		$link = getSiteLink($node);
 	} else {
 		$link = $node['url'];
 	}
@@ -1178,8 +1353,8 @@ function getNodeLink($node) {
  * @param unknown $id
  * @return string
  */
-function getSiteLink($id) {
-	$link = 'index.php?nodesId=' . $id;
+function getSiteLink($node) {
+	$link = $node['name'] . '_' . $node['seitenId'] . '.htm';
 	return $link;
 }
 
@@ -1192,6 +1367,8 @@ function getSiteLink($id) {
 function renderSite($site) {
 	global $main;
 	global $data;
+	global $db;
+	global $database;
 	renderHeadline($site['titel'], 2, 'siteTitle');
 // 	renderParagraph($site['text'], 'siteText');
 	renderRichtext($site['text']);

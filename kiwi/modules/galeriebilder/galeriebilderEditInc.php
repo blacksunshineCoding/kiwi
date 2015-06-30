@@ -1,7 +1,4 @@
 <?php
-$feedback = '';
-$link = getDbLink();
-
 if (isset($_POST['sent'])) {
 	if (isset($_FILES['bild']['tmp_name']) && !empty($_FILES['bild']['tmp_name'])) {
 		$dateityp = GetImageSize($_FILES['bild']['tmp_name']);
@@ -26,9 +23,9 @@ if (isset($_POST['sent'])) {
 		}
 	}
 	
-	updateRow($_POST['row'], 'id', $_POST['row']['id'], $data['table']['name']);
-	$feedback['type'] = 'success';
-	$feedback['text'] = 'Der ' . $data['table']['singular'] . ' wurde erfolgreich gespeichert';
+	$db->updateRow($_POST['row'], 'id', $_POST['row']['id'], $data['table']['name']);
+	$editFeedback['type'] = 'success';
+	$editFeedback['text'] = 'Der ' . $data['table']['singular'] . ' wurde erfolgreich gespeichert';
 }
 
-$entry = getRow('SELECT * FROM galeriebilder WHERE id = ' . sqlEscape($_GET['galeriebilderId']));
+$entry = $db->getRow('SELECT * FROM ' . $data['table']['name'] . ' WHERE id = ' . $db->escape($_GET[$data['table']['name'] . 'Id']));

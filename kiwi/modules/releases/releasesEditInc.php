@@ -1,7 +1,4 @@
 <?php
-$feedback = '';
-$link = getDbLink();
-
 if (isset($_POST['sent'])) {
 	if (isset($_FILES['bild']['tmp_name']) && !empty($_FILES['bild']['tmp_name'])) {
 		$dateityp = GetImageSize($_FILES['bild']['tmp_name']);
@@ -16,13 +13,13 @@ if (isset($_POST['sent'])) {
 				$_POST['row']['bild'] = $newName . '||' . $_FILES['bild']['name'];
 				
 			} else {
-				$error['type'] = 'danger';
-				$error['text'] = 'Das Bild darf nicht größer als 5.000Kb sein';
+				$bildUploadFeedback['type'] = 'danger';
+				$bildUploadFeedback['text'] = 'Das Bild darf nicht größer als 5.000Kb sein';
 			}
 		
 		} else {
-			$error['type'] = 'danger';
-			$error['text'] = 'Das Bild darf nur als Jpeg, PNG oder GIF vorliegen';
+			$bildUploadFeedback['type'] = 'danger';
+			$bildUploadFeedback['text'] = 'Das Bild darf nur als Jpeg, PNG oder GIF vorliegen';
 		}
 	}
 	
@@ -38,15 +35,15 @@ if (isset($_POST['sent'])) {
 			$_POST['row']['datei'] = $newName . '||' . $_FILES['datei']['name'];
 			
 		} else {
-			$error['type'] = 'danger';
-			$error['text'] = 'Die Datei darf nicht größer als 500Mb sein';
+			$dateiUploadFeedback['type'] = 'danger';
+			$dateiUploadFeedback['text'] = 'Die Datei darf nicht größer als 500Mb sein';
 		}
 		
 	}
 	
-	updateRow($_POST['row'], 'id', $_POST['row']['id'], $data['table']['name']);
-	$feedback['type'] = 'success';
-	$feedback['text'] = 'Der ' . $data['table']['singular'] . ' wurde erfolgreich gespeichert';
+	$db->updateRow($_POST['row'], 'id', $_POST['row']['id'], $data['table']['name']);
+	$editFeedback['type'] = 'success';
+	$editFeedback['text'] = 'Der ' . $data['table']['singular'] . ' wurde erfolgreich gespeichert';
 }
 
-$entry = getRow('SELECT * FROM releases WHERE id = ' . sqlEscape($_GET['releasesId']));
+$entry = $db->getRow('SELECT * FROM ' . $data['table']['name'] . ' WHERE id = ' . $db->escape($_GET[$data['table']['name'] . 'Id']));

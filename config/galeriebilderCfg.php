@@ -2,16 +2,17 @@
 $table = new Table();
 $table->name = 'galeriebilder';
 $table->label = 'Galerie';
+$table->newLabel = 'Neues Galeriebild';
 $table->singular = 'Galeriebild';
 $table->plural = 'Galeriebilder';
 $table->showTop = 1;
-$table->icon = 'fa fa-outdent';
+$table->icon = 'fa fa-picture-o';
 $table->topActions = '';
 $table->sideActions = 'all,new';
 $table->listActions = 'edit,copy,delete';
-$table->icons['all'] = 'fa fa-list';
+$table->order = 'position, id ASC';
+$table->icons['all'] = 'fa fa-picture-o';
 $table->icons['new'] = 'fa fa-plus-square';
-$table->icons['tree'] = 'fa fa-outdent';
 
 $field = new Field();
 $field->name = 'id';

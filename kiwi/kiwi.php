@@ -37,16 +37,18 @@
 				</nav>
 				<div class="clear"></div>
 			</header>
-			<nav id="side">
-				<?php
-					include_once dirname(__FILE__) . '/modules/side/sideCmp.php';
-				?>
-			</nav>
-			<section id="main">
-				<?php
-					include_once dirname(__FILE__) . '/modules/mainCmp.php';
-				?>
-			</section>
+			<div id="content">
+				<nav id="side">
+					<?php
+						include_once dirname(__FILE__) . '/modules/side/sideCmp.php';
+					?>
+				</nav>
+				<section id="main">
+					<?php
+						include_once dirname(__FILE__) . '/modules/mainCmp.php';
+					?>
+				</section>
+			</div>
 			<div class="clear"></div>
 		</div>
 	</body>

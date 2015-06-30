@@ -2,6 +2,7 @@
 $data['table'] = $main['tables']['orders'];
 $deleteFeedback = '';
 $copyFeedback = '';
+$editFeedback = '';
 
 if (isset($_GET['action'])) {
 	switch ($_GET['action']) {
@@ -17,7 +18,7 @@ if (isset($_GET['action'])) {
 		case 'delete':
 			$modulansicht = 'list';
 			if (isset($_GET['ordersId'])) {
-				deleteRow('id', $_GET['ordersId'], $data['table']['name']);
+				$db->deleteRow('id', $_GET['ordersId'], $data['table']['name']);
 				$deleteFeedback['type'] = 'info';
 				$deleteFeedback['text'] = 'Der ' . $data['table']['singular'] . ' wurde erfolgreich gelöscht.';
 			}

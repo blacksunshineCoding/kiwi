@@ -14,9 +14,9 @@ if (isset($_GET['action'])) {
 	$modulansicht = 'list';
 }
 
-$ordersCmpFile = dirname(__FILE__) . '/orders' . ucfirst($modulansicht) . 'Cmp.php';
+$cmpFile = dirname(__FILE__) . '/' . $data['table']['name'] . ucfirst($modulansicht) . 'Cmp.php';
 ?>
-<div class="modul orders ordersMain">
+<div class="modul <?php echo $data['table']['name'] . ' ' . $data['table']['name'] . 'Main'?>">
 	<div class="listTop">
 		<?php
 			renderListTop($data['table']);
@@ -24,8 +24,8 @@ $ordersCmpFile = dirname(__FILE__) . '/orders' . ucfirst($modulansicht) . 'Cmp.p
 		?>
 	</div>
 	<?php
-		if (file_exists($ordersCmpFile)) {
-			include_once($ordersCmpFile);
+		if (file_exists($cmpFile)) {
+			include_once($cmpFile);
 		}
 	?>
 </div>

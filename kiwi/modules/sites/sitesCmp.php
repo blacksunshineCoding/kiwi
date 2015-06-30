@@ -7,7 +7,11 @@ if (isset($_GET['action'])) {
 			break;
 				
 		case 'new':
-			$modulansicht = 'new';
+			if (isset($_POST['sent'])) {
+				$modulansicht = 'list';
+			} else {
+				$modulansicht = 'new';
+			}
 			break;
 				
 		case 'edit':
@@ -18,9 +22,9 @@ if (isset($_GET['action'])) {
 	$modulansicht = 'list';
 }
 
-$sitesCmpFile = dirname(__FILE__) . '/sites' . ucfirst($modulansicht) . 'Cmp.php';
+$cmpFile = dirname(__FILE__) . '/' . $data['table']['name'] . ucfirst($modulansicht) . 'Cmp.php';
 ?>
-<div class="modul sites sitesMain">
+<div class="modul <?php echo $data['table']['name'] . ' ' . $data['table']['name'] . 'Main'; ?>">
 	<div class="listTop">
 		<?php
 			renderListTop($data['table']);
@@ -28,8 +32,8 @@ $sitesCmpFile = dirname(__FILE__) . '/sites' . ucfirst($modulansicht) . 'Cmp.php
 		?>
 	</div>
 	<?php
-		if (file_exists($sitesCmpFile)) {
-			include_once($sitesCmpFile);
+		if (file_exists($cmpFile)) {
+			include_once($cmpFile);
 		}
 	?>
 </div>

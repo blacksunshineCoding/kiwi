@@ -1,11 +1,8 @@
 <?php
-$feedback = '';
-$link = getDbLink();
-
 if (isset($_POST['sent'])) {
-	updateRow($_POST['row'], 'id', $_POST['row']['id'], $data['table']['name']);
-	$feedback['type'] = 'success';
-	$feedback['text'] = 'Der ' . $data['table']['singular'] . ' wurde erfolgreich gespeichert';
+	$db->updateRow($_POST['row'], 'id', $_POST['row']['id'], $data['table']['name']);
+	$editFeedback['type'] = 'success';
+	$editFeedback['text'] = $data['table']['singular'] . ' wurde erfolgreich gespeichert';
 }
 
-$entry = getRow('SELECT * FROM produktkategorien WHERE id = ' . sqlEscape($_GET['produktkategorienId']));
+$entry = $db->getRow('SELECT * FROM ' . $data['table']['name'] . ' WHERE id = ' . $db->escape($_GET[$data['table']['name'] . 'Id']));

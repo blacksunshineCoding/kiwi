@@ -165,7 +165,7 @@ function renderDateiliste ($dateien, $class = FALSE, $ulAttributes = FALSE, $liA
 /**
  * renderLinkliste
  * Aus einem Array von Links wird eine Linkliste (ul) erstellt (optional mit Klasse)
- * Es k�nnen Attribute als Array f�r den ul, li oder a-Tag mitgegeben werden.
+ * Es koennen Attribute als Array fuer den ul, li oder a-Tag mitgegeben werden.
  * @param array $links
  * @param string $class
  * @param array $ulAttributes

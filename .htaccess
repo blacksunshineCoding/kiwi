@@ -1,0 +1,24 @@
+RewriteEngine On
+RewriteBase /space/kiwi/
+
+
+# Bestimmte dateien vom Rewrite ausschließen
+RewriteRule \.(css|jpe?g|gif|png|js|ico)$ - [L]
+
+RewriteRule ^(.*)_(.*)\.htm$ index.php?nodesName=$1&nodesId=$2 [QSA,L]
+
+
+RewriteRule test/ test.php
+RewriteRule test test.php
+
+RewriteRule ueber/ ueber_5.htm
+RewriteRule ueber ueber_5.htm
+
+RewriteRule galerie/ galerie_3.htm
+RewriteRule galerie galerie_3.htm
+
+RewriteRule releases/ releases_4.htm
+RewriteRule releases releases_4.htm
+
+RewriteRule kontakt/ kontakt_6.htm
+RewriteRule kontakt kontakt_6.htm

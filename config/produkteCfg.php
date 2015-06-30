@@ -2,14 +2,16 @@
 $table = new Table();
 $table->name = 'produkte';
 $table->label = 'Produkte';
+$table->newLabel = 'Neues Produkt';
 $table->singular = 'Produkt';
 $table->plural = 'Produkte';
-$table->icon = 'fa fa-outdent';
+$table->icon = 'fa fa-inbox';
 $table->topActions = '';
 $table->sideActions = 'all,new';
 $table->listActions = 'edit,copy,delete';
-$table->icons['all'] = 'fa fa-list';
+$table->icons['all'] = 'fa fa-inbox';
 $table->icons['new'] = 'fa fa-plus-square';
+$table->order = 'position, id ASC';
 $table->childtableList = 'produktvarianten';
 $table->childtables['produktvarianten']['parentIdField'] = 'produktId';
 
@@ -17,6 +19,7 @@ $field = new Field();
 $field->name = 'id';
 $field->label = 'Id';
 $field->type = 'text';
+$field->edit = 0;
 $table->add($field);
 
 $field = new Field();

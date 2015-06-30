@@ -1,2 +1,2 @@
 <?php
-$data['entries'] = getRows('SELECT * FROM settings ORDER BY id ASC');
+$data['entries'] = $db->getRows('SELECT * FROM ' . $data['table']['name'] . ' ORDER BY ' . $data['table']['order']);

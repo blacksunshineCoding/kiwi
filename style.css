@@ -251,6 +251,21 @@ strong {
 		display: none;
 	}
 	
+	.produktEintragBild a {
+		display: block;
+		padding: 10px;
+		border: 1px solid #ECECEC;
+	}
+	
+	.produktEintragBild a img {
+		display: block;
+		margin: 0 auto;
+	}
+	
+	.produktEintrag select.form-control {
+		margin-bottom: 15px !important;
+	}
+	
 	.produktEintragMain .artikelnummer {
 		position: relative !important;
 		display: block !important;

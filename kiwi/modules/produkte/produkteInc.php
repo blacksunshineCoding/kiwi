@@ -2,6 +2,9 @@
 $data['table'] = $main['tables']['produkte'];
 $deleteFeedback = '';
 $copyFeedback = '';
+$newFeedback = '';
+$editFeedback = '';
+$uploadFeedback = '';
 
 if (isset($_GET['action'])) {
 	switch ($_GET['action']) {
@@ -20,22 +23,22 @@ if (isset($_GET['action'])) {
 
 		case 'delete':
 			$modulansicht = 'list';
-			if (isset($_GET['produkteId'])) {
-				deleteRow('id', $_GET['produkteId'], $data['table']['name']);
+			if (isset($_GET[$data['table']['name'] . 'Id'])) {
+				$db->deleteRow('id', $_GET[$data['table']['name'] . 'Id'], $data['table']['name']);
 				$deleteFeedback['type'] = 'info';
-				$deleteFeedback['text'] = 'Der ' . $data['table']['singular'] . ' wurde erfolgreich gelöscht.';
+				$deleteFeedback['text'] = $data['table']['singular'] . ' wurde erfolgreich gelöscht.';
 			}
 			break;
 
 		case 'copy':
 			$modulansicht = 'list';
-			if (isset($_GET['produkteId'])) {
-				$copyEntry = getRow('SELECT * FROM produkte WHERE id = ' . sqlEscape($_GET['produkteId']));
+			if (isset($_GET[$data['table']['name'] . 'Id'])) {
+				$copyEntry = $db->getRow('SELECT * FROM ' . $data['table']['name'] . ' WHERE id = ' . $db->escape($_GET[$data['table']['name'] . 'Id']));
 				unset($copyEntry['id']);
 				$copyEntry['titel'] .= ' (Kopie)';
-				insertRow($copyEntry, $data['table']['name']);
+				$db->insertRow($copyEntry, $data['table']['name']);
 				$copyFeedback['type'] = 'info';
-				$copyFeedback['text'] = 'Der ' . $data['table']['singular'] . ' wurde erfolgreich kopiert.';
+				$copyFeedback['text'] = $data['table']['singular'] . ' wurde erfolgreich kopiert.';
 			}
 			break;
 	}
@@ -43,7 +46,7 @@ if (isset($_GET['action'])) {
 	$modulansicht = 'list';
 }
 
-$produkteIncFile = dirname(__FILE__) . '/produkte' . ucfirst($modulansicht) . 'Inc.php';
-if (file_exists($produkteIncFile)) {
-	include_once($produkteIncFile);
+$incFile = dirname(__FILE__) . '/' . $data['table']['name'] . ucfirst($modulansicht) . 'Inc.php';
+if (file_exists($incFile)) {
+	include_once($incFile);
 }

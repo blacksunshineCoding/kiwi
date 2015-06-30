@@ -1,7 +1,7 @@
 <?php
 $_SESSION['completeSteps']['uebersicht'] = true;
 
-$data['produkte'] = idAsIndex(getRows('SELECT * FROM produkte'));
+$data['produkte'] = $db->getRows('SELECT * FROM produkte');
 
 
 if (isset($_SESSION['produkte'])) {
@@ -29,12 +29,12 @@ if (isset($_SESSION['produkte'])) {
 			
 			/* Lagerbestand Update */
 			
-			$variante = getRow('SELECT * FROM produktvarianten WHERE produktId = "' . $realProdukt['id'] . '" AND variante LIKE "Größe" AND varianteOption LIKE "' . $sessionProdukt['size'] . '"');
+			$variante = $db->getRow('SELECT * FROM produktvarianten WHERE produktId = "' . $realProdukt['id'] . '" AND variante LIKE "Größe" AND varianteOption LIKE "' . $sessionProdukt['size'] . '"');
 			$variante['lagerbestand'] = intval($variante['lagerbestand']) - intval($sessionProdukt['anzahl']);
 			if ($variante['lagerbestand'] < 0) {
 				$variante['lagerbestand'] = 0;
 			}
-			updateRow($variante, 'id', $variante['id'], 'produktvarianten');
+			$db->updateRow($variante, 'id', $variante['id'], 'produktvarianten');
 	
 		}
 		
@@ -70,22 +70,22 @@ if (isset($_SESSION['produkte'])) {
 		
 		$row['bestellnummer'] = date('Ymd') . '-' . rand(1000,9999);
 		
-		$row['vorname'] = sqlEscape($_SESSION['adresse']['vorname']);
-		$row['nachname'] = sqlEscape($_SESSION['adresse']['nachname']);
-		$row['strasse'] = sqlEscape($_SESSION['adresse']['strasse']);
-		$row['hausnummer'] = sqlEscape($_SESSION['adresse']['hausnummer']);
-		$row['adresszusatz'] = sqlEscape($_SESSION['adresse']['adresszusatz']);
-		$row['plz'] = sqlEscape($_SESSION['adresse']['plz']);
-		$row['ort'] = sqlEscape($_SESSION['adresse']['ort']);
-		$row['land'] = sqlEscape($_SESSION['adresse']['land']);
-		$row['emailadresse'] = sqlEscape($_SESSION['adresse']['emailadresse']);
-		$row['anmerkung'] = sqlEscape($_SESSION['adresse']['anmerkung']);
+		$row['vorname'] = $_SESSION['adresse']['vorname'];
+		$row['nachname'] = $_SESSION['adresse']['nachname'];
+		$row['strasse'] = $_SESSION['adresse']['strasse'];
+		$row['hausnummer'] = $_SESSION['adresse']['hausnummer'];
+		$row['adresszusatz'] = $_SESSION['adresse']['adresszusatz'];
+		$row['plz'] = $_SESSION['adresse']['plz'];
+		$row['ort'] = $_SESSION['adresse']['ort'];
+		$row['land'] = $_SESSION['adresse']['land'];
+		$row['emailadresse'] = $_SESSION['adresse']['emailadresse'];
+		$row['anmerkung'] = $_SESSION['adresse']['anmerkung'];
 		
 		$row['produktGesamtPreis'] = number_format($allProduktePreis, 2);
 		$row['versandkosten'] = number_format($versandkosten, 2);
 		$row['gesamtpreis'] = number_format($finalKosten, 2);
-		$row['zahlungsmethode'] = sqlEscape($_SESSION['adresse']['zahlungsmethode']);
-		$row['versandmethode'] = sqlEscape($_SESSION['adresse']['versandmethode']);
+		$row['zahlungsmethode'] = $_SESSION['adresse']['zahlungsmethode'];
+		$row['versandmethode'] = $_SESSION['adresse']['versandmethode'];
 		$row['zahlungErhalten'] = 0;
 		$row['versendet'] = 0;
 		
@@ -93,11 +93,11 @@ if (isset($_SESSION['produkte'])) {
 		$row['zahlungsdatum'] = 0;
 		$row['versanddatum'] = 0;
 		
-		$row['produkte'] = sqlEscape($produktText);
+		$row['produkte'] = $produktText;
 		
 		$data['order'] = $row;
 
-		insertRow($row, 'orders');
+		$db->insertRow($row, 'orders');
 		orderMail($row, 'confirm');
 		
 		$_SESSION['orderComplete'] = 1;

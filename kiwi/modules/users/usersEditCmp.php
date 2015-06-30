@@ -6,7 +6,7 @@
 		<div class="panel-body">
 			<?php
 				renderDetailEdit($data['table'], $entry);
-				renderFeedback($feedback);
+				renderFeedback($editFeedback);
 			?>
 		</div>
 	</div>

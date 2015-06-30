@@ -2,14 +2,19 @@
 $table = new Table();
 $table->name = 'sites';
 $table->label = 'Seiten';
+$table->newLabel = 'Neue Seite';
 $table->singular = 'Seite';
 $table->plural = 'Seiten';
-$table->icon = 'fa fa-outdent';
+$table->icon = 'fa fa-leanpub';
 $table->topActions = '';
 $table->sideActions = 'all,new';
 $table->listActions = 'edit,copy,delete';
-$table->icons['all'] = 'fa fa-list';
+$table->icons['all'] = 'fa fa-leanpub';
 $table->icons['new'] = 'fa fa-plus-square';
+$table->order = 'id ASC';
+$table->childtableList = 'contents';
+$table->childtables['contents']['parentIdField'] = 'parentId';
+$table->childtables['contents']['parentTableField'] = 'parentTable';
 
 $field = new Field();
 $field->name = 'id';

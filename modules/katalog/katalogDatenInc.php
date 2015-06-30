@@ -2,7 +2,7 @@
 
 $_SESSION['completeSteps']['warenkorb'] = true;
 
-$data['produkte'] = idAsIndex(getRows('SELECT * FROM produkte'));
+$data['produkte'] = $db->getRows('SELECT * FROM produkte');
 
 $data['vornameClass'] = '';
 $data['nachnameClass'] = '';

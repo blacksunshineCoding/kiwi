@@ -7,7 +7,11 @@ if (isset($_GET['action'])) {
 			break;
 				
 		case 'new':
-			$modulansicht = 'new';
+			if (isset($_POST['sent'])) {
+				$modulansicht = 'list';
+			} else {
+				$modulansicht = 'new';
+			}
 			break;
 				
 		case 'own':
@@ -22,18 +26,15 @@ if (isset($_GET['action'])) {
 	$modulansicht = 'list';
 }
 
-$usersCmpFile = dirname(__FILE__) . '/users' . ucfirst($modulansicht) . 'Cmp.php';
+$cmpFile = dirname(__FILE__) . '/' . $data['table']['name'] . ucfirst($modulansicht) . 'Cmp.php';
 ?>
-<div class="modul users usersMain">
+<div class="modul <?php echo $data['table']['name'] . ' ' . $data['table']['name'] . 'Main'; ?>">
 	<div class="listTop">
-		<?php
-			//renderListTop($data['table']);
-		?>
 		<h1><?php echo $data['table']['label']; ?></h1>
 	</div>
 	<?php
-		if (file_exists($usersCmpFile)) {
-			include_once($usersCmpFile);
+		if (file_exists($cmpFile)) {
+			include_once($cmpFile);
 		}
 	?>
 </div>
